@@ -1,4 +1,4 @@
-const defaults={heroTitle:'讓影像不再只是被觀看，\n而是真正被「理解」。',heroText:'介於廣告美學與內容行銷之間，我們不只拍攝畫面，\n更透過「觀點企劃」整理您的品牌靈魂，\n讓每一幀影像都有意義。',cta:'預約品牌影像診斷',phone:'02-1234-5678',email:'hello@seamoflight.com',line:'@seamoflight'};
+const defaults={heroTitle:'讓影像不再只是被觀看，\n而是真正被「理解」。',heroText:'介於廣告美學與內容行銷之間，我們不只拍攝畫面，\n更透過「觀點企劃」整理您的品牌靈魂，\n讓每一幀影像都有意義。',cta:'預約品牌影像診斷',phone:'02-1234-5678',email:'hello@seamoflight.com',line:'@seamoflight',instagramUrl:'',facebookUrl:'',lineUrl:''};
 const data={...defaults,...JSON.parse(localStorage.getItem('slit-content-v2')||'{}')};
 const login=document.querySelector('#login');
 const dashboard=document.querySelector('#dashboard');
