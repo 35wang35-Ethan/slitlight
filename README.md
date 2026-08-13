@@ -1,19 +1,8 @@
-# 隙光一頁式品牌網站
+# 一線之光（Slit Light）
 
-Bootstrap 5 響應式前台與輕量內容管理後台。
+這是一個使用 HTML、CSS、JavaScript 與 Bootstrap 5 製作的靜態網站。
 
-## 本機預覽
+## 網站連結
 
-```powershell
-python -m http.server 8080
-```
-
-- 前台：`http://localhost:8080/`
-- 後台：`http://localhost:8080/admin.html`
-- 測試帳號：`admin`
-- 測試密碼：`seam2026`
-
-目前後台使用瀏覽器 LocalStorage 儲存，適合提案／原型展示；正式多人維護上線前，應接入伺服器端驗證與資料庫。
- ## Github推送地址
-HTTS:https://github.com/35wang35-Ethan/slitlight.git
-SSH:git@github.com:35wang35-Ethan/slitlight.git
+- 公開網站：https://35wang35-ethan.github.io/slitlight/
+- GitHub 原始碼：https://github.com/35wang35-Ethan/slitlight

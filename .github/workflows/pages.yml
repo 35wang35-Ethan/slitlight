@@ -27,7 +27,7 @@ jobs:
       - name: Prepare public frontend
         run: |
           mkdir -p public/assets
-          cp index.html style.css app.js public/
+          cp index.html style.css app.js admin.html admin.js public/
           cp assets/hero.png public/assets/
 
       - name: Configure Pages
