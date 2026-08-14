@@ -62,7 +62,7 @@ function renderServices(services = siteContent.services) {
     const regularPrice = typeof service.regularPrice === 'number' ? `NT$${service.regularPrice.toLocaleString()}` : service.regularPrice;
     const priceParts = promoPrice?.match(/^(NT\$)(.+)$/);
     const price = service.priceVisible ? `<div class="service-price"><del>原價 ${escapeHtml(regularPrice)}</del><div><span>${escapeHtml(priceParts?.[1] || '')}</span><strong>${escapeHtml(priceParts?.[2] || promoPrice)}</strong></div><small>初期案例價</small></div>` : '';
-    return `<div class="col-lg-4 col-md-6"><article class="service-card${service.featured ? ' featured' : ''}" data-service="${escapeHtml(service.name)}">${service.featured ? '<span class="service-badge">適合從這裡開始</span>' : ''}<span class="service-index">0${index + 1}</span><h3>${escapeHtml(service.name)}</h3><p class="service-fit">${escapeHtml(service.fit)}</p><p class="service-target"><strong>適合：</strong>${escapeHtml(service.targetCustomer)}</p>${price}<p class="service-subtitle">${escapeHtml(service.subtitle)}</p><ul>${service.items.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul><p class="service-duration">時間：${escapeHtml(service.duration)}</p><a class="btn btn-gold" href="#contact" data-track="inquiry_click">告訴我你現在最卡的問題</a></article></div>`;
+    return `<div class="col-lg-4 col-md-6"><article class="service-card${service.featured ? ' featured' : ''}" data-service="${escapeHtml(service.name)}">${service.featured ? '<span class="service-badge">適合從這裡開始</span>' : ''}<span class="service-index">0${index + 1}</span><h3>${escapeHtml(service.name)}</h3><p class="service-fit">${escapeHtml(service.fit)}</p><p class="service-target"><strong>適合：</strong>${escapeHtml(service.targetCustomer)}</p>${price}<p class="service-subtitle">${escapeHtml(service.subtitle)}</p><ul>${service.items.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul><p class="service-duration">時間：${escapeHtml(service.duration)}</p><a class="btn btn-gold" href="#contact" data-track="inquiry_click">聊聊你的卡點</a></article></div>`;
   }).join('');
 }
 
@@ -72,14 +72,34 @@ function renderFaqs(faqs = siteContent.faqs) {
   accordion.innerHTML = faqs.map((faq, index) => { const [question, answer] = Array.isArray(faq) ? faq : [faq.question, faq.answer]; return `<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-${index}" aria-expanded="false" aria-controls="faq-${index}">${escapeHtml(question)}</button></h3><div id="faq-${index}" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">${escapeHtml(answer)}</div></div></div>`; }).join('');
 }
 
+function applySiteSettings(settings = {}) {
+  siteContent.settings = {
+    email: settings.email || '',
+    instagramUrl: settings.instagram_url || '',
+    lineUrl: settings.line_url || '',
+    facebookUrl: settings.facebook_url || ''
+  };
+
+  document.querySelectorAll('[data-link]').forEach(link => {
+    const value = siteContent.settings[link.dataset.link]?.trim();
+    link.hidden = !value;
+    if (!value) {
+      link.removeAttribute('href');
+      return;
+    }
+    link.href = link.dataset.link === 'email' ? `mailto:${value}` : value;
+  });
+}
+
 renderServices();
 renderFaqs();
 
 async function loadCloudContent() {
   if (typeof slitSupabase === 'undefined') return;
-  const [servicesResult, faqsResult] = await Promise.all([
+  const [servicesResult, faqsResult, settingsResult] = await Promise.all([
     slitSupabase.from('services').select('*').eq('enabled', true).order('sort_order'),
-    slitSupabase.from('faqs').select('question,answer').eq('enabled', true).order('sort_order')
+    slitSupabase.from('faqs').select('question,answer').eq('enabled', true).order('sort_order'),
+    slitSupabase.from('site_settings').select('email,instagram_url,line_url,facebook_url').eq('is_published', true).limit(1).maybeSingle()
   ]);
   if (!servicesResult.error && servicesResult.data?.length) renderServices(servicesResult.data.map(service => ({
     name: service.name, fit: service.description, subtitle: service.subtitle, targetCustomer: service.target_customer,
@@ -87,6 +107,7 @@ async function loadCloudContent() {
     priceVisible: service.price_visible, duration: service.duration, featured: service.featured
   })));
   if (!faqsResult.error && faqsResult.data?.length) renderFaqs(faqsResult.data);
+  if (!settingsResult.error && settingsResult.data) applySiteSettings(settingsResult.data);
 }
 
 loadCloudContent();
