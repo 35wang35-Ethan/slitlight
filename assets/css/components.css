@@ -73,8 +73,10 @@ textarea.form-control { min-height: 130px; }
 .form-status.success { display: block; border-left: 2px solid var(--gold-dark); background: var(--paper-warm); }
 .form-status.info { display: block; border-left: 2px solid var(--muted); background: var(--paper-warm); }
 .form-status.error { display: block; border-left: 2px solid #8b4a42; background: #f6ece9; color: #6b332d; }
-.socials { display: flex; justify-content: flex-end; gap: 20px; }
-.socials a { display: inline-flex; align-items: center; gap: 7px; font-size: var(--fs-small); text-decoration: none; letter-spacing: .04em; }
-.socials svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 auto; }
+.socials { display: flex; justify-content: flex-end; align-items: center; gap: 12px; }
+.socials a { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: var(--gold); color: var(--white); text-decoration: none; transition: background-color .2s ease, transform .2s ease; }
+.socials a:hover, .socials a:focus-visible { background: var(--gold-dark); color: var(--white); transform: translateY(-2px); }
+.socials span { display: none; }
+.socials svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 auto; }
 .socials a[data-link="lineUrl"] svg,
 .socials a[data-link="facebookUrl"] svg { fill: currentColor; stroke: none; }
