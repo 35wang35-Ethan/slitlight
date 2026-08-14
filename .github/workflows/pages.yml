@@ -28,6 +28,7 @@ jobs:
         run: |
           mkdir -p public
           cp index.html style.css app.js admin.html admin.js public/
+          cp -R admin public/admin
           cp -R assets public/assets
 
       - name: Configure Pages

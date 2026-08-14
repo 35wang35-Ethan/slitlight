@@ -7,6 +7,7 @@ const siteContent = {
   services: [
     {
       name: '內容診斷',
+      fit: '我不知道問題到底在哪裡。',
       subtitle: '先看清楚問題在哪裡，再決定下一步。',
       targetCustomer: '已經有經營社群，但不知道問題在哪裡的人。',
       items: ['事前資料檢視', '60–90 分鐘一對一諮詢', '現有內容診斷', '核心問題整理', '3 個優先改善方向', '會後重點摘要'],
@@ -15,6 +16,7 @@ const siteContent = {
     },
     {
       name: 'IP 核心企劃',
+      fit: '我有專業、有想法，但不知道怎麼說清楚。',
       subtitle: '把專業與經驗，整理成清楚的內容定位。',
       targetCustomer: '有專業、有想法，但不知道如何形成清楚內容定位的人。',
       items: ['前期問卷', '1–2 次深度訪談', 'IP／品牌核心梳理', '目標客群與主要問題整理', '差異化觀點', '3–5 個內容主軸', '10–15 個內容題目', '一次修改'],
@@ -23,6 +25,7 @@ const siteContent = {
     },
     {
       name: 'IP 內容轉換企劃',
+      fit: '已經有人看，但信任與詢問沒有接起來。',
       subtitle: '讓內容從被看見，接到信任與詢問。',
       targetCustomer: '已經有流量，希望進一步建立信任、詢問與完整內容系統的人。',
       items: ['IP 核心企劃全部內容', '現有內容漏斗診斷', '轉換卡點分析', '內容與服務連結設計', '20–30 個內容題目', '3–5 支短影音企劃／腳本架構', 'CTA 建議', '2–4 週執行追蹤'],
@@ -51,20 +54,39 @@ function escapeHtml(value) {
   return String(value).replace(/[&<>'"]/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[character]));
 }
 
-function renderServices() {
+function renderServices(services = siteContent.services) {
   const grid = document.querySelector('#servicesGrid');
   if (!grid) return;
-  grid.innerHTML = siteContent.services.map((service, index) => {
-    const price = service.priceVisible ? `<div class="service-price"><del>原價 ${escapeHtml(service.regularPrice)}</del><strong>初期案例價 ${escapeHtml(service.promoPrice)}</strong></div>` : '';
-    return `<div class="col-lg-4 col-md-6"><article class="service-card${service.featured ? ' featured' : ''}" data-service="${escapeHtml(service.name)}"><span class="service-index">0${index + 1}</span><h3>${escapeHtml(service.name)}</h3><p class="service-subtitle">${escapeHtml(service.subtitle)}</p><p class="service-target"><strong>適合：</strong>${escapeHtml(service.targetCustomer)}</p><ul>${service.items.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul><p class="service-duration">時間：${escapeHtml(service.duration)}</p>${price}<a class="btn btn-gold" href="#contact" data-track="inquiry_click">${escapeHtml(service.ctaText)}</a></article></div>`;
+  grid.innerHTML = services.map((service, index) => {
+    const promoPrice = typeof service.promoPrice === 'number' ? `NT$${service.promoPrice.toLocaleString()}` : service.promoPrice;
+    const regularPrice = typeof service.regularPrice === 'number' ? `NT$${service.regularPrice.toLocaleString()}` : service.regularPrice;
+    const priceParts = promoPrice?.match(/^(NT\$)(.+)$/);
+    const price = service.priceVisible ? `<div class="service-price"><del>原價 ${escapeHtml(regularPrice)}</del><div><span>${escapeHtml(priceParts?.[1] || '')}</span><strong>${escapeHtml(priceParts?.[2] || promoPrice)}</strong></div><small>初期案例價</small></div>` : '';
+    return `<div class="col-lg-4 col-md-6"><article class="service-card${service.featured ? ' featured' : ''}" data-service="${escapeHtml(service.name)}">${service.featured ? '<span class="service-badge">適合從這裡開始</span>' : ''}<span class="service-index">0${index + 1}</span><h3>${escapeHtml(service.name)}</h3><p class="service-fit">${escapeHtml(service.fit)}</p><p class="service-target"><strong>適合：</strong>${escapeHtml(service.targetCustomer)}</p>${price}<p class="service-subtitle">${escapeHtml(service.subtitle)}</p><ul>${service.items.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul><p class="service-duration">時間：${escapeHtml(service.duration)}</p><a class="btn btn-gold" href="#contact" data-track="inquiry_click">告訴我你現在最卡的問題</a></article></div>`;
   }).join('');
 }
 
-function renderFaqs() {
+function renderFaqs(faqs = siteContent.faqs) {
   const accordion = document.querySelector('#faqAccordion');
   if (!accordion) return;
-  accordion.innerHTML = siteContent.faqs.map(([question, answer], index) => `<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-${index}" aria-expanded="false" aria-controls="faq-${index}">${escapeHtml(question)}</button></h3><div id="faq-${index}" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">${escapeHtml(answer)}</div></div></div>`).join('');
+  accordion.innerHTML = faqs.map((faq, index) => { const [question, answer] = Array.isArray(faq) ? faq : [faq.question, faq.answer]; return `<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-${index}" aria-expanded="false" aria-controls="faq-${index}">${escapeHtml(question)}</button></h3><div id="faq-${index}" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">${escapeHtml(answer)}</div></div></div>`; }).join('');
 }
 
 renderServices();
 renderFaqs();
+
+async function loadCloudContent() {
+  if (typeof slitSupabase === 'undefined') return;
+  const [servicesResult, faqsResult] = await Promise.all([
+    slitSupabase.from('services').select('*').eq('enabled', true).order('sort_order'),
+    slitSupabase.from('faqs').select('question,answer').eq('enabled', true).order('sort_order')
+  ]);
+  if (!servicesResult.error && servicesResult.data?.length) renderServices(servicesResult.data.map(service => ({
+    name: service.name, fit: service.description, subtitle: service.subtitle, targetCustomer: service.target_customer,
+    items: service.items, regularPrice: service.regular_price, promoPrice: service.promo_price,
+    priceVisible: service.price_visible, duration: service.duration, featured: service.featured
+  })));
+  if (!faqsResult.error && faqsResult.data?.length) renderFaqs(faqsResult.data);
+}
+
+loadCloudContent();

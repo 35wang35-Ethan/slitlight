@@ -23,12 +23,25 @@ if (inquiryForm) {
       return;
     }
 
-    const payload = { ...Object.fromEntries(new FormData(form)), ...utmParameters, source: utmParameters.utm_source || 'direct' };
-    console.info('Phase 2 inquiry preview:', payload);
-    form.classList.remove('was-validated');
-    form.reset();
     const status = document.querySelector('#formStatus');
-    status.className = 'form-status info';
-    status.innerHTML = '<strong>表單介面已完成。</strong><br>正式送出功能會在 Supabase 串接階段啟用；目前沒有傳送或保存你的資料。';
+    const button = form.querySelector('button[type="submit"]');
+    const payload = { ...Object.fromEntries(new FormData(form)), ...utmParameters, source: utmParameters.utm_source || 'direct' };
+    button.disabled = true;
+    button.textContent = '傳送中…';
+    slitSupabase.from('inquiries').insert(payload).then(({ error }) => {
+      if (error) {
+        status.className = 'form-status error';
+        status.textContent = '目前無法送出，請稍後再試，或透過 Email 與我們聯絡。';
+        return;
+      }
+      form.classList.remove('was-validated');
+      form.reset();
+      status.className = 'form-status success';
+      status.innerHTML = '<strong>已收到你的問題。</strong><br>我會先看看目前的狀況，再於 1–2 個工作天內回覆你。';
+      trackEvent('inquiry_submit');
+    }).finally(() => {
+      button.disabled = false;
+      button.textContent = '送出目前的問題';
+    });
   });
 }
