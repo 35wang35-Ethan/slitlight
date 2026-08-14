@@ -143,16 +143,16 @@
     <section id="contact" class="section contact-section" aria-labelledby="contact-title">
       <div class="contact-light" aria-hidden="true"></div>
       <div class="container shell-sm"><div class="row g-5">
-        <div class="col-lg-5 contact-copy"><p class="eyebrow">START A CONVERSATION</p><h2 id="contact-title">告訴我，<br>你現在最卡的一個問題。</h2><p>我會先看看目前的狀況，再於 1–2 個工作天內回覆你。也可以先安排 15–20 分鐘初步討論，確認卡點與彼此是否適合合作。</p><p class="small-note">初談用來判斷問題類型與適合方案，不是一次免費解決完整問題。</p></div>
+        <div class="col-lg-5 contact-copy"><p class="eyebrow">START A CONVERSATION</p><h2 id="contact-title">說不清楚也沒關係，<br>先從你現在最卡的地方開始。</h2><p>留下你的狀況，我會在 1–2 個工作天內回覆。<br>適合的話，我們再安排 15–20 分鐘初談。</p><p class="small-note">初談用來確認問題與合作方向，完整梳理會在正式諮詢中進行。</p></div>
         <div class="col-lg-7">
           <form id="inquiryForm" class="inquiry-form" novalidate>
             <div class="row g-3">
-              <div class="col-12 form-step"><span>STEP 01</span><label for="problemType">目前最接近哪一種狀況？ *</label><select id="problemType" name="problem_type" class="form-select" required><option value="">請選擇</option><option>有流量，但沒有詢問</option><option>有專業，但不知道怎麼說</option><option>內容很多，但定位很散</option><option>想開始建立個人 IP</option><option>想重新整理品牌內容</option><option>其他</option></select><div class="invalid-feedback">請選擇目前的狀況。</div></div>
-              <div class="col-12 form-step"><span>STEP 02</span><label for="problem">你現在最想解決的一個問題？ *</label><textarea id="problem" name="problem_description" class="form-control" rows="5" required></textarea><div class="invalid-feedback">請描述目前最想解決的問題。</div></div>
-              <div class="col-md-6"><label for="name">怎麼稱呼你？ *</label><input id="name" name="name" class="form-control" autocomplete="name" required><div class="invalid-feedback">請填寫姓名。</div></div>
-              <div class="col-md-6"><label for="email">Email *</label><input id="email" name="email" type="email" class="form-control" autocomplete="email" required><div class="invalid-feedback">請填寫有效的 Email。</div></div>
-              <div class="col-12"><label for="socialContact">LINE 或 Instagram *</label><input id="socialContact" name="social_contact" class="form-control" placeholder="LINE ID 或 @Instagram 帳號" autocomplete="off" required><div class="invalid-feedback">請留下 LINE 或 Instagram，方便我們回覆。</div></div>
-              <div class="col-12"><button class="btn btn-gold submit-button" type="submit">送出目前的問題</button></div>
+              <div class="col-12 form-step"><span>STEP 01</span><label for="problemType">目前哪一種狀況最接近你？</label><select id="problemType" name="problem_type" class="form-select" required><option value="" selected disabled>請選擇</option><option>有專業，但說不清楚自己的價值</option><option>有品牌／服務，但定位不清楚</option><option>有在做內容，但方向很散</option><option>有流量，但很少變成詢問</option><option>想建立或重新整理個人品牌</option><option>我也不確定，只知道現在有點卡</option><option>其他</option></select><div class="invalid-feedback">請選擇目前的狀況。</div></div>
+              <div class="col-12 form-step"><span>STEP 02</span><label for="problem">如果只能先弄清楚一件事，你最希望是哪一件？</label><textarea id="problem" name="problem_description" class="form-control" rows="5" required placeholder="不用想得很完整，用你平常說話的方式寫就好。"></textarea><div class="invalid-feedback">請描述目前最希望弄清楚的事情。</div></div>
+              <div class="col-md-6"><label for="name">怎麼稱呼你？</label><input id="name" name="name" class="form-control" autocomplete="name" required><div class="invalid-feedback">請填寫姓名。</div></div>
+              <div class="col-md-6"><label for="email">Email</label><input id="email" name="email" type="email" class="form-control" autocomplete="email" required><div class="invalid-feedback">請填寫有效的 Email。</div></div>
+              <div class="col-12"><label for="socialContact">LINE 或 Instagram</label><input id="socialContact" name="social_contact" class="form-control" placeholder="LINE ID 或 @Instagram 帳號" autocomplete="off"></div>
+              <div class="col-12"><button class="btn btn-gold submit-button" type="submit">開始聊聊</button></div>
             </div>
             <div id="formStatus" class="form-status" role="status" aria-live="polite"></div>
           </form>
