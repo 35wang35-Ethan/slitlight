@@ -39,7 +39,8 @@ function getSecretKey() {
   return Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')
 }
 
-Deno.serve(async (request) => {
+export default {
+async fetch(request: Request) {
   if (request.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders })
   if (request.method !== 'POST') return json({ ok: false, error: 'Method not allowed' }, 405)
 
@@ -117,4 +118,5 @@ Deno.serve(async (request) => {
     console.error(error instanceof Error ? error.message : 'Unknown inquiry error')
     return json({ ok: false, error: '目前無法送出，請稍後再試。' }, 500)
   }
-})
+},
+}

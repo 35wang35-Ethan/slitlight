@@ -23,7 +23,6 @@
 .service-card li { margin-bottom: 7px; }
 .service-duration { color: var(--muted); font-size: var(--fs-small); }
 .service-price { margin: 0 0 22px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
-.service-price del { display: block; color: #918982; font-size: var(--fs-label); }
 .service-price > div { display: flex; align-items: baseline; gap: 5px; color: var(--gold-dark); }
 .service-price span { font-family: var(--editorial); font-size: 1rem; }
 .service-price strong { font-family: var(--editorial); font-size: 2.3rem; font-weight: 600; line-height: 1.15; }

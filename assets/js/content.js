@@ -116,9 +116,9 @@ function renderServices(services = siteContent.services) {
   if (!grid) return;
   grid.innerHTML = services.map((service, index) => {
     const promoPrice = typeof service.promoPrice === 'number' ? `NT$${service.promoPrice.toLocaleString()}` : service.promoPrice;
-    const regularPrice = typeof service.regularPrice === 'number' ? `NT$${service.regularPrice.toLocaleString()}` : service.regularPrice;
     const priceParts = promoPrice?.match(/^(NT\$)(.+)$/);
-    const price = service.priceVisible ? `<div class="service-price"><del>原價 ${escapeHtml(regularPrice)}</del><div><span>${escapeHtml(priceParts?.[1] || '')}</span><strong>${escapeHtml(priceParts?.[2] || promoPrice)}</strong></div><small>初期案例價</small></div>` : '';
+    const priceNote = index === 0 ? '單次固定價' : '起，依需求調整';
+    const price = service.priceVisible ? `<div class="service-price"><div><span>${escapeHtml(priceParts?.[1] || '')}</span><strong>${escapeHtml(priceParts?.[2] || promoPrice)}</strong></div><small>${priceNote}</small></div>` : '';
     return `<div class="col-lg-4 col-md-6"><article class="service-card${service.featured ? ' featured' : ''}" data-service="${escapeHtml(service.name)}">${service.featured ? '<span class="service-badge">適合從這裡開始</span>' : ''}<span class="service-index">0${index + 1}</span><h3>${escapeHtml(service.name)}</h3><p class="service-fit">${escapeHtml(service.fit)}</p><p class="service-target"><strong>適合：</strong>${escapeHtml(service.targetCustomer)}</p>${price}<p class="service-subtitle">${escapeHtml(service.subtitle)}</p><ul>${service.items.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul><p class="service-duration">時間：${escapeHtml(service.duration)}</p><a class="btn btn-gold" href="#contact" data-track="inquiry_click" aria-label="看看${escapeHtml(service.name)}是否適合">看看適不適合</a></article></div>`;
   }).join('');
 }
