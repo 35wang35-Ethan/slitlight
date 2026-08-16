@@ -1,7 +1,66 @@
-<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>隙光｜內容管理</title><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"><link href="../assets/css/admin.css" rel="stylesheet"></head><body><div class="admin-layout"><aside class="admin-sidebar"><div><p class="admin-kicker">SLIT.LIGHT</p><h1>內容管理</h1></div><nav id="adminNav"><button class="active" data-view="dashboard">Dashboard</button><button data-view="services">服務方案</button><button data-view="faqs">FAQ</button><button data-view="inquiries">諮詢名單</button><button data-view="settings">網站設定</button></nav><div><a href="../index.html" target="_blank">查看網站 ↗</a><button id="logoutButton">登出</button></div></aside><main class="admin-main"><header><button id="menuButton" class="menu-button" aria-label="開啟管理選單">☰</button><div><p class="admin-kicker" id="viewKicker">OVERVIEW</p><h2 id="viewTitle">Dashboard</h2></div><p id="adminEmail"></p></header><div id="adminAlert" role="status"></div>
-<section class="admin-view active" data-panel="dashboard"><div class="stats-grid"><article><span>本月新諮詢</span><strong id="statNew">—</strong></article><article><span>待聯絡</span><strong id="statContact">—</strong></article><article><span>初談完成</span><strong id="statDiscovery">—</strong></article><article><span>合作中</span><strong id="statActive">—</strong></article></div><div class="admin-card"><h3>最近諮詢</h3><div class="table-responsive"><table class="table"><thead><tr><th>姓名</th><th>問題類型</th><th>日期</th><th>狀態</th></tr></thead><tbody id="recentInquiries"></tbody></table></div></div></section>
-<section class="admin-view" data-panel="services"><div class="section-actions"><p>價格、內容與顯示狀態會同步前台。</p><button class="btn btn-dark" id="saveServices">儲存服務方案</button></div><div id="servicesEditor" class="editor-grid"></div></section>
-<section class="admin-view" data-panel="faqs"><div class="section-actions"><p>可修改問題、答案與顯示狀態。</p><button class="btn btn-dark" id="saveFaqs">儲存 FAQ</button></div><div id="faqsEditor"></div></section>
-<section class="admin-view" data-panel="inquiries"><div class="admin-card"><div class="table-responsive"><table class="table align-middle"><thead><tr><th>姓名</th><th>聯絡</th><th>問題</th><th>日期</th><th>狀態</th></tr></thead><tbody id="inquiriesEditor"></tbody></table></div></div></section>
-<section class="admin-view" data-panel="settings"><div class="section-actions"><p>設定頁尾聯絡方式與 SEO。</p><button class="btn btn-dark" id="saveSettings">儲存設定</button></div><form id="settingsForm" class="admin-card form-grid"><label>網站名稱<input class="form-control" name="site_name"></label><label>Email<input class="form-control" name="email" type="email"></label><label>Instagram 網址<input class="form-control" name="instagram_url" type="url"></label><label>LINE 網址<input class="form-control" name="line_url" type="url"></label><label>Facebook 網址<input class="form-control" name="facebook_url" type="url"></label><label>電話<input class="form-control" name="phone"></label><label class="full">SEO 標題<input class="form-control" name="meta_title"></label><label class="full">SEO 說明<textarea class="form-control" name="meta_description" rows="4"></textarea></label></form></section>
-</main></div><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="../assets/js/supabase.js"></script><script src="../assets/js/admin/dashboard.js"></script></body></html>
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>隙光｜內容管理</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link href="../assets/css/admin.css" rel="stylesheet">
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <div><p class="admin-kicker">SLIT.LIGHT</p><h1>內容管理</h1></div>
+      <nav id="adminNav">
+        <button class="active" data-view="dashboard">Dashboard</button>
+        <button data-view="homepage">首頁區塊</button>
+        <button data-view="painPoints">痛點內容</button>
+        <button data-view="methods">方法內容</button>
+        <button data-view="cases">案例</button>
+        <button data-view="services">服務方案</button>
+        <button data-view="faqs">FAQ</button>
+        <button data-view="inquiries">諮詢名單</button>
+        <button data-view="settings">網站設定</button>
+      </nav>
+      <div><a href="../index.html" target="_blank" rel="noopener noreferrer">查看網站 ↗</a><button id="logoutButton">登出</button></div>
+    </aside>
+
+    <main class="admin-main">
+      <header><button id="menuButton" class="menu-button" aria-label="開啟管理選單">☰</button><div><p class="admin-kicker" id="viewKicker">OVERVIEW</p><h2 id="viewTitle">Dashboard</h2></div><p id="adminEmail"></p></header>
+      <div id="adminAlert" role="status"></div>
+
+      <section class="admin-view active" data-panel="dashboard">
+        <div class="stats-grid"><article><span>本月新諮詢</span><strong id="statNew">—</strong></article><article><span>待聯絡</span><strong id="statContact">—</strong></article><article><span>初談完成</span><strong id="statDiscovery">—</strong></article><article><span>合作中</span><strong id="statActive">—</strong></article></div>
+        <div class="admin-card"><h3>最近諮詢</h3><div class="table-responsive"><table class="table"><thead><tr><th>姓名</th><th>問題類型</th><th>日期</th><th>狀態</th></tr></thead><tbody id="recentInquiries"></tbody></table></div></div>
+      </section>
+
+      <section class="admin-view" data-panel="homepage"><div class="section-actions"><p>修改首頁主要標題、說明、圖片與按鈕。</p><button class="btn btn-dark" id="saveHomepage">儲存首頁區塊</button></div><div id="homepageEditor" class="editor-grid two-columns"></div></section>
+      <section class="admin-view" data-panel="painPoints"><div class="section-actions"><p>依排序顯示在首頁痛點格。</p><div><button class="btn btn-outline-dark" id="addPainPoint">新增痛點</button> <button class="btn btn-dark" id="savePainPoints">儲存痛點</button></div></div><div id="painPointsEditor" class="editor-grid two-columns"></div></section>
+      <section class="admin-view" data-panel="methods"><div class="section-actions"><p>可更新方法說明並上傳 JPG、PNG 或 WebP。</p><div><button class="btn btn-outline-dark" id="addMethod">新增方法</button> <button class="btn btn-dark" id="saveMethods">儲存方法</button></div></div><div id="methodsEditor" class="editor-grid two-columns"></div></section>
+      <section class="admin-view" data-panel="cases"><div class="section-actions"><p>示範內容請明確標示，正式案例再改成「已發布」。</p><div><button class="btn btn-outline-dark" id="addCase">新增案例</button> <button class="btn btn-dark" id="saveCases">儲存案例</button></div></div><div id="casesEditor" class="editor-grid two-columns"></div></section>
+      <section class="admin-view" data-panel="services"><div class="section-actions"><p>價格、內容與顯示狀態會同步前台。</p><button class="btn btn-dark" id="saveServices">儲存服務方案</button></div><div id="servicesEditor" class="editor-grid"></div></section>
+      <section class="admin-view" data-panel="faqs"><div class="section-actions"><p>可修改問題、答案與顯示狀態。</p><button class="btn btn-dark" id="saveFaqs">儲存 FAQ</button></div><div id="faqsEditor"></div></section>
+      <section class="admin-view" data-panel="inquiries"><div class="admin-card"><div class="table-responsive"><table class="table align-middle"><thead><tr><th>姓名</th><th>聯絡</th><th>問題</th><th>日期</th><th>狀態</th></tr></thead><tbody id="inquiriesEditor"></tbody></table></div></div></section>
+      <section class="admin-view" data-panel="settings">
+        <div class="section-actions"><p>社群連結會同步前台；搜尋與社群預覽仍以部署版本為準。</p><button class="btn btn-dark" id="saveSettings">儲存設定</button></div>
+        <form id="settingsForm" class="admin-card form-grid">
+          <label>網站名稱（品牌字標需從原始碼調整）<input class="form-control" name="site_name" disabled></label>
+          <label>公開 Email（目前固定）<input class="form-control" name="email" type="email" disabled></label>
+          <label>Instagram 網址<input class="form-control" name="instagram_url" type="url"></label>
+          <label>LINE 網址<input class="form-control" name="line_url" type="url"></label>
+          <label>Facebook 網址<input class="form-control" name="facebook_url" type="url"></label>
+          <label>電話（目前僅保存）<input class="form-control" name="phone" disabled></label>
+          <label class="full">瀏覽器頁面標題<input class="form-control" name="meta_title"></label>
+          <label class="full">瀏覽器頁面說明<textarea class="form-control" name="meta_description" rows="4"></textarea></label>
+          <label class="full">社群分享圖片網址<input class="form-control" name="og_image_url" type="url"></label>
+        </form>
+      </section>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../assets/js/supabase.js"></script>
+  <script src="../assets/js/admin/dashboard.js"></script>
+</body>
+</html>

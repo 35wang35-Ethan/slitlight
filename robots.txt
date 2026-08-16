@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://35wang35-ethan.github.io/slitlight/sitemap.xml

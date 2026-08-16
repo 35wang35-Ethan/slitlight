@@ -4,6 +4,7 @@
   --muted: #716961;
   --gold: #aa8b68;
   --gold-dark: #8e7152;
+  --gold-action: #806248;
   --paper: #fbfaf8;
   --paper-warm: #f4f0ea;
   --white: #fff;
@@ -49,15 +50,15 @@ button, a, input, select, textarea { outline-offset: 4px; }
 .brand small { display: block; margin-top: 8px; font: 600 .65rem var(--editorial); letter-spacing: .12em; }
 .navbar { min-height: 84px; background: rgba(251, 250, 248, .93); backdrop-filter: blur(12px); transition: min-height .25s, box-shadow .25s; }
 .navbar.scrolled { min-height: 70px; box-shadow: 0 3px 24px rgba(48, 41, 34, .08); }
-.navbar-toggler { border: 0; border-radius: 0; }
+.navbar-toggler { min-width: 44px; min-height: 44px; border: 0; border-radius: 0; }
 .nav-link { color: var(--ink); font-size: var(--fs-small); font-weight: 500; letter-spacing: .025em; }
 .nav-link:hover { color: var(--gold-dark); }
 .btn { min-height: 46px; border-radius: var(--radius-sm); padding: .78rem 1.4rem; font-size: var(--fs-small); font-weight: 500; letter-spacing: .025em; }
-.btn-gold { border: 1px solid var(--gold); background: var(--gold); color: var(--white); }
-.btn-gold:hover, .btn-gold:focus { border-color: var(--gold-dark); background: var(--gold-dark); color: var(--white); }
+.btn-gold { border: 1px solid var(--gold-action); background: var(--gold-action); color: var(--white); }
+.btn-gold:hover, .btn-gold:focus { border-color: #684d37; background: #684d37; color: var(--white); }
 .text-link { display: inline-flex; min-height: 44px; align-items: center; gap: 10px; text-underline-offset: 6px; }
 .hero { position: relative; min-height: 760px; overflow: hidden; background: var(--ink-deep); color: var(--white); }
-.hero-image { position: absolute; inset: 0; background: url("../images/hero-main.png") center / cover no-repeat; filter: brightness(.62) saturate(.7); }
+.hero-image { position: absolute; inset: 0; background: url("../images/hero-main.jpg") center / cover no-repeat; filter: brightness(.62) saturate(.7); }
 .hero::after { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(25, 23, 21, .9) 0%, rgba(31, 28, 25, .72) 43%, rgba(31, 28, 25, .16) 78%); content: ""; }
 .hero-content { position: relative; z-index: 1; display: flex; min-height: 760px; align-items: center; padding-top: 92px; }
 .hero-copy { max-width: 760px; }
@@ -77,9 +78,26 @@ button, a, input, select, textarea { outline-offset: 4px; }
 .faq-section { background: var(--paper); }
 .contact-section { position: relative; overflow: hidden; background: #ece5dc; }
 .contact-section > .container { position: relative; z-index: 1; }
-.contact-light { position: absolute; inset: 0; background: url("../images/cta-light.png") center / cover no-repeat; opacity: .22; }
+.contact-light { position: absolute; inset: 0; background: url("../images/cta-light.jpg") center / cover no-repeat; opacity: .22; }
 .site-footer { padding: 48px 0 28px; background: var(--white); }
 .footer-grid { display: grid; grid-template-columns: 1fr 2fr 1fr; align-items: end; gap: 30px; }
 .footer-grid > p { margin: 0; color: var(--muted); text-align: center; }
+.footer-grid > p a { color: var(--ink); text-underline-offset: 4px; }
 .footer-bottom { display: flex; justify-content: space-between; margin-top: 38px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: var(--fs-small); }
-.footer-bottom a { text-decoration: none; }
+.footer-bottom a { display: inline-flex; min-height: 44px; align-items: center; text-decoration: none; }
+.legal-links { display: flex; align-items: center; justify-content: flex-end; gap: 18px; }
+.legal-links button { min-height: 44px; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; }
+.policy-page { background: var(--paper); }
+.policy-page .navbar { position: static; }
+.policy-hero { padding: 92px 0 52px; background: var(--ink-deep); color: var(--white); }
+.policy-hero h1 { max-width: 850px; margin: 0; font-size: clamp(2.25rem, 5vw, 3.75rem); }
+.policy-hero p { max-width: 720px; margin: 22px 0 0; color: rgba(255,255,255,.75); }
+.policy-content { padding: 76px 0 112px; }
+.policy-content article { max-width: 850px; }
+.policy-content h2 { margin: 54px 0 18px; font-size: 1.55rem; }
+.policy-content h2:first-child { margin-top: 0; }
+.policy-content h3 { margin-top: 28px; font-size: 1.1rem; }
+.policy-content p, .policy-content li { color: var(--muted); }
+.policy-content li + li { margin-top: 8px; }
+.policy-note { margin: 28px 0; padding: 22px 24px; border-left: 2px solid var(--gold); background: var(--paper-warm); }
+.policy-meta { font-size: var(--fs-small); }

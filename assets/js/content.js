@@ -1,8 +1,11 @@
+const PUBLIC_EMAIL = '35slit.light@gmail.com';
+
 const siteContent = {
   settings: {
-    email: 'hello@seamoflight.com',
+    email: PUBLIC_EMAIL,
     instagramUrl: '',
-    lineUrl: ''
+    lineUrl: '',
+    facebookUrl: ''
   },
   services: [
     {
@@ -54,6 +57,60 @@ function escapeHtml(value) {
   return String(value).replace(/[&<>'"]/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[character]));
 }
 
+function formatEditableText(value) {
+  return escapeHtml(value || '').replace(/\r?\n/g, '<br>');
+}
+
+function renderPainPoints(points = []) {
+  const grid = document.querySelector('#painGrid');
+  if (!grid || !points.length) return;
+  grid.innerHTML = points.map((point, index) => `<article><span>${String(index + 1).padStart(2, '0')}</span><p>${point.title ? `<strong>${escapeHtml(point.title)}</strong>` : ''}${point.description ? `${point.title ? '<br>' : ''}${formatEditableText(point.description)}` : ''}</p></article>`).join('');
+}
+
+function renderMethods(methods = []) {
+  const list = document.querySelector('#methodsList');
+  if (!list || !methods.length) return;
+  list.innerHTML = methods.map((method, index) => {
+    const image = method.image_url?.trim();
+    return `<article><div class="method-body"><span>${String(index + 1).padStart(2, '0')}</span><div><h3>${escapeHtml(method.title)}</h3><p>${formatEditableText(method.description)}</p></div></div>${image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(method.title)}示意圖" loading="lazy" decoding="async">` : ''}</article>`;
+  }).join('');
+}
+
+function renderCases(cases = []) {
+  const grid = document.querySelector('#casesGrid');
+  if (!grid || !cases.length) return;
+  const labels = [['problem', '原本問題'], ['insight', '關鍵洞察'], ['strategy', '策略處理'], ['execution', '執行內容'], ['result', '目前成果']];
+  grid.innerHTML = cases.map(item => {
+    const image = item.cover_image?.trim() || 'assets/images/case-placeholder.jpg';
+    const details = labels.filter(([key]) => item[key]).map(([key, label]) => `<div><dt>${label}</dt><dd>${formatEditableText(item[key])}</dd></div>`).join('');
+    const isDemo = item.client_type?.includes('示範');
+    return `<article class="case-card"><img src="${escapeHtml(image)}" alt="${escapeHtml(item.title)}" loading="lazy" decoding="async"><div><p class="eyebrow">${isDemo ? 'SELF-INITIATED DEMO' : 'CONSULTING CASE'}</p>${item.client_type ? `<span class="case-label">${escapeHtml(item.client_type)}${isDemo ? '｜不是客戶案例' : ''}</span>` : ''}<h3>${escapeHtml(item.title)}</h3>${item.problem ? `<p>${formatEditableText(item.problem)}</p>` : ''}${details ? `<dl>${details}</dl>` : ''}${item.testimonial ? `<blockquote>${formatEditableText(item.testimonial)}</blockquote>` : ''}</div></article>`;
+  }).join('');
+}
+
+function applyHomepageSections(sections = []) {
+  sections.forEach(section => {
+    const container = document.querySelector(`[data-cms-section="${CSS.escape(section.section_key)}"]`);
+    if (!container) return;
+    if (section.title) container.querySelector('[data-cms-title]').innerHTML = formatEditableText(section.title);
+    if (section.content) container.querySelector('[data-cms-content]').innerHTML = formatEditableText(section.content);
+    if (section.image_url) {
+      const image = container.querySelector('[data-cms-image]');
+      const heroImage = container.querySelector('.hero-image');
+      if (image) {
+        image.src = section.image_url;
+        image.removeAttribute('srcset');
+      }
+      if (heroImage) heroImage.style.backgroundImage = `url("${section.image_url.replace(/["\\]/g, '\\$&')}")`;
+    }
+    if (section.cta_text) {
+      const cta = container.querySelector('[data-track="inquiry_click"]');
+      if (cta) cta.textContent = section.cta_text;
+      if (cta && section.cta_url) cta.href = section.cta_url;
+    }
+  });
+}
+
 function renderServices(services = siteContent.services) {
   const grid = document.querySelector('#servicesGrid');
   if (!grid) return;
@@ -62,7 +119,7 @@ function renderServices(services = siteContent.services) {
     const regularPrice = typeof service.regularPrice === 'number' ? `NT$${service.regularPrice.toLocaleString()}` : service.regularPrice;
     const priceParts = promoPrice?.match(/^(NT\$)(.+)$/);
     const price = service.priceVisible ? `<div class="service-price"><del>原價 ${escapeHtml(regularPrice)}</del><div><span>${escapeHtml(priceParts?.[1] || '')}</span><strong>${escapeHtml(priceParts?.[2] || promoPrice)}</strong></div><small>初期案例價</small></div>` : '';
-    return `<div class="col-lg-4 col-md-6"><article class="service-card${service.featured ? ' featured' : ''}" data-service="${escapeHtml(service.name)}">${service.featured ? '<span class="service-badge">適合從這裡開始</span>' : ''}<span class="service-index">0${index + 1}</span><h3>${escapeHtml(service.name)}</h3><p class="service-fit">${escapeHtml(service.fit)}</p><p class="service-target"><strong>適合：</strong>${escapeHtml(service.targetCustomer)}</p>${price}<p class="service-subtitle">${escapeHtml(service.subtitle)}</p><ul>${service.items.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul><p class="service-duration">時間：${escapeHtml(service.duration)}</p><a class="btn btn-gold" href="#contact" data-track="inquiry_click">看看適不適合</a></article></div>`;
+    return `<div class="col-lg-4 col-md-6"><article class="service-card${service.featured ? ' featured' : ''}" data-service="${escapeHtml(service.name)}">${service.featured ? '<span class="service-badge">適合從這裡開始</span>' : ''}<span class="service-index">0${index + 1}</span><h3>${escapeHtml(service.name)}</h3><p class="service-fit">${escapeHtml(service.fit)}</p><p class="service-target"><strong>適合：</strong>${escapeHtml(service.targetCustomer)}</p>${price}<p class="service-subtitle">${escapeHtml(service.subtitle)}</p><ul>${service.items.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul><p class="service-duration">時間：${escapeHtml(service.duration)}</p><a class="btn btn-gold" href="#contact" data-track="inquiry_click" aria-label="看看${escapeHtml(service.name)}是否適合">看看適不適合</a></article></div>`;
   }).join('');
 }
 
@@ -74,7 +131,7 @@ function renderFaqs(faqs = siteContent.faqs) {
 
 function applySiteSettings(settings = {}) {
   siteContent.settings = {
-    email: settings.email || '',
+    email: PUBLIC_EMAIL,
     instagramUrl: settings.instagram_url || '',
     lineUrl: settings.line_url || '',
     facebookUrl: settings.facebook_url || ''
@@ -88,7 +145,26 @@ function applySiteSettings(settings = {}) {
       return;
     }
     link.href = link.dataset.link === 'email' ? `mailto:${value}` : value;
+    if (link.dataset.link === 'email') link.textContent = value;
   });
+
+  const title = settings.meta_title?.trim();
+  const description = settings.meta_description?.trim();
+  const image = settings.og_image_url?.trim();
+  if (title) {
+    document.title = title;
+    document.querySelector('meta[property="og:title"]')?.setAttribute('content', title);
+    document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', title);
+  }
+  if (description) {
+    document.querySelector('meta[name="description"]')?.setAttribute('content', description);
+    document.querySelector('meta[property="og:description"]')?.setAttribute('content', description);
+    document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', description);
+  }
+  if (image) {
+    document.querySelector('meta[property="og:image"]')?.setAttribute('content', image);
+    document.querySelector('meta[name="twitter:image"]')?.setAttribute('content', image);
+  }
 }
 
 renderServices();
@@ -96,10 +172,14 @@ renderFaqs();
 
 async function loadCloudContent() {
   if (typeof slitSupabase === 'undefined') return;
-  const [servicesResult, faqsResult, settingsResult] = await Promise.all([
+  const [servicesResult, faqsResult, settingsResult, homepageResult, painResult, methodsResult, casesResult] = await Promise.all([
     slitSupabase.from('services').select('*').eq('enabled', true).order('sort_order'),
     slitSupabase.from('faqs').select('question,answer').eq('enabled', true).order('sort_order'),
-    slitSupabase.from('site_settings').select('email,instagram_url,line_url,facebook_url').eq('is_published', true).limit(1).maybeSingle()
+    slitSupabase.from('site_settings').select('email,instagram_url,line_url,facebook_url,meta_title,meta_description,og_image_url').eq('is_published', true).limit(1).maybeSingle(),
+    slitSupabase.from('homepage_sections').select('*').eq('enabled', true).order('sort_order'),
+    slitSupabase.from('pain_points').select('*').eq('enabled', true).order('sort_order'),
+    slitSupabase.from('methods').select('*').eq('enabled', true).order('sort_order'),
+    slitSupabase.from('cases').select('*').eq('publish_status', 'published').order('sort_order')
   ]);
   if (!servicesResult.error && servicesResult.data?.length) renderServices(servicesResult.data.map(service => ({
     name: service.name, fit: service.description, subtitle: service.subtitle, targetCustomer: service.target_customer,
@@ -108,6 +188,10 @@ async function loadCloudContent() {
   })));
   if (!faqsResult.error && faqsResult.data?.length) renderFaqs(faqsResult.data);
   if (!settingsResult.error && settingsResult.data) applySiteSettings(settingsResult.data);
+  if (!homepageResult.error && homepageResult.data?.length) applyHomepageSections(homepageResult.data);
+  if (!painResult.error && painResult.data?.length) renderPainPoints(painResult.data);
+  if (!methodsResult.error && methodsResult.data?.length) renderMethods(methodsResult.data);
+  if (!casesResult.error && casesResult.data?.length) renderCases(casesResult.data);
 }
 
 loadCloudContent();

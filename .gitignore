@@ -3,3 +3,8 @@ seam-of-light-site.zip
 
 # Local private notes (never commit)
 README.private.md
+
+# Supabase Edge Function secrets
+supabase/functions/.env
+supabase/functions/.env.*
+!supabase/functions/.env.example
