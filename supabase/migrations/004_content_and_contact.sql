@@ -9,7 +9,7 @@ values
   ('pain', E'你可能不是沒有內容，\n而是內容沒有接到下一步。', null, null, null, null, 2, true),
   ('approach', '不是先問下一支影片拍什麼。', '我們會先釐清：你真正想說的是什麼、觀眾現在卡在哪裡，以及內容在哪一步沒有接上。', null, null, null, 3, true),
   ('services', '先看看適合哪一種方式', '從一次釐清，到完整的內容系統，依照你現在的卡點開始。', null, null, null, 4, true),
-  ('experience', E'從影像製作，\n到內容策略。', '這些是過往參與團隊與專案的實務經驗，不代表下列品牌直接聘請隙光。', 'assets/images/experience.jpg', null, null, 5, true),
+  ('experience', E'不只提出想法，\n也理解內容如何真正被完成。', '從影像現場到內容整理，累積的是把模糊問題釐清，並轉成可執行方向的工作經驗。', 'assets/images/experience.jpg', null, null, 5, true),
   ('about', E'從廣告片場走到品牌內容，\n我現在更在意，觀眾最後記住了什麼。', '過去參與廣告、TVC、MV 與商業影像製作，也做過社群短影音企劃、拍攝與內容營運。', 'assets/images/about.jpg', null, null, 6, true)
 on conflict (section_key) do nothing;
 

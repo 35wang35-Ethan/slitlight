@@ -37,13 +37,13 @@
 .process-list span { color: #d4b894; font-family: var(--editorial); font-size: 1rem; letter-spacing: .08em; }
 .process-list h3 { margin: 36px 0 10px; }
 .process-list p { margin: 0; color: rgba(255,255,255,.72); line-height: 1.75; }
-.experience-numbers { display: grid; grid-template-columns: repeat(3, 1fr); }
 .experience-visual { margin: 0 0 64px; }
 .experience-visual img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 7; object-fit: cover; }
-.experience-numbers div { padding: 20px; border-left: 1px solid var(--line); }
-.experience-numbers strong { display: block; margin-bottom: 12px; color: var(--gold-dark); font-family: var(--editorial); font-size: 2rem; font-weight: 600; }
-.experience-numbers span { color: var(--muted); font-size: var(--fs-small); }
-.brand-list { margin: 34px 0 0; color: var(--muted); line-height: 2; letter-spacing: .025em; }
+.experience-capabilities { display: grid; grid-template-columns: repeat(3, 1fr); }
+.experience-capabilities article { min-height: 230px; padding: 24px 22px; border-left: 1px solid var(--line); }
+.experience-capabilities span { display: block; margin-bottom: 34px; color: var(--gold-dark); font-family: var(--editorial); font-size: var(--fs-label); font-weight: 600; letter-spacing: .08em; }
+.experience-capabilities h3 { margin-bottom: 12px; font-size: 1.2rem; }
+.experience-capabilities p { margin: 0; color: var(--muted); font-size: var(--fs-small); line-height: 1.75; }
 .case-empty { display: grid; grid-template-columns: 1fr 1fr; margin-top: 76px; border: 1px solid var(--line); }
 .case-empty > img { width: 100%; height: 100%; min-height: 330px; object-fit: cover; }
 .case-empty > div { display: flex; flex-direction: column; justify-content: center; padding: 48px; text-align: left; }
@@ -69,9 +69,14 @@
 .about-identity strong { font-size: var(--fs-body-lg); font-weight: 500; }
 .about-identity span { color: var(--muted); font-size: var(--fs-small); }
 .accordion { --bs-accordion-bg: transparent; --bs-accordion-border-color: var(--line); --bs-accordion-btn-focus-box-shadow: none; --bs-accordion-active-bg: transparent; --bs-accordion-active-color: var(--ink); }
-.accordion-button { padding: 24px 4px; color: var(--ink); font-size: 1.0625rem; font-weight: 500; }
+.accordion-button { padding: 20px 4px; color: var(--ink); font-size: 1.0625rem; font-weight: 500; }
 .accordion-button::after { opacity: .7; }
-.accordion-body { padding: 0 4px 26px; color: var(--muted); font-size: var(--fs-body); font-weight: 400; line-height: 1.8; }
+.accordion-body { padding: 0 4px 22px; color: var(--muted); font-size: var(--fs-body); font-weight: 400; line-height: 1.8; }
+.faq-more { display: flex; justify-content: center; margin-top: 32px; }
+.faq-more[hidden] { display: none; }
+.faq-toggle { display: inline-flex; min-width: 230px; align-items: center; justify-content: center; gap: 12px; border: 1px solid var(--line); background: transparent; color: var(--ink); }
+.faq-toggle:hover, .faq-toggle:focus-visible { border-color: var(--gold-dark); background: var(--white); color: var(--gold-dark); }
+.faq-toggle-icon { font-size: 1.15rem; line-height: 1; }
 .contact-copy { padding-right: 5%; }
 .contact-copy > p:not(.eyebrow) { color: var(--muted); }
 .small-note { padding-top: 20px; border-top: 1px solid var(--line); font-size: var(--fs-small); }
