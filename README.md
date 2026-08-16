@@ -10,7 +10,7 @@
 
 ## 在另一台電腦開始修改
 
-先安裝 Git 與 Visual Studio Code，再於終端機執行：
+先安裝 Git 與 Visual Studio Code，再於終端機執行。若要在本機執行網站驗證，另需安裝 Python 3；沒有 Python 仍可修改網站，推送後 GitHub Actions 會執行正式驗證。
 
 ```powershell
 git clone https://github.com/35wang35-Ethan/slitlight.git
