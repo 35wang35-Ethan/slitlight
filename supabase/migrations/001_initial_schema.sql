@@ -202,7 +202,7 @@ create policy "admins update site images" on storage.objects for update to authe
 create policy "admins delete site images" on storage.objects for delete to authenticated using (bucket_id = 'site-images' and public.is_admin());
 
 insert into public.site_settings (id, site_name, email, meta_title, meta_description, copyright)
-values (1, '隙光 slit.light', 'hello@seamoflight.com', '隙光 slit.light｜品牌內容策略・影像 IP 企劃', '協助有專業但說不清楚，以及有流量卻沒有形成詢問的人，整理品牌核心、內容定位與轉換卡點。', '© slit.light')
+values (1, '隙光 slit.light', '35slit.light@gmail.com', '隙光 slit.light｜品牌內容策略・影像 IP 企劃', '協助有專業但說不清楚，以及有流量卻沒有形成詢問的人，整理品牌核心、內容定位與轉換卡點。', '© slit.light')
 on conflict (id) do nothing;
 
 insert into public.services (name, subtitle, description, target_customer, items, regular_price, promo_price, duration, cta_text, cta_url, featured, sort_order)

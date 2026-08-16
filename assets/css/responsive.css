@@ -13,6 +13,8 @@
   .about-copy { padding-left: calc(var(--bs-gutter-x) * .5); }
   .case-empty { grid-template-columns: 1fr; }
   .case-empty > img { min-height: 300px; aspect-ratio: 16 / 8; }
+  .case-card { grid-template-columns: 1fr; }
+  .case-card > img { min-height: 300px; aspect-ratio: 16 / 8; }
   .contact-copy { padding-right: calc(var(--bs-gutter-x) * .5); }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .footer-grid > p { grid-column: 1 / -1; grid-row: 2; text-align: left; }
@@ -26,7 +28,7 @@
   h2 { font-size: 2rem; }
   .navbar { min-height: 70px; }
   .hero, .hero-content { min-height: 720px; }
-  .hero-image { background-position: 70% center; }
+  .hero-image { background-image: url("../images/hero-main-768.jpg"); background-position: 70% center; }
   .hero::after { background: rgba(26,24,22,.68); }
   .hero-content { align-items: flex-end; padding-top: 100px; padding-bottom: 62px; }
   .hero h1 { font-size: clamp(2.1rem, 9vw, 2.7rem); line-height: 1.22; }
@@ -50,11 +52,21 @@
   .experience-numbers strong { margin: 0; }
   .case-empty { margin-top: 52px; }
   .case-empty > div { padding: 34px 24px; }
+  .cases-grid { margin-top: 52px; }
+  .case-card > div { padding: 34px 24px; }
+  .case-card dl > div { grid-template-columns: 1fr; gap: 4px; }
   .inquiry-form { padding: 28px 22px; }
+  .contact-light { background-image: url("../images/cta-light-768.jpg"); }
   .form-control, .form-select { font-size: 1rem; }
   .footer-grid { grid-template-columns: 1fr; align-items: start; }
   .footer-grid > p { grid-column: auto; grid-row: auto; text-align: left; }
   .socials { justify-content: flex-start; flex-wrap: wrap; }
+  .footer-bottom { align-items: flex-start; flex-direction: column; gap: 10px; }
+  .legal-links { justify-content: flex-start; flex-wrap: wrap; gap: 6px 16px; }
+  .consent-banner { right: 12px; bottom: 12px; left: 12px; grid-template-columns: 1fr; gap: 16px; padding: 20px; }
+  .consent-actions { display: grid; grid-template-columns: 1fr 1fr; }
+  .policy-hero { padding: 70px 0 42px; }
+  .policy-content { padding: 58px 0 82px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

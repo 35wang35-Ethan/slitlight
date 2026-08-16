@@ -2,6 +2,7 @@
 .pain-grid article { min-height: 190px; padding: 32px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .pain-grid span, .method-list span, .service-index { color: var(--gold-dark); font-family: var(--editorial); font-size: 2.7rem; font-weight: 500; line-height: 1; opacity: .72; }
 .pain-grid p { margin: 28px 0 0; font-size: var(--fs-body); font-weight: 500; line-height: 1.75; }
+.pain-grid p strong { font-weight: 600; }
 .section-visual { margin: 48px 0 0; overflow: hidden; }
 .section-visual img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 7; object-fit: cover; object-position: center 52%; }
 .sticky-copy { position: sticky; top: 110px; }
@@ -48,6 +49,18 @@
 .case-empty > div { display: flex; flex-direction: column; justify-content: center; padding: 48px; text-align: left; }
 .case-empty h3 { font-size: 1.55rem; }
 .case-empty p:last-child { max-width: 580px; margin: 0; color: var(--muted); }
+.cases-grid { display: grid; gap: 28px; margin-top: 76px; }
+.case-card { display: grid; grid-template-columns: minmax(280px, .85fr) minmax(0, 1.15fr); border: 1px solid var(--line); background: var(--paper); }
+.case-card > img { width: 100%; height: 100%; min-height: 460px; object-fit: cover; }
+.case-card > div { padding: 48px; }
+.case-card h3 { margin: 14px 0 16px; font-size: 1.65rem; }
+.case-card > div > p:not(.eyebrow) { color: var(--muted); }
+.case-label { display: inline-block; padding: 5px 9px; background: var(--paper-warm); color: var(--gold-dark); font-size: var(--fs-label); }
+.case-card dl { margin: 30px 0 0; }
+.case-card dl > div { display: grid; grid-template-columns: 90px 1fr; gap: 14px; padding: 15px 0; border-top: 1px solid var(--line); }
+.case-card dt { font-size: var(--fs-small); font-weight: 600; }
+.case-card dd { margin: 0; color: var(--muted); font-size: var(--fs-small); line-height: 1.75; }
+.case-card blockquote { margin: 24px 0 0; padding-left: 18px; border-left: 2px solid var(--gold); color: var(--muted); }
 .about-image { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; filter: saturate(.65) sepia(.04); }
 .about-copy { padding-left: 7%; }
 .about-copy h2 { margin-bottom: 28px; font-size: clamp(1.85rem, 3vw, 2.75rem); }
@@ -73,10 +86,22 @@ textarea.form-control { min-height: 130px; }
 .form-status.success { display: block; border-left: 2px solid var(--gold-dark); background: var(--paper-warm); }
 .form-status.info { display: block; border-left: 2px solid var(--muted); background: var(--paper-warm); }
 .form-status.error { display: block; border-left: 2px solid #8b4a42; background: #f6ece9; color: #6b332d; }
+.form-status a { color: inherit; font-weight: 500; text-underline-offset: 4px; }
+.form-privacy { margin: 0; color: var(--muted); font-size: var(--fs-label); line-height: 1.6; }
+.form-privacy a { color: var(--ink); text-underline-offset: 3px; }
+.turnstile-container { min-height: 65px; }
+.hp-field { position: absolute !important; left: -10000px !important; width: 1px !important; height: 1px !important; overflow: hidden !important; }
 .socials { display: flex; justify-content: flex-end; align-items: center; gap: 12px; }
-.socials a { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: var(--gold); color: var(--white); text-decoration: none; transition: background-color .2s ease, transform .2s ease; }
+.socials a { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; background: var(--gold-action); color: var(--white); text-decoration: none; transition: background-color .2s ease, transform .2s ease; }
 .socials a:hover, .socials a:focus-visible { background: var(--gold-dark); color: var(--white); transform: translateY(-2px); }
 .socials span { display: none; }
 .socials svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 auto; }
 .socials a[data-link="lineUrl"] svg,
 .socials a[data-link="facebookUrl"] svg { fill: currentColor; stroke: none; }
+.consent-banner { position: fixed; z-index: 3000; right: 24px; bottom: 24px; left: 24px; display: grid; max-width: 860px; margin-left: auto; grid-template-columns: 1fr auto; align-items: center; gap: 28px; padding: 24px 28px; border: 1px solid var(--line); background: var(--white); box-shadow: 0 18px 60px rgba(38,35,31,.2); }
+.consent-banner[hidden] { display: none; }
+.consent-banner strong { display: block; margin-bottom: 4px; }
+.consent-banner p { margin: 0; color: var(--muted); font-size: var(--fs-small); line-height: 1.65; }
+.consent-actions { display: flex; gap: 10px; white-space: nowrap; }
+.consent-secondary { border: 1px solid var(--line); background: var(--white); color: var(--ink); }
+.consent-secondary:hover, .consent-secondary:focus { border-color: var(--ink); background: var(--paper-warm); }

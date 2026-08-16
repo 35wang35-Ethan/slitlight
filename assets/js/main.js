@@ -30,6 +30,9 @@ document.addEventListener('click', event => {
   }
 });
 
-document.querySelectorAll('.service-card').forEach(card => {
-  card.addEventListener('mouseenter', () => trackEvent('service_view', { service_name: card.dataset.service }), { once: true });
+document.addEventListener('pointerover', event => {
+  const card = event.target.closest('.service-card');
+  if (!card || card.dataset.viewTracked) return;
+  card.dataset.viewTracked = 'true';
+  trackEvent('service_view', { service_name: card.dataset.service });
 });

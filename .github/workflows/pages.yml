@@ -26,10 +26,15 @@ jobs:
 
       - name: Prepare public frontend
         run: |
-          mkdir -p public
-          cp index.html style.css app.js admin.html admin.js public/
+          mkdir -p public/assets/images
+          cp index.html privacy.html terms.html admin.html robots.txt sitemap.xml public/
           cp -R admin public/admin
-          cp -R assets public/assets
+          cp -R assets/css assets/js public/assets/
+          cp assets/favicon.svg public/assets/
+          cp assets/images/*.jpg public/assets/images/
+
+      - name: Validate public frontend
+        run: python3 scripts/validate_site.py public
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
