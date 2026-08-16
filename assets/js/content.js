@@ -123,10 +123,30 @@ function renderServices(services = siteContent.services) {
   }).join('');
 }
 
+const FAQ_PREVIEW_COUNT = 6;
+let faqExpanded = false;
+
+function setFaqExpanded(expanded) {
+  faqExpanded = expanded;
+  const extraItems = [...document.querySelectorAll('#faqAccordion .faq-extra')];
+  extraItems.forEach(item => { item.hidden = !expanded; });
+
+  const toggle = document.querySelector('#faqToggle');
+  const label = toggle?.querySelector('[data-faq-toggle-label]');
+  const icon = toggle?.querySelector('.faq-toggle-icon');
+  if (!toggle || !label || !icon) return;
+  toggle.setAttribute('aria-expanded', String(expanded));
+  label.textContent = expanded ? '收合常見問題' : `查看更多常見問題（${extraItems.length}）`;
+  icon.textContent = expanded ? '−' : '＋';
+}
+
 function renderFaqs(faqs = siteContent.faqs) {
   const accordion = document.querySelector('#faqAccordion');
   if (!accordion) return;
-  accordion.innerHTML = faqs.map((faq, index) => { const [question, answer] = Array.isArray(faq) ? faq : [faq.question, faq.answer]; return `<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-${index}" aria-expanded="false" aria-controls="faq-${index}">${escapeHtml(question)}</button></h3><div id="faq-${index}" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">${escapeHtml(answer)}</div></div></div>`; }).join('');
+  accordion.innerHTML = faqs.map((faq, index) => { const [question, answer] = Array.isArray(faq) ? faq : [faq.question, faq.answer]; const isExtra = index >= FAQ_PREVIEW_COUNT; return `<div class="accordion-item${isExtra ? ' faq-extra' : ''}"${isExtra ? ' hidden' : ''}><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-${index}" aria-expanded="false" aria-controls="faq-${index}">${escapeHtml(question)}</button></h3><div id="faq-${index}" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">${escapeHtml(answer)}</div></div></div>`; }).join('');
+  const more = document.querySelector('#faqMore');
+  if (more) more.hidden = faqs.length <= FAQ_PREVIEW_COUNT;
+  setFaqExpanded(false);
 }
 
 function applySiteSettings(settings = {}) {
@@ -169,6 +189,7 @@ function applySiteSettings(settings = {}) {
 
 renderServices();
 renderFaqs();
+document.querySelector('#faqToggle')?.addEventListener('click', () => setFaqExpanded(!faqExpanded));
 
 async function loadCloudContent() {
   if (typeof slitSupabase === 'undefined') return;

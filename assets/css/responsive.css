@@ -47,9 +47,9 @@
   .process-list { grid-template-columns: 1fr; }
   .process-list li { min-height: 0; padding: 26px; }
   .process-list h3 { margin: 22px 0 7px; }
-  .experience-numbers { grid-template-columns: 1fr; }
-  .experience-numbers div { display: grid; grid-template-columns: 110px 1fr; align-items: center; border-bottom: 1px solid var(--line); }
-  .experience-numbers strong { margin: 0; }
+  .experience-capabilities { grid-template-columns: 1fr; border-top: 1px solid var(--line); }
+  .experience-capabilities article { min-height: 0; padding: 24px 4px; border-right: 0; border-bottom: 1px solid var(--line); border-left: 0; }
+  .experience-capabilities span { margin-bottom: 12px; }
   .case-empty { margin-top: 52px; }
   .case-empty > div { padding: 34px 24px; }
   .cases-grid { margin-top: 52px; }
