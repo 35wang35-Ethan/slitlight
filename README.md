@@ -1,68 +1,93 @@
 # 隙光（slit.light）
 
-品牌內容策略與影像 IP 企劃的靜態網站。前台部署於 GitHub Pages，內容資料、管理後台與詢問表單使用 Supabase。
+品牌內容策略與影像 IP 企劃的靜態網站。前台部署於 GitHub Pages，內容管理、詢問資料與安全表單使用 Supabase。
 
 ## 網址
 
 - 前台：https://35wang35-ethan.github.io/slitlight/
 - 後台：https://35wang35-ethan.github.io/slitlight/admin/login.html
+- GitHub：https://github.com/35wang35-Ethan/slitlight
+
+## 在另一台電腦開始修改
+
+先安裝 Git 與 Visual Studio Code，再於終端機執行：
+
+```powershell
+git clone https://github.com/35wang35-Ethan/slitlight.git
+cd slitlight
+code .
+```
+
+每次開始修改前，先取得最新正式版本：
+
+```powershell
+git switch main
+git pull --ff-only origin main
+```
+
+建議每次修改建立獨立分支，完成後推送到 GitHub 並合併 Pull Request：
+
+```powershell
+git switch -c update/修改內容
+python .\scripts\validate_site.py
+git add .
+git commit -m "說明這次修改"
+git push -u origin update/修改內容
+```
+
+請勿把 Supabase、Cloudflare 或 Resend 的 Secret／API Key 寫入原始碼。這些敏感設定只保存在各服務後台。
 
 ## 專案結構
 
 - `index.html`：前台頁面與搜尋／社群分享資訊
 - `privacy.html`、`terms.html`：個資告知與合作／取消說明
 - `assets/css`、`assets/js`：前台與後台樣式、互動
-- `admin`：Supabase 驗證的內容管理後台
-- `supabase/migrations`：資料表、RLS 與 API 權限
+- `assets/images`：網站圖片；PNG 為原稿，JPG 與 768px 版本供不同裝置載入
+- `admin`：使用 Supabase 驗證的內容管理後台
+- `supabase/migrations`：資料表、RLS 與 API 權限版本紀錄
 - `supabase/functions/submit-inquiry`：Turnstile 驗證、寫入詢問與 Resend 通知
 - `scripts/optimize-images.ps1`：從 PNG 原稿產生壓縮 JPG 與 768px 手機版
 - `scripts/validate_site.py`：部署前檢查本機資源與必要中繼資料
 
+## 目前正式設定
+
+- 對外聯絡信箱與詢問通知：`35slit.light@gmail.com`
+- 公開職稱：「內容企劃・品牌內容梳理」
+- 價格：內容診斷為單次固定價，其餘方案顯示起始價
+- Google Analytics：`G-JG1RP94Q9J`，訪客同意分析後才載入
+- Cloudflare Turnstile：已啟用，用於阻擋表單機器人
+- Supabase `submit-inquiry`：已部署，匿名使用者不能繞過安全表單直接新增詢問
+- Resend：已啟用，詢問通知寄至 `35slit.light@gmail.com`
+- Facebook：目前連到隙光的 Facebook
+
+網站不保存上述服務的 Secret／API Key。若換電腦，只需從 GitHub 下載原始碼；若要重新部署後端函式或調整服務設定，需登入原本的 Supabase、Cloudflare 與 Resend 帳戶。
+
+## 尚待確認
+
+- [ ] 更換「關於隙光」目前的人物示意照。建議使用本人工作照，或沒有可辨識人物的工作空間／拍攝現場照片，並確認圖片使用權與替代文字。
+
 ## 更新圖片
 
-在 Windows PowerShell 執行：
+替換 `assets/images` 中的 PNG 原稿後，在 Windows PowerShell 執行：
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\optimize-images.ps1
 ```
 
-## 部署
+這會重新產生網站使用的 JPG 與 768px 手機版；它們是正式資源，不是可刪除的重複檔案。
 
-推送到 `main` 後，GitHub Actions 會建立乾淨的公開目錄、執行驗證，再部署至 GitHub Pages。舊版後台與 PNG 原稿不會被放進公開網站。
+## 驗證與部署
 
-新增 Supabase migration 後，需在 Supabase 專案中套用，資料庫權限才會生效。`004_content_and_contact.sql` 會把公開 Email 更新為 `35slit.light@gmail.com`，並加入首頁 CMS 初始內容與「自有品牌示範」案例。
-
-## 啟用安全表單與 Email 通知
-
-目前 `assets/js/config.js` 保持 `secureInquiryEnabled: false`，讓尚未設定金鑰的正式網站仍能送出表單。完成以下步驟後再切換：
-
-1. 在 Cloudflare Turnstile 建立 Widget，允許主機名稱 `35wang35-ethan.github.io`，取得 Site Key 與 Secret Key。
-2. 以 `35slit.light@gmail.com` 註冊／登入 Resend 並建立 API Key。尚未購買網域時，可用 `onboarding@resend.dev` 寄到這個 Resend 帳號自己的 Gmail；要寄給其他收件人或寄客戶確認信，需先驗證自有網域。
-3. 在 Supabase Edge Function Secrets 設定：
-
-```text
-TURNSTILE_SECRET_KEY=...
-TURNSTILE_EXPECTED_HOSTNAME=35wang35-ethan.github.io
-RESEND_API_KEY=...
-INQUIRY_NOTIFICATION_EMAIL=35slit.light@gmail.com
-RESEND_FROM=slit.light <onboarding@resend.dev>
-```
-
-4. 部署函式：
+本機驗證：
 
 ```powershell
-supabase functions deploy submit-inquiry --no-verify-jwt
+python .\scripts\validate_site.py
 ```
 
-5. 將 `assets/js/config.js` 的 `turnstileSiteKey` 填入公開 Site Key，並把 `secureInquiryEnabled` 改為 `true`，部署並確認表單成功。
-6. 確認安全表單上線後，在 Supabase SQL Editor 執行下列指令，關閉可繞過 Turnstile 的匿名資料庫直寫：
+Pull Request 合併到 `main` 後，GitHub Actions 會建立乾淨的公開目錄、再次執行驗證，再部署至 GitHub Pages。後台原始碼、Supabase 檔案與 PNG 原稿不會被放進公開網站。
 
-```sql
-revoke insert on public.inquiries from anon, authenticated;
-```
-
-如果要暫時回復舊表單，可重新執行 `003_limit_public_inquiry_insert.sql` 的欄位級 `grant insert`，並將 `secureInquiryEnabled` 改回 `false`。
+新增 Supabase migration 後，仍需在 Supabase 專案中套用，資料庫變更才會生效。目前 `001` 至 `006` 的正式設定均已套用。
 
 ## 分析同意
 
-Google Analytics 不再於頁面開啟時直接載入。訪客選擇「接受分析」後才會載入，選擇保存在瀏覽器的 `slit-consent-v1`；頁尾的「分析設定」可重新開啟選擇視窗。
+Google Analytics 不會在頁面開啟時直接載入。訪客選擇「接受分析」後才會載入，選擇保存在瀏覽器的 `slit-consent-v1`；頁尾的「分析設定」可重新開啟選擇視窗。
