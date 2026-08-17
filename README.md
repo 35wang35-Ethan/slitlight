@@ -54,7 +54,7 @@ git push -u origin update/修改內容
 - 對外聯絡信箱與詢問通知：`35slit.light@gmail.com`
 - 公開職稱：「內容企劃・品牌內容梳理」
 - 價格：內容診斷為單次固定價，其餘方案顯示起始價
-- Google Analytics：`G-JG1RP94Q9J`，訪客同意分析後才載入
+- Google Analytics：`G-JG1RP94Q9J`，訪客進入頁面時直接載入
 - Cloudflare Turnstile：已啟用，用於阻擋表單機器人
 - Supabase `submit-inquiry`：已部署，匿名使用者不能繞過安全表單直接新增詢問
 - Resend：已啟用，詢問通知寄至 `35slit.light@gmail.com`
@@ -88,6 +88,6 @@ Pull Request 合併到 `main` 後，GitHub Actions 會建立乾淨的公開目�
 
 新增 Supabase migration 後，仍需在 Supabase 專案中套用，資料庫變更才會生效。目前 `001` 至 `006` 的正式設定均已套用。
 
-## 分析同意
+## 網站分析
 
-Google Analytics 不會在頁面開啟時直接載入。訪客選擇「接受分析」後才會載入，選擇保存在瀏覽器的 `slit-consent-v1`；頁尾的「分析設定」可重新開啟選擇視窗。
+Google Analytics 會在訪客進入頁面時直接載入；相關資料處理方式已記載於隱私權頁面。

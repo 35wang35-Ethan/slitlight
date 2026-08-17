@@ -63,8 +63,6 @@
   .socials { justify-content: flex-start; flex-wrap: wrap; }
   .footer-bottom { align-items: flex-start; flex-direction: column; gap: 10px; }
   .legal-links { justify-content: flex-start; flex-wrap: wrap; gap: 6px 16px; }
-  .consent-banner { right: 12px; bottom: 12px; left: 12px; grid-template-columns: 1fr; gap: 16px; padding: 20px; }
-  .consent-actions { display: grid; grid-template-columns: 1fr 1fr; }
   .policy-hero { padding: 70px 0 42px; }
   .policy-content { padding: 58px 0 82px; }
 }
