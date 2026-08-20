@@ -4,16 +4,19 @@
   });
 
   const analyticsId = window.slitConfig?.analyticsId?.trim();
-  if (!analyticsId) return;
+  const googleAdsId = window.slitConfig?.googleAdsId?.trim();
+  const googleTagId = analyticsId || googleAdsId;
+  if (!googleTagId) return;
 
   window.dataLayer = window.dataLayer || [];
   window.gtag = window.gtag || function gtag() { window.dataLayer.push(arguments); };
   window.gtag('js', new Date());
-  window.gtag('config', analyticsId, { anonymize_ip: true });
+  if (analyticsId) window.gtag('config', analyticsId, { anonymize_ip: true });
+  if (googleAdsId) window.gtag('config', googleAdsId);
 
   const script = document.createElement('script');
   script.async = true;
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(analyticsId)}`;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(googleTagId)}`;
   document.head.append(script);
 
 })();

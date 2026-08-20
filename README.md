@@ -55,6 +55,7 @@ git push -u origin update/修改內容
 - 公開職稱：「內容企劃・品牌內容梳理」
 - 價格：內容診斷為單次固定價，其餘方案顯示起始價
 - Google Analytics：`G-JG1RP94Q9J`，訪客進入頁面時直接載入
+- Google Ads：`AW-18389054487`，與 Google Analytics 共用一個 Google tag 載入器
 - Cloudflare Turnstile：已啟用，用於阻擋表單機器人
 - Supabase `submit-inquiry`：已部署，匿名使用者不能繞過安全表單直接新增詢問
 - Resend：已啟用，詢問通知寄至 `35slit.light@gmail.com`
@@ -90,4 +91,4 @@ Pull Request 合併到 `main` 後，GitHub Actions 會建立乾淨的公開目�
 
 ## 網站分析
 
-Google Analytics 會在訪客進入頁面時直接載入；相關資料處理方式已記載於隱私權頁面。
+Google Analytics 與 Google Ads 標記會在訪客進入頁面時直接載入；相關資料處理方式已記載於隱私權頁面。
