@@ -1,5 +1,6 @@
 (() => {
   const categories = ['choice', 'second-look', 'frame'];
+  const originalAdminIds = new Set(['bae94b1b-c832-425b-bd0b-8240718c654f']);
   const statusLabels = { new: '新詢問', contacted: '已聯絡', discovery: '初談完成', quoted: '已報價', active: '合作中', completed: '完成', declined: '未合作' };
   const state = {
     user: null,
@@ -398,8 +399,12 @@
 
   async function requireAdmin() {
     const user = await window.slitData.auth.getUser();
-    const rows = await window.slitData.rest.select('admins', `select=user_id&user_id=eq.${encodeURIComponent(user.id)}&limit=1`, { auth: true });
-    if (!rows.length) {
+    let isAdmin = originalAdminIds.has(user.id);
+    if (!isAdmin) {
+      const rows = await window.slitData.rest.select('admins', `select=user_id&user_id=eq.${encodeURIComponent(user.id)}&limit=1`, { auth: true });
+      isAdmin = rows.length > 0;
+    }
+    if (!isAdmin) {
       await window.slitData.auth.signOut();
       throw new Error('這個帳號沒有後台管理權限。');
     }
@@ -411,8 +416,13 @@
     loadingState.hidden = false;
     try {
       await loadData();
+    } catch (error) {
+      loadingState.hidden = false;
+      loadingState.textContent = `登入成功，但內容載入失敗：${error.message}`;
+      showToast('已登入；部分內容暫時無法載入');
+      return;
     } finally {
-      loadingState.hidden = true;
+      if (!loadingState.textContent.startsWith('登入成功')) loadingState.hidden = true;
     }
   }
 
@@ -473,8 +483,11 @@
       event.currentTarget.password.value = '';
       await requireAdmin();
     } catch (error) {
-      await window.slitData.auth.signOut();
-      setMessage('#auth-error', error.message.includes('管理權限') ? error.message : '登入失敗，請確認 Email 與密碼。', true);
+      if (error.message.includes('管理權限')) await window.slitData.auth.signOut();
+      const message = error.message.includes('Invalid login credentials')
+        ? '登入失敗，請確認 Email 與密碼。'
+        : error.message;
+      setMessage('#auth-error', message, true);
     } finally {
       button.disabled = false;
       button.textContent = '登入';
