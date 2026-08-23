@@ -367,19 +367,31 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  function loadSameOriginText(url) {
+    return new Promise((resolve, reject) => {
+      const request = new XMLHttpRequest();
+      request.open('GET', url, true);
+      request.setRequestHeader('Accept', 'text/html,application/json');
+      request.onload = () => {
+        if (request.status >= 200 && request.status < 300) resolve(request.responseText);
+        else reject(new Error(`備援內容回應 ${request.status}`));
+      };
+      request.onerror = () => reject(new Error('無法讀取網站備援內容。'));
+      request.send();
+    });
+  }
+
   async function loadData() {
     const staticSelectedUrl = new URL('../assets/data/selected.json', document.baseURI).href;
     const indexUrl = new URL('../index.html', document.baseURI).href;
-    const [staticSelectedResponse, indexResponse, cmsCases, copyRows, inquiries] = await Promise.all([
-      fetch(staticSelectedUrl, { cache: 'no-cache' }),
-      fetch(indexUrl, { cache: 'no-cache' }),
+    const [staticSelectedText, indexHtml, cmsCases, copyRows, inquiries] = await Promise.all([
+      loadSameOriginText(staticSelectedUrl),
+      loadSameOriginText(indexUrl),
       window.slitData.rest.select('cases', 'select=id,title,slug,cover_image,client_name,client_type,insight,execution,publish_status,sort_order&client_type=in.(choice,second-look,frame)&order=sort_order.asc', { auth: true }),
       window.slitData.rest.select('homepage_sections', 'select=id,content&section_key=eq.editorial_copy&limit=1', { auth: true }),
       window.slitData.rest.select('inquiries', 'select=id,name,email,social_contact,problem_type,problem_description,status,created_at&order=created_at.desc', { auth: true })
     ]);
-    if (!staticSelectedResponse.ok || !indexResponse.ok) throw new Error('無法讀取 repository 備援內容。');
-    const staticSelected = await staticSelectedResponse.json();
-    const indexHtml = await indexResponse.text();
+    const staticSelected = JSON.parse(staticSelectedText);
     state.selected = cmsCases.length >= 3 ? cmsCases.map(caseToTake) : staticSelected;
     state.originalCaseIds = new Set(cmsCases.map(item => item.id));
     state.copyRowId = copyRows[0]?.id || null;
