@@ -31,6 +31,8 @@ git switch -c update/簡短修改名稱
 - 圖片：`assets/images/`
 - 網站設定：`assets/js/config.js`
 
+`assets/js/config.js` 內的 Google Analytics 與 Google Ads ID 是目前正式追蹤設定。修改版面時不要移除 `assets/js/analytics.js`；公開頁面需在 `config.js` 之後載入它，但網站不顯示分析同意視窗。
+
 ## 本機預覽與檢查
 
 不要直接雙擊 HTML；用本機伺服器開啟，JSON 內容才會正常載入：
@@ -69,4 +71,3 @@ git push -u origin update/簡短修改名稱
 ## 更新圖片
 
 圖片清單與命名方式請看 `assets/images/README.md`。PNG 是目前視覺的來源原稿，不會部署；JPG／WebP 才是網站載入檔。替換圖片後務必維持既有檔名與尺寸比例，再執行網站檢查。
-

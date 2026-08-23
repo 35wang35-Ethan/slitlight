@@ -152,6 +152,19 @@ def main() -> int:
     pages = ("index.html", "takes/index.html", "privacy.html", "terms.html")
     parsed = {page: validate_page(root, page, errors) for page in pages}
 
+    for page, parser in parsed.items():
+        config_scripts = [index for index, src in enumerate(parser.scripts) if src.endswith("assets/js/config.js")]
+        analytics_scripts = [index for index, src in enumerate(parser.scripts) if src.endswith("assets/js/analytics.js")]
+        if len(config_scripts) != 1 or len(analytics_scripts) != 1:
+            errors.append(f"{page}: expected one config.js and one analytics.js")
+        elif config_scripts[0] > analytics_scripts[0]:
+            errors.append(f"{page}: config.js must load before analytics.js")
+
+    browser_config = (root / "assets/js/config.js").read_text(encoding="utf-8")
+    for tracking_id in ("G-JG1RP94Q9J", "AW-18389054487"):
+        if tracking_id not in browser_config:
+            errors.append(f"assets/js/config.js: missing tracking ID {tracking_id}")
+
     if not parsed["index.html"].hero_is_eager:
         errors.append("index.html: hero image must be eager and fetchpriority=high")
 
@@ -193,7 +206,7 @@ def main() -> int:
         if legacy_bootstrap:
             errors.append(f"{source.relative_to(root)}: Bootstrap 4 syntax remains: {legacy_bootstrap.group(0)}")
 
-    for obsolete in ("admin.js", "app.js", "style.css", "assets/hero.png"):
+    for obsolete in ("admin.js", "app.js", "style.css", "assets/hero.png", "assets/js/consent.js"):
         if (root / obsolete).exists():
             errors.append(f"obsolete file must not be deployed: {obsolete}")
 

@@ -61,7 +61,9 @@ git push -u origin update/修改內容
 - 正式品牌：「隙光 slit.light」；內容母題：「慢看 SLOW TAKE」
 - 公開職稱：「影像內容企劃・創意觀察」
 - 舊 Services 與價格保留於 Supabase，首頁不顯示
-- 網站目前不載入訪客分析工具
+- Google Analytics：`G-JG1RP94Q9J`
+- Google Ads：`AW-18389054487`
+- 網站會直接載入上述 Google tag，不顯示分析同意視窗
 - Cloudflare Turnstile：已啟用，用於阻擋表單機器人
 - Supabase `submit-inquiry`：已部署，匿名使用者不能繞過安全表單直接新增詢問
 - Resend：已啟用，詢問通知寄至 `35slit.light@gmail.com`
@@ -99,6 +101,6 @@ Pull Request 合併到 `main` 後，GitHub Actions 會建立乾淨的公開目�
 
 新增 Supabase migration 後，仍需在 Supabase 專案中套用，資料庫變更才會生效。目前 `001` 至 `006` 的正式設定均已套用。
 
-## 分析同意
+## 網站分析
 
-網站目前不使用 Google Analytics，也不顯示分析同意視窗。
+原有 Google Analytics 與 Google Ads 代碼會在所有公開頁面載入；網站不顯示「允許匿名網站分析」提示。資料處理方式記載於隱私權頁面。
