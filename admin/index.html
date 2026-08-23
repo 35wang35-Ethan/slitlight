@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#211f1c">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src https://ptruiafyvqhyeodvkiub.supabase.co; img-src 'self' https://ptruiafyvqhyeodvkiub.supabase.co data:; style-src 'self'; script-src 'self'; base-uri 'none'; form-action 'self'">
+  <title>slit.light Studio｜內容管理</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/admin.css?v=20260823c">
+  <script src="../assets/js/supabase.js?v=20260823b" defer></script>
+  <script src="../assets/js/admin.js?v=20260823c" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#auth-main">跳到內容管理</a>
+
+  <section id="auth-view" class="auth-view" aria-labelledby="auth-title">
+    <div class="auth-brand"><img src="../assets/brand-symbol.svg" width="34" height="34" alt=""><span>slit.light</span></div>
+    <main id="auth-main" class="auth-card">
+      <p class="kicker">STUDIO</p>
+      <h1 id="auth-title">回到內容裡。</h1>
+      <p>使用原本的後台 Email 與密碼登入。登入後可從任何電腦管理 Selected Takes、首頁文字、圖片與詢問資料。</p>
+      <form id="auth-form" class="auth-form">
+        <label for="admin-email">Email</label>
+        <input id="admin-email" name="email" type="email" autocomplete="email" required>
+        <label for="admin-password">Password</label>
+        <input id="admin-password" name="password" type="password" autocomplete="current-password" required>
+        <button type="submit">登入</button>
+        <p id="auth-error" class="form-message" role="alert"></p>
+      </form>
+      <button id="forgot-password-button" class="auth-switch" type="button">忘記密碼？</button>
+
+      <form id="recovery-request-form" class="auth-form" hidden>
+        <label for="recovery-email">原管理員 Email</label>
+        <input id="recovery-email" name="email" type="email" autocomplete="email" required>
+        <button type="submit">寄出密碼重設信</button>
+        <button class="auth-secondary" type="button" data-auth-mode="login">返回登入</button>
+        <p id="recovery-request-message" class="form-message" role="status"></p>
+      </form>
+
+      <form id="recovery-update-form" class="auth-form" hidden>
+        <label for="new-password">新密碼</label>
+        <input id="new-password" name="password" type="password" autocomplete="new-password" minlength="12" required>
+        <label for="confirm-password">再次輸入新密碼</label>
+        <input id="confirm-password" name="confirmation" type="password" autocomplete="new-password" minlength="12" required>
+        <button type="submit">更新原帳號密碼</button>
+        <p id="recovery-update-message" class="form-message" role="alert"></p>
+      </form>
+    </main>
+    <p class="auth-note">登入由原本的 Supabase 帳號系統驗證；只有管理員帳號能進入。</p>
+  </section>
+
+  <div id="studio-view" class="studio" hidden>
+    <aside class="studio-sidebar">
+      <a class="studio-brand" href="../" target="_blank" rel="noopener noreferrer"><img src="../assets/brand-symbol.svg" width="32" height="32" alt=""><span>slit.light</span></a>
+      <div><p class="kicker">CONTENT STUDIO</p><p class="studio-description">只管理目前網站真正使用的內容。</p></div>
+      <nav id="studio-nav" aria-label="內容管理導覽">
+        <button class="is-active" type="button" data-panel-target="overview">Overview</button>
+        <button type="button" data-panel-target="selected">Selected Takes</button>
+        <button type="button" data-panel-target="copy">Site Copy</button>
+        <button type="button" data-panel-target="media">Media</button>
+        <button type="button" data-panel-target="inquiries">Inquiries</button>
+        <button type="button" data-panel-target="save">Save</button>
+      </nav>
+      <div class="sidebar-bottom"><span id="admin-user"></span><button id="logout-button" type="button">登出</button></div>
+    </aside>
+
+    <header class="studio-mobile-header"><button id="menu-button" type="button" aria-expanded="false">MENU</button><span>slit.light Studio</span><button type="button" data-save-shortcut>儲存</button></header>
+
+    <main id="studio-main" class="studio-main">
+      <h1 class="sr-only">slit.light Studio</h1>
+      <div id="loading-state" class="loading-state" role="status">正在讀取最新內容…</div>
+
+      <section class="studio-panel is-active" data-panel="overview" aria-labelledby="overview-title">
+        <header class="panel-heading"><p class="kicker">OVERVIEW</p><h2 id="overview-title">目前網站。</h2><p>內容儲存在原本的 Supabase 專案；更新後會直接同步到公開網站，GitHub 版本仍保留為離線備援。</p></header>
+        <div class="stat-grid">
+          <article><span>Selected</span><strong id="stat-selected">—</strong><small>首頁顯示</small></article>
+          <article><span>New inquiries</span><strong id="stat-inquiries">—</strong><small>尚未聯絡</small></article>
+          <article><span>Pending</span><strong id="stat-pending">0</strong><small>尚未儲存</small></article>
+        </div>
+        <div class="overview-grid">
+          <article class="studio-card"><p class="card-label">SITE</p><h2>公開網站</h2><p>Selected 與首頁文字從 Supabase 讀取；資料不可用時，網站會自動使用 repository 內的穩定版本。</p><a class="text-link" href="../" target="_blank" rel="noopener noreferrer">查看網站 ↗</a></article>
+          <article class="studio-card"><p class="card-label">SCOPE</p><h2>目前可管理</h2><p>Selected Takes、Hero、About、Collaborate、圖片與原有詢問資料。不恢復價格、服務方案或 FAQ。</p></article>
+        </div>
+      </section>
+
+      <section class="studio-panel" data-panel="selected" aria-labelledby="selected-editor-title">
+        <header class="panel-heading panel-heading--actions"><div><p class="kicker">SELECTED TAKES</p><h2 id="selected-editor-title">精選觀看。</h2><p>固定保留 3–5 筆；依 order 排序，不使用日期。</p></div><button id="add-take-button" class="secondary-button" type="button">新增一筆</button></header>
+        <div id="selected-editors" class="selected-editors"></div>
+      </section>
+
+      <section class="studio-panel" data-panel="copy" aria-labelledby="copy-title">
+        <header class="panel-heading"><p class="kicker">SITE COPY</p><h2 id="copy-title">網站文字。</h2><p>只開放目前品牌入口需要的 Hero、About 與 Collaborate 文字。</p></header>
+        <form id="copy-form" class="copy-grid">
+          <fieldset class="studio-card"><legend>Hero</legend><label>SLOW TAKE Label<input name="heroLabel" maxlength="30"></label><label>主標<input name="heroTitle" maxlength="40"></label><label>次要說明<input name="heroNote" maxlength="80"></label><label>補充說明<input name="heroStatement" maxlength="100"></label></fieldset>
+          <fieldset class="studio-card"><legend>About</legend><label>標題<input name="aboutTitle" maxlength="40"></label><label>內文<textarea name="aboutBody" rows="7" maxlength="260"></textarea></label><div class="field-row"><label>公開名稱<input name="aboutName" maxlength="30"></label><label>職稱<input name="aboutRole" maxlength="40"></label></div></fieldset>
+          <fieldset class="studio-card"><legend>Collaborate</legend><label>標題<input name="collaborationTitle" maxlength="40"></label><label>說明<textarea name="collaborationBody" rows="3" maxlength="120"></textarea></label><label>合作範圍<input name="collaborationScope" maxlength="80"></label><label>CTA 文字<input name="collaborationCta" maxlength="30"></label></fieldset>
+        </form>
+      </section>
+
+      <section class="studio-panel" data-panel="media" aria-labelledby="media-title">
+        <header class="panel-heading"><p class="kicker">MEDIA</p><h2 id="media-title">圖片上傳。</h2><p>上傳 JPG、PNG 或 WebP 後，把產生的網址放進 Selected Take 的 Cover path。</p></header>
+        <div class="media-upload studio-card">
+          <label for="media-file">選擇圖片</label>
+          <input id="media-file" type="file" accept="image/jpeg,image/png,image/webp">
+          <button id="media-upload-button" class="secondary-button" type="button">上傳圖片</button>
+          <label for="media-url">圖片網址</label>
+          <div class="media-url-row"><input id="media-url" type="url" readonly><button id="copy-media-url" type="button">複製</button></div>
+          <p id="media-status" class="form-message" role="status"></p>
+          <small>單張上限 5 MB。首頁仍建議使用壓縮後的 WebP。</small>
+        </div>
+      </section>
+
+      <section class="studio-panel" data-panel="inquiries" aria-labelledby="inquiries-title">
+        <header class="panel-heading"><p class="kicker">INQUIRIES</p><h2 id="inquiries-title">原有詢問。</h2><p>保留舊後台已收到的詢問資料與狀態管理；前台目前不顯示 Email 或詢問表單。</p></header>
+        <div class="inquiry-table-wrap studio-card"><table class="inquiry-table"><thead><tr><th>姓名／聯絡</th><th>內容</th><th>日期</th><th>狀態</th></tr></thead><tbody id="inquiries-table"></tbody></table></div>
+      </section>
+
+      <section class="studio-panel" data-panel="save" aria-labelledby="save-title">
+        <header class="panel-heading"><p class="kicker">SAVE</p><h2 id="save-title">儲存變更。</h2><p>Selected 與首頁文字會寫回原本的 Supabase；公開網站重新整理後即可看到。</p></header>
+        <div class="publish-layout">
+          <article class="studio-card"><p class="card-label">CHANGES</p><ul id="change-summary" class="change-summary"><li>目前沒有尚未儲存的變更。</li></ul></article>
+          <article class="publish-action"><button id="save-button" class="publish-button" type="button">儲存到網站</button><p id="save-status" class="form-message" role="status"></p><small>若儲存時顯示登入失效，請重新登入後再試。</small></article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

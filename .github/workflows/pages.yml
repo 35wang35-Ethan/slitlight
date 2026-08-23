@@ -26,8 +26,9 @@ jobs:
 
       - name: Prepare public frontend
         run: |
-          mkdir -p public/assets/images public/assets/data public/takes
-          cp index.html privacy.html terms.html robots.txt sitemap.xml public/
+          mkdir -p public/assets/images public/assets/data public/takes public/admin
+          cp index.html privacy.html terms.html admin.html robots.txt sitemap.xml public/
+          cp admin/index.html admin/login.html public/admin/
           cp -R assets/css assets/js public/assets/
           cp -R assets/data/. public/assets/data/
           cp -R assets/vendor public/assets/

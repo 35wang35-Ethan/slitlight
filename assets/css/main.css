@@ -71,7 +71,7 @@ button, a { outline-offset: 5px; }
 .footer-main nav a { display: inline-flex; min-height: 32px; align-items: center; color: var(--muted); font-size: .75rem; letter-spacing: .08em; text-decoration: none; }
 .footer-main nav a:hover { color: var(--ink); }
 .footer-social a { justify-content: flex-end; gap: 9px; }
-.footer-bottom { display: flex; justify-content: space-between; margin-top: 72px; padding-top: 20px; border-top: 1px solid var(--line); color: rgba(104,98,92,.72); font-size: .76rem; }
+.footer-bottom { display: flex; justify-content: space-between; margin-top: 72px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: .76rem; }
 .footer-bottom > div { display: flex; align-items: center; gap: 20px; }
 .footer-bottom a { color: var(--muted); text-decoration: none; }
 .back-to-top { display: inline-flex; width: 32px; height: 32px; align-items: center; justify-content: center; }

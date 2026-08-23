@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /slitlight/admin/
+Disallow: /slitlight/admin.html
 
 Sitemap: https://35wang35-ethan.github.io/slitlight/sitemap.xml

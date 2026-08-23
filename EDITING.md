@@ -12,7 +12,7 @@ cd slitlight
 code .
 ```
 
-敏感資料不在專案內。網站內容與部署版本以 GitHub `main` 分支為準。
+管理員密碼與 Supabase service-role key 不在專案內。程式與備援內容以 GitHub `main` 為準；後台最新內容儲存在原本的 Supabase 專案。
 
 ## 每次修改前
 
@@ -30,6 +30,10 @@ git switch -c update/簡短修改名稱
 - 視覺樣式：`assets/css/`
 - 圖片：`assets/images/`
 - 網站設定：`assets/js/config.js`
+
+若修改 Selected Takes、首頁文字、圖片或詢問狀態，可開啟正式網站的 `/admin/`，使用原本的後台 Email／Password 登入。內容儲存後會立即寫入 Supabase，不需要 GitHub Token，也不會自動修改 repository。
+
+忘記原管理員密碼時，使用同一個登入頁的「忘記密碼？」寄信。重設信會回到 `/slitlight/admin/`，不會建立新帳號；請勿把新密碼寫入 README 或任何 Git 檔案。
 
 `assets/js/config.js` 內的 Google Analytics 與 Google Ads ID 是目前正式追蹤設定。修改版面時不要移除 `assets/js/analytics.js`；公開頁面需在 `config.js` 之後載入它，但網站不顯示分析同意視窗。
 
@@ -59,7 +63,7 @@ git push -u origin update/簡短修改名稱
 
 ## 更新 Selected Take
 
-編輯 `assets/data/selected.json`。每筆資料需保留：
+日常更新請優先使用後台。若要更新 Supabase 無法連線時使用的備援內容，再編輯 `assets/data/selected.json`。每筆資料需保留：
 
 - `slug`、`category`、`title`、`description`
 - `cover`、`coverAlt`、`coverWidth`、`coverHeight`

@@ -169,6 +169,37 @@ def validate_selected(root: Path, errors: list[str]) -> None:
         errors.append(f"selected.json: expected 3–5 selected items, found {selected_count}")
 
 
+def validate_admin(root: Path, errors: list[str]) -> None:
+    required = (
+        "admin.html", "admin/index.html", "admin/login.html", "assets/css/admin.css",
+        "assets/js/admin.js", "assets/js/supabase.js", "assets/js/site-content.js"
+    )
+    for relative_path in required:
+        if not (root / relative_path).exists():
+            errors.append(f"missing admin asset: {relative_path}")
+    admin_page = root / "admin/index.html"
+    admin_script = root / "assets/js/admin.js"
+    if not admin_page.exists() or not admin_script.exists():
+        return
+    html = admin_page.read_text(encoding="utf-8")
+    script = admin_script.read_text(encoding="utf-8")
+    data_client = (root / "assets/js/supabase.js").read_text(encoding="utf-8")
+    if "Content-Security-Policy" not in html:
+        errors.append("admin/index.html: Content Security Policy is required")
+    if "https://ptruiafyvqhyeodvkiub.supabase.co" not in html or "https://ptruiafyvqhyeodvkiub.supabase.co" not in data_client:
+        errors.append("admin: original Supabase project configuration is missing")
+    if "signIn" not in data_client or "type=\"password\"" not in html:
+        errors.append("admin: Email/Password authentication is missing")
+    if not all(marker in data_client for marker in ("requestPasswordRecovery", "updatePassword", "type') !== 'recovery")):
+        errors.append("admin: original account password recovery flow is incomplete")
+    if not all(marker in html for marker in ('id="forgot-password-button"', 'id="recovery-update-form"')):
+        errors.append("admin: password recovery controls are missing")
+    if "service_role" in html + script + data_client:
+        errors.append("admin: a Supabase service-role credential appears to be committed")
+    if "https://api.github.com" in html + script:
+        errors.append("admin: obsolete GitHub-token backend remains")
+
+
 def main() -> int:
     root = Path(sys.argv[1] if len(sys.argv) > 1 else ".").resolve()
     errors: list[str] = []
@@ -211,6 +242,7 @@ def main() -> int:
                 errors.append(f"{css_path.relative_to(root)}: missing local asset: {reference}")
 
     validate_selected(root, errors)
+    validate_admin(root, errors)
 
     public_sources = [
         root / "index.html", root / "takes/index.html", root / "privacy.html",
