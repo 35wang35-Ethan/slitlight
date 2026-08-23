@@ -1,38 +1,24 @@
-const trackEvent = (eventName, parameters = {}) => {
-  if (typeof window.gtag === 'function') window.gtag('event', eventName, parameters);
-};
-
-document.querySelector('#currentYear').textContent = new Date().getFullYear();
-
-const navbar = document.querySelector('.navbar');
-const updateNavbar = () => navbar?.classList.toggle('scrolled', window.scrollY > 40);
-window.addEventListener('scroll', updateNavbar, { passive: true });
-updateNavbar();
-
-document.querySelectorAll('[data-link]').forEach(link => {
-  const key = link.dataset.link;
-  const value = siteContent.settings[key]?.trim();
-  if (!value) {
-    link.hidden = true;
-    return;
-  }
-  link.href = key === 'email' ? `mailto:${value}` : value;
+document.querySelectorAll('[data-current-year]').forEach(element => {
+  element.textContent = new Date().getFullYear();
 });
 
-document.addEventListener('click', event => {
-  const tracked = event.target.closest('[data-track]');
-  if (tracked) trackEvent(tracked.dataset.track, { link_text: tracked.textContent.trim() });
-
-  const navLink = event.target.closest('#mainNav a');
-  const collapseElement = document.querySelector('#mainNav');
-  if (navLink && collapseElement?.classList.contains('show') && window.bootstrap) {
-    window.bootstrap.Collapse.getOrCreateInstance(collapseElement).hide();
-  }
+const offcanvasNavigation = document.querySelector('.site-nav-panel');
+offcanvasNavigation?.querySelectorAll('a[href]').forEach(link => {
+  link.addEventListener('click', () => {
+    window.bootstrap?.Offcanvas.getInstance(offcanvasNavigation)?.hide();
+  });
 });
 
-document.addEventListener('pointerover', event => {
-  const card = event.target.closest('.service-card');
-  if (!card || card.dataset.viewTracked) return;
-  card.dataset.viewTracked = 'true';
-  trackEvent('service_view', { service_name: card.dataset.service });
-});
+const revealItems = [...document.querySelectorAll('.reveal:not(.is-visible)')];
+if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: .08 });
+  revealItems.forEach(item => observer.observe(item));
+} else {
+  revealItems.forEach(item => item.classList.add('is-visible'));
+}
