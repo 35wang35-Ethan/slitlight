@@ -1,6 +1,6 @@
 # 隙光（slit.light）
 
-品牌內容策略與影像 IP 企劃的靜態網站。前台部署於 GitHub Pages，內容管理、詢問資料與安全表單使用 Supabase。
+「慢看 SLOW TAKE」的影像／創意品牌入口。前台部署於 GitHub Pages；舊版服務資料與管理後台仍保留於 Supabase，但不再作為首頁內容。
 
 ## 網址
 
@@ -11,6 +11,8 @@
 ## 在另一台電腦開始修改
 
 先安裝 Git 與 Visual Studio Code，再於終端機執行。若要在本機執行網站驗證，另需安裝 Python 3；沒有 Python 仍可修改網站，推送後 GitHub Actions 會執行正式驗證。
+
+完整流程請見 [`EDITING.md`](EDITING.md)。
 
 ```powershell
 git clone https://github.com/35wang35-Ethan/slitlight.git
@@ -39,10 +41,14 @@ git push -u origin update/修改內容
 
 ## 專案結構
 
-- `index.html`：前台頁面與搜尋／社群分享資訊
+- `index.html`：品牌首頁與搜尋／社群分享資訊
+- `takes/index.html`：Selected Takes Archive 與分類篩選
+- `assets/data/takes.json`：CHOICE、SECOND LOOK、FRAME 共用內容資料
 - `privacy.html`、`terms.html`：個資告知與合作／取消說明
 - `assets/css`、`assets/js`：前台與後台樣式、互動
-- `assets/images`：網站圖片；PNG 為原稿，JPG 與 768px 版本供不同裝置載入
+- `assets/vendor/bootstrap`：前台實際使用的 Bootstrap 5 結構與元件模組
+- `assets/brand-symbol.svg`：Header 與 Footer 使用的正式品牌 Symbol
+- `assets/images`：最新版圖片原稿、正式輸出與必要的歷史資料相容檔；清單見 `assets/images/README.md`
 - `admin`：使用 Supabase 驗證的內容管理後台
 - `supabase/migrations`：資料表、RLS 與 API 權限版本紀錄
 - `supabase/functions/submit-inquiry`：Turnstile 驗證、寫入詢問與 Resend 通知
@@ -52,9 +58,10 @@ git push -u origin update/修改內容
 ## 目前正式設定
 
 - 對外聯絡信箱與詢問通知：`35slit.light@gmail.com`
-- 公開職稱：「內容企劃・品牌內容梳理」
-- 價格：內容診斷為單次固定價，其餘方案顯示起始價
-- Google Analytics：`G-JG1RP94Q9J`，訪客同意分析後才載入
+- 正式品牌：「隙光 slit.light」；內容母題：「慢看 SLOW TAKE」
+- 公開職稱：「影像內容企劃・創意觀察」
+- 舊 Services 與價格保留於 Supabase，首頁不顯示
+- 網站目前不載入訪客分析工具
 - Cloudflare Turnstile：已啟用，用於阻擋表單機器人
 - Supabase `submit-inquiry`：已部署，匿名使用者不能繞過安全表單直接新增詢問
 - Resend：已啟用，詢問通知寄至 `35slit.light@gmail.com`
@@ -68,13 +75,17 @@ git push -u origin update/修改內容
 
 ## 更新圖片
 
-替換 `assets/images` 中的 PNG 原稿後，在 Windows PowerShell 執行：
+替換 `assets/images` 中的 PNG 原稿後，可用既有腳本產生 JPG；正式首頁也應同步準備 WebP：
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\optimize-images.ps1
 ```
 
-這會重新產生網站使用的 JPG 與 768px 手機版；它們是正式資源，不是可刪除的重複檔案。
+這會重新產生 JPG 與 768px 手機版；WebP 可使用 Google 官方 `cwebp` 產生。GitHub Pages 只部署目前頁面使用的 JPG／WebP，不會部署 PNG 原稿或歷史相容檔。
+
+## 新增 Take
+
+在 `assets/data/takes.json` 新增一筆資料即可同時更新首頁 Selected Takes 與 Archive。必填欄位為 `title`、`slug`、`category`、`excerpt`、`cover_image`、`date`、`external_url`、`film_title`、`film_year`、`featured`、`published`；`category` 只能是 `choice`、`second-look` 或 `frame`。
 
 ## 驗證與部署
 
@@ -90,4 +101,4 @@ Pull Request 合併到 `main` 後，GitHub Actions 會建立乾淨的公開目�
 
 ## 分析同意
 
-Google Analytics 不會在頁面開啟時直接載入。訪客選擇「接受分析」後才會載入，選擇保存在瀏覽器的 `slit-consent-v1`；頁尾的「分析設定」可重新開啟選擇視窗。
+網站目前不使用 Google Analytics，也不顯示分析同意視窗。
