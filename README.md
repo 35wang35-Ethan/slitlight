@@ -1,11 +1,10 @@
 # 隙光（slit.light）
 
-「慢看 SLOW TAKE」的影像／創意品牌入口。前台部署於 GitHub Pages；舊版服務資料與管理後台仍保留於 Supabase，但不再作為首頁內容。
+「慢看 SLOW TAKE」的影像／創意品牌入口，部署於 GitHub Pages。
 
 ## 網址
 
 - 前台：https://35wang35-ethan.github.io/slitlight/
-- 後台：https://35wang35-ethan.github.io/slitlight/admin/login.html
 - GitHub：https://github.com/35wang35-Ethan/slitlight
 
 ## 在另一台電腦開始修改
@@ -37,39 +36,30 @@ git commit -m "說明這次修改"
 git push -u origin update/修改內容
 ```
 
-請勿把 Supabase、Cloudflare 或 Resend 的 Secret／API Key 寫入原始碼。這些敏感設定只保存在各服務後台。
+請勿把任何 Secret／API Key 寫入原始碼；網站公開設定只保留在 `assets/js/config.js`。
 
 ## 專案結構
 
 - `index.html`：品牌首頁與搜尋／社群分享資訊
-- `takes/index.html`：Selected Takes Archive 與分類篩選
-- `assets/data/takes.json`：CHOICE、SECOND LOOK、FRAME 共用內容資料
+- `takes/index.html`：為既有網址保留的精選頁，不在主要導覽中
+- `assets/data/selected.json`：首頁與保留頁共用的 3–5 筆精選內容
 - `privacy.html`、`terms.html`：個資告知與合作／取消說明
-- `assets/css`、`assets/js`：前台與後台樣式、互動
+- `assets/css`、`assets/js`：前台樣式與互動
 - `assets/vendor/bootstrap`：前台實際使用的 Bootstrap 5 結構與元件模組
 - `assets/brand-symbol.svg`：Header 與 Footer 使用的正式品牌 Symbol
-- `assets/images`：最新版圖片原稿、正式輸出與必要的歷史資料相容檔；清單見 `assets/images/README.md`
-- `admin`：使用 Supabase 驗證的內容管理後台
-- `supabase/migrations`：資料表、RLS 與 API 權限版本紀錄
-- `supabase/functions/submit-inquiry`：Turnstile 驗證、寫入詢問與 Resend 通知
+- `assets/images`：最新版圖片原稿與正式輸出；清單見 `assets/images/README.md`
 - `scripts/optimize-images.ps1`：從 PNG 原稿產生壓縮 JPG 與 768px 手機版
 - `scripts/validate_site.py`：部署前檢查本機資源與必要中繼資料
 
 ## 目前正式設定
 
-- 對外聯絡信箱與詢問通知：`35slit.light@gmail.com`
 - 正式品牌：「隙光 slit.light」；內容母題：「慢看 SLOW TAKE」
 - 公開職稱：「影像內容企劃・創意觀察」
-- 舊 Services 與價格保留於 Supabase，首頁不顯示
 - Google Analytics：`G-JG1RP94Q9J`
 - Google Ads：`AW-18389054487`
 - 網站會直接載入上述 Google tag，不顯示分析同意視窗
-- Cloudflare Turnstile：已啟用，用於阻擋表單機器人
-- Supabase `submit-inquiry`：已部署，匿名使用者不能繞過安全表單直接新增詢問
-- Resend：已啟用，詢問通知寄至 `35slit.light@gmail.com`
-- Facebook：目前連到隙光的 Facebook
 
-網站不保存上述服務的 Secret／API Key。若換電腦，只需從 GitHub 下載原始碼；若要重新部署後端函式或調整服務設定，需登入原本的 Supabase、Cloudflare 與 Resend 帳戶。
+若換電腦，只需從 GitHub 下載原始碼；網站與圖片均以 `main` 分支的內容為準。
 
 ## 尚待確認
 
@@ -85,9 +75,9 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\optimize-images.ps
 
 這會重新產生 JPG 與 768px 手機版；WebP 可使用 Google 官方 `cwebp` 產生。GitHub Pages 只部署目前頁面使用的 JPG／WebP，不會部署 PNG 原稿或歷史相容檔。
 
-## 新增 Take
+## 管理 Selected Take
 
-在 `assets/data/takes.json` 新增一筆資料即可同時更新首頁 Selected Takes 與 Archive。必填欄位為 `title`、`slug`、`category`、`excerpt`、`cover_image`、`date`、`external_url`、`film_title`、`film_year`、`featured`、`published`；`category` 只能是 `choice`、`second-look` 或 `frame`。
+在 `assets/data/selected.json` 編輯精選項目。首頁只顯示 `selected: true` 的前 3–5 筆，並依 `order` 排序，不使用日期。主要欄位為 `slug`、`category`、`title`、`description`、`cover`、`coverAlt`、`selected`、`order`；`workTitle`、`year`、`director`、`creator`、`sourceNote` 與外部／Instagram／未來內頁連結均為選填。`category` 只能是 `choice`、`second-look` 或 `frame`。
 
 ## 驗證與部署
 
@@ -97,9 +87,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\optimize-images.ps
 python .\scripts\validate_site.py
 ```
 
-Pull Request 合併到 `main` 後，GitHub Actions 會建立乾淨的公開目錄、再次執行驗證，再部署至 GitHub Pages。後台原始碼、Supabase 檔案與 PNG 原稿不會被放進公開網站。
-
-新增 Supabase migration 後，仍需在 Supabase 專案中套用，資料庫變更才會生效。目前 `001` 至 `006` 的正式設定均已套用。
+Pull Request 合併到 `main` 後，GitHub Actions 會建立乾淨的公開目錄、再次執行驗證，再部署至 GitHub Pages。PNG 原稿不會被放進公開網站。
 
 ## 網站分析
 

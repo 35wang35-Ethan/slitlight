@@ -3,7 +3,6 @@ from __future__ import annotations
 import json
 import re
 import sys
-from datetime import date
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlsplit
@@ -110,40 +109,64 @@ def validate_page(root: Path, relative_path: str, errors: list[str]) -> SitePars
     return parser
 
 
-def validate_takes(root: Path, errors: list[str]) -> None:
-    data_path = root / "assets/data/takes.json"
+def validate_selected(root: Path, errors: list[str]) -> None:
+    data_path = root / "assets/data/selected.json"
     if not data_path.exists():
-        errors.append("missing assets/data/takes.json")
+        errors.append("missing assets/data/selected.json")
         return
     try:
-        takes = json.loads(data_path.read_text(encoding="utf-8"))
+        items = json.loads(data_path.read_text(encoding="utf-8"))
     except json.JSONDecodeError as exc:
-        errors.append(f"invalid takes.json: {exc}")
+        errors.append(f"invalid selected.json: {exc}")
         return
 
     required = {
-        "title", "slug", "category", "excerpt", "cover_image", "date",
-        "external_url", "film_title", "film_year", "featured", "published"
+        "slug", "category", "title", "description", "cover", "coverAlt",
+        "coverWidth", "coverHeight", "selected", "order", "workTitle", "year",
+        "director", "creator", "sourceNote", "externalUrl", "instagramUrl",
+        "internalSlug"
     }
     categories = {"choice", "second-look", "frame"}
     slugs: set[str] = set()
-    for index, take in enumerate(takes, start=1):
-        missing = required - set(take)
+    orders: set[int] = set()
+    selected_count = 0
+    for index, item in enumerate(items, start=1):
+        missing = required - set(item)
         if missing:
-            errors.append(f"takes[{index}] missing fields: {', '.join(sorted(missing))}")
-        if take.get("category") not in categories:
-            errors.append(f"takes[{index}] invalid category: {take.get('category')}")
-        slug = take.get("slug")
-        if not slug or slug in slugs:
-            errors.append(f"takes[{index}] slug is empty or duplicated: {slug}")
+            errors.append(f"selected[{index}] missing fields: {', '.join(sorted(missing))}")
+        if item.get("category") not in categories:
+            errors.append(f"selected[{index}] invalid category: {item.get('category')}")
+        slug = item.get("slug")
+        if not slug or slug in slugs or not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", str(slug)):
+            errors.append(f"selected[{index}] slug is invalid or duplicated: {slug}")
         slugs.add(slug)
-        try:
-            date.fromisoformat(take.get("date", ""))
-        except ValueError:
-            errors.append(f"takes[{index}] date must use YYYY-MM-DD")
-        cover = root / str(take.get("cover_image", ""))
-        if not cover.exists():
-            errors.append(f"takes[{index}] missing cover: {take.get('cover_image')}")
+        order = item.get("order")
+        if not isinstance(order, int) or order < 1 or order in orders:
+            errors.append(f"selected[{index}] order must be a unique positive integer: {order}")
+        orders.add(order)
+        if item.get("selected") is True:
+            selected_count += 1
+        if not str(item.get("coverAlt", "")).strip():
+            errors.append(f"selected[{index}] coverAlt must describe the image")
+        if not all(isinstance(item.get(field), int) and item[field] > 0 for field in ("coverWidth", "coverHeight")):
+            errors.append(f"selected[{index}] coverWidth/coverHeight must be positive integers")
+        for obsolete_field in ("date", "publishedAt", "published_at"):
+            if obsolete_field in item:
+                errors.append(f"selected[{index}] must not use blog field: {obsolete_field}")
+
+        cover = root / str(item.get("cover", ""))
+        variants = (
+            cover,
+            cover.with_suffix(".webp"),
+            cover.with_name(f"{cover.stem}-768.jpg"),
+            cover.with_name(f"{cover.stem}-768.webp")
+        )
+        for variant in variants:
+            if not variant.exists():
+                errors.append(f"selected[{index}] missing cover variant: {variant.relative_to(root)}")
+
+    if not 3 <= selected_count <= 5:
+        errors.append(f"selected.json: expected 3–5 selected items, found {selected_count}")
 
 
 def main() -> int:
@@ -170,12 +193,16 @@ def main() -> int:
 
     homepage = (root / "index.html").read_text(encoding="utf-8")
     homepage_sections = (
-        'id="slow-take"', 'id="perspectives"', 'id="journal"',
+        'id="slow-take"', 'id="perspectives"', 'id="selected"',
         'id="about"', 'id="collaboration"'
     )
     positions = [homepage.find(section) for section in homepage_sections]
     if any(position < 0 for position in positions) or positions != sorted(positions):
-        errors.append("index.html: homepage sections must follow SLOW TAKE > PERSPECTIVES > JOURNAL > ABOUT > COLLABORATE")
+        errors.append("index.html: homepage sections must follow SLOW TAKE > PERSPECTIVES > SELECTED > ABOUT > COLLABORATE")
+    if 'href="#journal"' in homepage or "JOURNAL" in homepage:
+        errors.append("index.html: JOURNAL must not appear in the primary homepage experience")
+    if 'data-take-filter' in homepage or 'href="takes/"' in homepage:
+        errors.append("index.html: Selected must not behave like an archive")
 
     for css_path in root.glob("assets/css/*.css"):
         css = css_path.read_text(encoding="utf-8")
@@ -183,7 +210,7 @@ def main() -> int:
             if is_local(reference) and not (css_path.parent / urlsplit(reference).path).resolve().exists():
                 errors.append(f"{css_path.relative_to(root)}: missing local asset: {reference}")
 
-    validate_takes(root, errors)
+    validate_selected(root, errors)
 
     public_sources = [
         root / "index.html", root / "takes/index.html", root / "privacy.html",
@@ -191,7 +218,8 @@ def main() -> int:
     ]
     banned = (
         "HOOOO", "有專業", "IP 核心", "轉換企劃", "A WAY OF LOOKING",
-        "THREE WAYS OF LOOKING", "SELECTED TAKES", "START A CONVERSATION",
+        "THREE WAYS OF LOOKING", "START A CONVERSATION", "最近在看。",
+        "查看全部", "最新文章", "最新發布",
         "35slit.light@gmail.com", "mailto:"
     )
     for source in public_sources:

@@ -1,3 +1,8 @@
+@media (max-width: 1199.98px) {
+  .hero-copy { width: min(54%, 620px); }
+  .selected-item--featured { grid-template-columns: minmax(0, 1.35fr) minmax(240px, .65fr); }
+}
+
 @media (max-width: 991.98px) {
   :root { --header-height: 68px; --section-space: 104px; }
   .site-header-inner { min-height: var(--header-height); padding-inline: 22px; }
@@ -7,44 +12,63 @@
   .site-nav .nav-link { min-height: 52px; font-size: .8rem; }
   .site-nav .nav-link::after { display: none; }
   .site-nav .nav-contact { margin-top: 8px; }
-  .hero-media img { object-position: 64% center; }
-  .hero-shade { background: linear-gradient(90deg, rgba(20,18,16,.78), rgba(20,18,16,.28)), linear-gradient(0deg, rgba(20,18,16,.52), transparent 55%); }
+  .hero-media .hero-image { object-position: left center; }
+  .hero-copy { width: min(66%, 600px); }
   .perspectives-section { padding-block: 112px; }
+  .perspectives-list { gap: 104px; }
+  .perspective, .perspective--choice, .perspective--second-look, .perspective--frame { grid-template-columns: 1fr; grid-template-rows: auto; grid-template-areas: "label" "media" "copy"; row-gap: 0; }
+  .perspective-index { margin-bottom: 20px; }
+  .perspective-media { margin-bottom: 26px; }
+  .perspective-media img, .perspective--frame .perspective-media img { aspect-ratio: 4 / 3; }
+  .perspective-copy { max-width: 620px; }
+  .selected-grid { grid-template-columns: 1fr; }
+  .selected-item--featured { display: block; grid-column: auto; }
+  .selected-item--featured .selected-copy { padding-top: 24px; }
+  .about-copy { padding-left: 0; }
   .collaboration-section { padding-block: 128px; }
 }
 
 @media (max-width: 767.98px) {
+  .hero, .hero-inner { min-height: min(760px, 84svh); }
+  .hero-shade { background: linear-gradient(0deg, rgba(18,17,15,.86) 0%, rgba(18,17,15,.5) 48%, rgba(18,17,15,.18) 78%); }
+  .hero-copy { width: 100%; margin-left: 0; }
   .perspective h3, .perspective p { min-height: 0; }
+  .selected-item--featured .selected-media img { aspect-ratio: 4 / 3; }
 }
 
 @media (max-width: 575.98px) {
-  :root { --type-h2: clamp(2rem, 9vw, 2.8rem); --section-space: 80px; }
+  :root { --type-h1: clamp(3rem, 14vw, 4rem); --type-h2: clamp(2rem, 9vw, 2.8rem); --section-space: 80px; }
   body { font-size: .96rem; }
   .section-heading { margin-bottom: 44px; }
   .eyebrow, .detail-label { margin-bottom: 12px; font-size: .74rem; }
   .brand { font-size: 1rem; }
   .brand img { width: 28px; height: 28px; }
-  .hero, .hero-inner { min-height: min(700px, 84svh); }
+  .hero, .hero-inner { min-height: min(700px, 82svh); }
   .hero-inner { padding-top: 96px; padding-bottom: 44px; }
-  .hero h1 { margin-bottom: 22px; font-size: clamp(2.75rem, 13.5vw, 3.5rem); }
-  .hero-statement { margin-bottom: 14px; font-size: 1.08rem; line-height: 1.65; }
-  .hero-note { font-size: .86rem; }
+  .hero h1 { margin-bottom: 20px; }
+  .hero-note { margin-bottom: 12px; font-size: 1.04rem; }
+  .hero-statement { max-width: 320px; font-size: .82rem; }
   .perspectives-section { padding-block: 88px; }
+  .perspectives-list { gap: 84px; }
   .perspective-index { margin-bottom: 14px; }
-  .perspective h3 { margin-top: 24px; }
-  .takes-section .section-link { margin-top: 42px; }
+  .perspective-media { margin-bottom: 22px; }
+  .perspective h3 { margin-bottom: 12px; }
+  .selected-grid { gap: 72px; }
+  .selected-copy, .selected-item--featured .selected-copy { padding-top: 20px; }
+  .selected-item h3, .selected-item--featured h3 { font-size: 1.55rem; }
+  .selected-section .section-link, .selected-page-content .section-link { margin-top: 48px; }
   .about-copy h2 { margin-bottom: 22px; }
   .about-role { margin-top: 28px; }
   .collaboration-section { padding-block: 96px; }
-  .collaboration-copy > p:not(.eyebrow) { margin: 26px 0; }
+  .collaboration-copy > p:not(.eyebrow):not(.collaboration-scope) { margin: 26px 0 20px; }
+  .collaboration-scope { margin-bottom: 26px; font-size: .66rem; }
   .site-footer { padding-top: 72px; }
   .footer-social { justify-content: start; text-align: left; }
   .footer-social a { justify-content: flex-start; }
   .footer-bottom { align-items: flex-start; flex-direction: column; gap: 12px; }
   .footer-bottom > div { flex-wrap: wrap; gap: 8px 16px; }
-  .archive-hero { padding: 80px 0 52px; }
-  .archive-content { padding: 42px 0 96px; }
-  .take-filters { margin-bottom: 50px; }
+  .selected-page-hero { padding: 80px 0 52px; }
+  .selected-page-content { padding: 72px 0 96px; }
   .policy-hero { padding: 64px 0 42px; }
   .policy-content { padding: 58px 0 82px; }
 }

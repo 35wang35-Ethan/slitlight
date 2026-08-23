@@ -27,17 +27,18 @@ jobs:
       - name: Prepare public frontend
         run: |
           mkdir -p public/assets/images public/assets/data public/takes
-          cp index.html privacy.html terms.html admin.html robots.txt sitemap.xml public/
-          cp -R admin public/admin
+          cp index.html privacy.html terms.html robots.txt sitemap.xml public/
           cp -R assets/css assets/js public/assets/
           cp -R assets/data/. public/assets/data/
           cp -R assets/vendor public/assets/
           cp assets/favicon.svg assets/brand-symbol.svg public/assets/
-          cp assets/images/about.jpg assets/images/about-768.jpg public/assets/images/
+          cp assets/images/about.jpg assets/images/about-768.jpg assets/images/about.webp assets/images/about-768.webp public/assets/images/
           cp assets/images/slow-take-hero.jpg assets/images/slow-take-hero-768.jpg assets/images/slow-take-hero.webp assets/images/slow-take-hero-768.webp public/assets/images/
           cp assets/images/perspective-choice.jpg assets/images/perspective-choice-768.jpg assets/images/perspective-choice.webp assets/images/perspective-choice-768.webp public/assets/images/
           cp assets/images/perspective-second-look.jpg assets/images/perspective-second-look-768.jpg assets/images/perspective-second-look.webp assets/images/perspective-second-look-768.webp public/assets/images/
           cp assets/images/perspective-frame.jpg assets/images/perspective-frame-768.jpg assets/images/perspective-frame.webp assets/images/perspective-frame-768.webp public/assets/images/
+          cp assets/images/selected-choice.jpg assets/images/selected-choice-768.jpg assets/images/selected-choice.webp assets/images/selected-choice-768.webp public/assets/images/
+          cp assets/images/selected-frame.jpg assets/images/selected-frame-768.jpg assets/images/selected-frame.webp assets/images/selected-frame-768.webp public/assets/images/
           cp takes/index.html public/takes/
 
       - name: Validate public frontend

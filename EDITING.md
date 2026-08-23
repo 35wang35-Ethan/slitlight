@@ -12,7 +12,7 @@ cd slitlight
 code .
 ```
 
-敏感資料不在專案內。只有要調整 Supabase、Cloudflare 或 Resend 設定時，才需要登入原本的服務帳戶。
+敏感資料不在專案內。網站內容與部署版本以 GitHub `main` 分支為準。
 
 ## 每次修改前
 
@@ -25,8 +25,8 @@ git switch -c update/簡短修改名稱
 主要編輯位置：
 
 - 首頁文字與結構：`index.html`
-- 首頁與 Archive 的 Take：`assets/data/takes.json`
-- Archive：`takes/index.html`
+- 首頁精選內容：`assets/data/selected.json`
+- 舊網址保留頁：`takes/index.html`（不在主要導覽中）
 - 視覺樣式：`assets/css/`
 - 圖片：`assets/images/`
 - 網站設定：`assets/js/config.js`
@@ -57,16 +57,17 @@ git push -u origin update/簡短修改名稱
 
 在 GitHub 建立 Pull Request 並合併到 `main`。GitHub Actions 會驗證並自動更新正式網站；只有 `main` 是正式最新版。
 
-## 更新 Take
+## 更新 Selected Take
 
-編輯 `assets/data/takes.json`。每筆資料需保留：
+編輯 `assets/data/selected.json`。每筆資料需保留：
 
-- `title`、`slug`、`category`、`excerpt`
-- `cover_image`、`date`、`external_url`
-- `film_title`、`film_year`
-- `featured`、`published`
+- `slug`、`category`、`title`、`description`
+- `cover`、`coverAlt`、`coverWidth`、`coverHeight`
+- `selected`、`order`
+- `workTitle`、`year`、`director`、`creator`、`sourceNote`
+- `externalUrl`、`instagramUrl`、`internalSlug`
 
-`category` 只能是 `choice`、`second-look` 或 `frame`。首頁顯示最新的精選內容，Archive 會讀取同一份資料，因此不需要重複修改兩個頁面。
+`category` 只能是 `choice`、`second-look` 或 `frame`。首頁依 `order` 顯示 `selected: true` 的前 3–5 筆，不依日期排序；沒有連結的項目會保留為單純的觀點樣本。
 
 ## 更新圖片
 

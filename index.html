@@ -20,7 +20,7 @@
   <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1672">
   <meta property="og:image:height" content="941">
-  <meta property="og:image:alt" content="午後自然光穿過窗簾窄縫，落在牆面與桌上照片">
+  <meta property="og:image:alt" content="暖色光線穿過窄縫，在深色牆面形成垂直光影">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="隙光 slit.light｜慢看 SLOW TAKE">
   <meta name="twitter:description" content="看畫面，也看畫面背後的選擇。">
@@ -32,9 +32,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet"></noscript>
   <link href="assets/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/css/main.css" rel="stylesheet">
-  <link href="assets/css/components.css" rel="stylesheet">
-  <link href="assets/css/responsive.css" rel="stylesheet">
+  <link href="assets/css/main.css?v=20260823d" rel="stylesheet">
+  <link href="assets/css/components.css?v=20260823d" rel="stylesheet">
+  <link href="assets/css/responsive.css?v=20260823d" rel="stylesheet">
   <script type="application/ld+json">
     {"@context":"https://schema.org","@type":"WebSite","name":"隙光 slit.light","url":"https://35wang35-ethan.github.io/slitlight/","sameAs":["https://www.instagram.com/ethan190410/"]}
   </script>
@@ -53,7 +53,7 @@
         <div class="offcanvas-body">
           <nav class="navbar-nav site-nav ms-lg-auto gap-lg-3 gap-xl-4" aria-label="主要導覽">
             <a class="nav-link" href="#perspectives">PERSPECTIVES</a>
-            <a class="nav-link" href="#journal">JOURNAL</a>
+            <a class="nav-link" href="#selected">SELECTED</a>
             <a class="nav-link" href="#about">ABOUT</a>
             <a class="nav-link nav-contact ms-lg-2" href="#collaboration">COLLABORATE</a>
           </nav>
@@ -67,15 +67,15 @@
       <picture class="hero-media">
         <source media="(max-width: 767px)" type="image/webp" srcset="assets/images/slow-take-hero-768.webp">
         <source type="image/webp" srcset="assets/images/slow-take-hero.webp">
-        <img src="assets/images/slow-take-hero.jpg" srcset="assets/images/slow-take-hero-768.jpg 768w, assets/images/slow-take-hero.jpg 1672w" sizes="100vw" width="1672" height="941" alt="午後自然光穿過窗簾窄縫，落在牆面與桌上照片" fetchpriority="high" decoding="async">
+        <img class="hero-image" src="assets/images/slow-take-hero.jpg" srcset="assets/images/slow-take-hero-768.jpg 768w, assets/images/slow-take-hero.jpg 1672w" sizes="100vw" width="1672" height="941" alt="暖色光線穿過窄縫，在深色牆面形成垂直光影" fetchpriority="high" decoding="async">
       </picture>
       <div class="hero-shade" aria-hidden="true"></div>
       <div class="container hero-inner d-flex align-items-end">
         <div class="hero-copy reveal is-visible">
           <p class="eyebrow">SLOW TAKE</p>
           <h1 id="hero-title">再看一眼。</h1>
-          <p class="hero-statement">影像、內容與品牌的觀察、<br>企劃與創意。</p>
           <p class="hero-note">看畫面，也看畫面背後的選擇。</p>
+          <p class="hero-statement">影像、內容與品牌的觀察、企劃與創意。</p>
         </div>
       </div>
     </section>
@@ -87,48 +87,39 @@
           <h2 id="perspectives-title">三種觀看方式。</h2>
           <p class="section-intro">看選擇、看第二眼，也看一個畫面怎麼成立。</p>
         </header>
-        <div class="row gx-4 gy-5 gx-xl-5">
-          <article id="choice" class="col-12 col-md-6 col-lg-4 reveal">
-            <div class="perspective h-100">
-              <div class="perspective-index"><span>A</span><span>CHOICE</span></div>
-              <picture><source type="image/webp" srcset="assets/images/perspective-choice-768.webp 768w, assets/images/perspective-choice.webp 1122w" sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw"><img src="assets/images/perspective-choice.jpg" srcset="assets/images/perspective-choice-768.jpg 768w, assets/images/perspective-choice.jpg 1122w" sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw" width="1122" height="1402" loading="lazy" decoding="async" alt="自然窗光下散放的照片，其中一張被留下"></picture>
-              <h3>做之前，怎麼選。</h3>
-              <p>從取捨裡，看見真正想留下的東西。</p>
-            </div>
+        <div class="perspectives-list">
+          <article id="choice" class="perspective perspective--choice reveal">
+            <div class="perspective-index"><span>A</span><span>CHOICE</span></div>
+            <picture class="perspective-media site-image"><source type="image/webp" srcset="assets/images/perspective-choice-768.webp 768w, assets/images/perspective-choice.webp 1122w" sizes="(max-width: 767px) 100vw, 55vw"><img class="perspective-image" src="assets/images/perspective-choice.jpg" srcset="assets/images/perspective-choice-768.jpg 768w, assets/images/perspective-choice.jpg 1122w" sizes="(max-width: 767px) 100vw, 55vw" width="1122" height="1402" loading="lazy" decoding="async" alt="自然窗光下散放的照片，其中一張被留下"></picture>
+            <div class="perspective-copy"><h3>做之前，怎麼選。</h3><p>從取捨裡，看見真正想留下的東西。</p></div>
           </article>
-          <article id="second-look" class="col-12 col-md-6 col-lg-4 reveal">
-            <div class="perspective h-100">
-              <div class="perspective-index"><span>B</span><span>SECOND LOOK</span></div>
-              <picture><source type="image/webp" srcset="assets/images/perspective-second-look-768.webp 768w, assets/images/perspective-second-look.webp 1122w" sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw"><img src="assets/images/perspective-second-look.jpg" srcset="assets/images/perspective-second-look-768.jpg 768w, assets/images/perspective-second-look.jpg 1122w" sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw" width="1122" height="1402" loading="lazy" decoding="async" alt="照片隔著玻璃形成兩個略有差異的觀看角度"></picture>
-              <h3>換個角度，再看一次。</h3>
-              <p>回到熟悉的事物，補上第一眼忽略的部分。</p>
-            </div>
+          <article id="second-look" class="perspective perspective--second-look reveal">
+            <div class="perspective-index"><span>B</span><span>SECOND LOOK</span></div>
+            <picture class="perspective-media site-image"><source type="image/webp" srcset="assets/images/perspective-second-look-768.webp 768w, assets/images/perspective-second-look.webp 1122w" sizes="(max-width: 767px) 100vw, 60vw"><img class="perspective-image" src="assets/images/perspective-second-look.jpg" srcset="assets/images/perspective-second-look-768.jpg 768w, assets/images/perspective-second-look.jpg 1122w" sizes="(max-width: 767px) 100vw, 60vw" width="1122" height="1402" loading="lazy" decoding="async" alt="照片隔著玻璃，呈現反射與折射交疊的兩個觀看角度"></picture>
+            <div class="perspective-copy"><h3>換個角度，再看一次。</h3><p>回到熟悉的事物，補上第一眼忽略的部分。</p></div>
           </article>
-          <article id="frame" class="col-12 col-md-6 col-lg-4 reveal">
-            <div class="perspective h-100">
-              <div class="perspective-index"><span>C</span><span>FRAME</span></div>
-              <picture><source type="image/webp" srcset="assets/images/perspective-frame-768.webp 768w, assets/images/perspective-frame.webp 1122w" sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw"><img src="assets/images/perspective-frame.jpg" srcset="assets/images/perspective-frame-768.jpg 768w, assets/images/perspective-frame.jpg 1122w" sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw" width="1122" height="1402" loading="lazy" decoding="async" alt="遠方人物被建築陰影與廊道開口框在畫面裡"></picture>
-              <h3>一個畫面，為什麼是這樣？</h3>
-              <p>從構圖、視線與時間，理解畫面如何成立。</p>
-            </div>
+          <article id="frame" class="perspective perspective--frame reveal">
+            <div class="perspective-index"><span>C</span><span>FRAME</span></div>
+            <picture class="perspective-media site-image"><source type="image/webp" srcset="assets/images/perspective-frame-768.webp 768w, assets/images/perspective-frame.webp 1122w" sizes="(max-width: 767px) 100vw, 70vw"><img class="perspective-image" src="assets/images/perspective-frame.jpg" srcset="assets/images/perspective-frame-768.jpg 768w, assets/images/perspective-frame.jpg 1122w" sizes="(max-width: 767px) 100vw, 70vw" width="1122" height="1402" loading="lazy" decoding="async" alt="遠方人物被建築陰影與廊道開口框在畫面裡"></picture>
+            <div class="perspective-copy"><h3>一個畫面，為什麼是這樣？</h3><p>從構圖、視線與時間，理解畫面如何成立。</p></div>
           </article>
         </div>
       </div>
     </section>
 
-    <section id="journal" class="section takes-section" aria-labelledby="journal-title">
+    <section id="selected" class="section selected-section" aria-labelledby="selected-title">
       <div class="container">
-        <header class="section-heading takes-heading reveal"><p class="eyebrow">JOURNAL</p><h2 id="journal-title">最近在看。</h2></header>
-        <div class="row gx-4 gy-5" data-takes-grid data-featured-only="true" data-limit="3" aria-live="polite"><p class="takes-status col-12">正在整理最近的觀看…</p></div>
-        <a class="section-link reveal" href="takes/">查看全部 <span aria-hidden="true">→</span></a>
+        <header class="section-heading selected-heading reveal"><p class="eyebrow">SELECTED TAKES</p><h2 id="selected-title">一些留下來的觀看。</h2><p class="section-intro">幾個值得再看一眼的片段。</p></header>
+        <div class="selected-grid" data-selected-grid data-selected-only="true" data-limit="5" aria-live="polite"><p class="selected-status">正在整理精選觀看…</p></div>
+        <a class="section-link reveal" href="https://www.instagram.com/ethan190410/" target="_blank" rel="noopener noreferrer">更多觀看在 Instagram <span aria-hidden="true">→</span></a>
       </div>
     </section>
 
     <section id="about" class="section about-section" aria-labelledby="about-title">
       <div class="container">
         <div class="row align-items-center gx-4 gy-5 gx-xl-5 about-row">
-          <picture class="col-12 col-lg-6 reveal about-photo"><source type="image/jpeg" srcset="assets/images/about-768.jpg 768w, assets/images/about.jpg 1122w" sizes="(max-width: 991px) 100vw, 50vw"><img src="assets/images/about.jpg" width="1122" height="1402" loading="lazy" decoding="async" alt="Ethan 在自然窗光下閱讀並整理資料"></picture>
-          <div class="col-12 col-lg-6 reveal about-copy">
+          <picture class="col-12 col-lg-5 reveal about-photo site-image"><source type="image/webp" srcset="assets/images/about-768.webp 768w, assets/images/about.webp 1122w" sizes="(max-width: 991px) 100vw, 42vw"><img class="about-image" src="assets/images/about.jpg" srcset="assets/images/about-768.jpg 768w, assets/images/about.jpg 1122w" sizes="(max-width: 991px) 100vw, 42vw" width="1122" height="1402" loading="lazy" decoding="async" alt="自然窗光下，一位創作者側身閱讀並整理資料"></picture>
+          <div class="col-12 col-lg-7 reveal about-copy">
             <p class="eyebrow">ABOUT</p>
             <h2 id="about-title">關於隙光。</h2>
             <p>隙光從「多看一下」開始。過去在 TVC、MV、商業影像與社群內容的企劃、拍攝和剪輯現場工作，慢慢發現真正留下來的，往往不是最先被看見的東西。現在更在意畫面、語言與品牌之間，每一個選擇如何成立，也把這些觀看整理成可以持續回來的內容。</p>
@@ -145,6 +136,7 @@
             <p class="eyebrow">COLLABORATE</p>
             <h2 id="collaboration-title">一起做點什麼。</h2>
             <p>品牌、影像、內容，<br>或一個還沒完全想清楚的方向。</p>
+            <p class="collaboration-scope">Brand Direction&nbsp;&nbsp;·&nbsp;&nbsp;Content Planning&nbsp;&nbsp;·&nbsp;&nbsp;Visual Concept&nbsp;&nbsp;·&nbsp;&nbsp;Creative Collaboration</p>
             <a class="primary-link" href="https://www.instagram.com/ethan190410/" target="_blank" rel="noopener noreferrer">聊聊合作 <span aria-hidden="true">→</span></a>
           </div>
         </div>
@@ -156,7 +148,7 @@
     <div class="container">
       <div class="row gy-5 footer-main">
         <div class="col-12 col-md-5"><a class="footer-brand brand" href="#top"><img src="assets/brand-symbol.svg" width="30" height="30" alt=""><span>slit.light</span></a><p>再看一眼。</p></div>
-        <nav class="col-6 col-md-3 footer-nav" aria-label="頁尾內容導覽"><a href="#slow-take">SLOW TAKE</a><a href="#perspectives">PERSPECTIVES</a><a href="#journal">JOURNAL</a><a href="#about">ABOUT</a></nav>
+        <nav class="col-6 col-md-3 footer-nav" aria-label="頁尾內容導覽"><a href="#perspectives">PERSPECTIVES</a><a href="#selected">SELECTED</a><a href="#about">ABOUT</a></nav>
         <nav class="col-6 col-md-4 footer-social" aria-label="社群與合作"><a href="https://www.instagram.com/ethan190410/" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="17.4" cy="6.7" r="1" fill="currentColor"/></svg><span>Instagram</span></a><a href="#collaboration">COLLABORATE <span aria-hidden="true">→</span></a></nav>
       </div>
       <div class="footer-bottom"><span>© <span data-current-year></span> slit.light</span><div><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a class="back-to-top" href="#top" aria-label="回到頂端"><svg viewBox="0 0 20 20" width="17" height="17" aria-hidden="true"><path d="M10 16V4M5.5 8.5 10 4l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div>
@@ -167,6 +159,6 @@
   <script src="assets/js/config.js" defer></script>
   <script src="assets/js/analytics.js" defer></script>
   <script src="assets/js/main.js" defer></script>
-  <script src="assets/js/takes.js" data-source="assets/data/takes.json" defer></script>
+  <script src="assets/js/takes.js?v=20260823d" data-source="assets/data/selected.json" defer></script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 param(
-  [string]$ImageDirectory = "assets/images"
+  [string]$ImageDirectory = "assets/images",
+  [string]$CwebpPath = "cwebp"
 )
 
 $ErrorActionPreference = "Stop"
@@ -59,6 +60,20 @@ foreach ($sourceFile in $sourceFiles) {
   $baseName = [System.IO.Path]::GetFileNameWithoutExtension($sourceFile.Name)
   Export-OptimizedJpeg -Source $sourceFile.FullName -Destination (Join-Path $sourceFile.DirectoryName "$baseName.jpg") -MaximumWidth 1920 -Quality 84
   Export-OptimizedJpeg -Source $sourceFile.FullName -Destination (Join-Path $sourceFile.DirectoryName "$baseName-768.jpg") -MaximumWidth 768 -Quality 80
+}
+
+$cwebpCommand = Get-Command $CwebpPath -ErrorAction SilentlyContinue
+if ($cwebpCommand) {
+  foreach ($sourceFile in $sourceFiles) {
+    $baseName = [System.IO.Path]::GetFileNameWithoutExtension($sourceFile.Name)
+    & $cwebpCommand.Source -quiet -mt -m 6 -q 80 -metadata none $sourceFile.FullName -o (Join-Path $sourceFile.DirectoryName "$baseName.webp")
+    if ($LASTEXITCODE -ne 0) { throw "WebP export failed: $($sourceFile.Name)" }
+    & $cwebpCommand.Source -quiet -mt -m 6 -q 77 -metadata none -resize 768 0 $sourceFile.FullName -o (Join-Path $sourceFile.DirectoryName "$baseName-768.webp")
+    if ($LASTEXITCODE -ne 0) { throw "Mobile WebP export failed: $($sourceFile.Name)" }
+  }
+}
+else {
+  Write-Warning "cwebp was not found. JPG files were generated, but WebP files were not updated."
 }
 
 Get-ChildItem -LiteralPath $ImageDirectory -Filter "*.jpg" |
