@@ -203,6 +203,12 @@ def validate_admin(root: Path, errors: list[str]) -> None:
 def main() -> int:
     root = Path(sys.argv[1] if len(sys.argv) > 1 else ".").resolve()
     errors: list[str] = []
+    verification_file = root / "google03850f274d84bd8f.html"
+    verification_value = "google-site-verification: google03850f274d84bd8f.html"
+    if not verification_file.exists():
+        errors.append(f"missing Google Search Console verification file: {verification_file.name}")
+    elif verification_file.read_text(encoding="utf-8").strip() != verification_value:
+        errors.append(f"invalid Google Search Console verification file: {verification_file.name}")
     pages = ("index.html", "takes/index.html", "privacy.html", "terms.html")
     parsed = {page: validate_page(root, page, errors) for page in pages}
 

@@ -91,6 +91,10 @@ git push origin main
 - 網站不顯示「允許匿名網站分析」提示。
 - 舊 Services、Pricing、FAQ 與銷售式首頁功能不恢復。
 
+## 2026-08-26 更新紀錄
+
+- 加入 Google Search Console HTML 驗證檔 `google03850f274d84bd8f.html`，部署後保留於網站根目錄。
+
 ## 2026-08-23 更新紀錄
 
 - 完成 SLOW TAKE 品牌入口首頁與最新版圖片整理。
