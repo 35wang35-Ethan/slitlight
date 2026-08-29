@@ -2,7 +2,7 @@
 
 ## Scope and authority
 
-- 本規則適用於整個 repository，Project OS 版本為 v1.1。
+- 本規則適用於整個 repository，Project OS 版本為 v1.2。
 - 每次工作先讀本檔，再由 `PROJECT_MASTER.md` 找到 Active Master，並查看 `PROJECT_STATE.md` 的目前狀態與 `CHANGELOG.md` 的正式變更紀錄。
 - `PROJECT_MASTER.md` 是 canonical pointer，不是第二份 Master；產品與品牌的 CURRENT 內容只以它指向的 Active Master 為準。
 - 舊聊天、舊文件、舊服務架構與過期 Master 只能作參考，不得覆蓋 CURRENT。
@@ -116,6 +116,117 @@ LEVEL C 與 D 在修改前必須列出：
 - 新版本完成並生效後才更新 canonical pointer。舊版原文內的版本與當時狀態屬歷史快照，不回寫；是否 CURRENT 以 pointer 為準。
 - Project OS 版本與 Product Master 版本是兩個獨立序列；任一方升版不得推定另一方也升版。
 - 若資料、實作與 Master 不一致，先報告衝突及影響，未獲授權前不自行選擇新策略。
+
+## Self-QA Protocol
+
+Repository 修改必須依序完成：理解任務 → 修改 → 驗證 → 找問題 → 修復 → 再驗證 → regression check → 回報。不得在寫入修改後直接宣稱完成。
+
+### 1｜Before Change
+
+每次修改前先確認：
+
+- 指令屬於 LEVEL A、B、C 或 D；混合指令逐項分類。
+- 使用者真正要求修改的結果與驗收條件。
+- 明確禁止或不應修改的區域。
+- 可能受影響的檔案與既有架構。
+- working tree 是否有未提交的使用者變更；這些變更不得被覆蓋、重置或混入任務。
+- Active Master 是否有相關限制、正式設定或版本要求。
+
+先定義最小必要修改範圍，不做無關重構。若範圍與既有變更重疊且無法安全隔離，先停止並說明。
+
+### 2｜Implementation
+
+- 優先沿用既有架構、元件、資料格式與命名方式。
+- 不因「可以寫得更漂亮」就重寫無關程式或文件。
+- 不刪除既有功能，除非任務明確需要且刪除範圍已確認。
+- 不修改品牌或產品正式設定，除非已通過 Instruction Triage 的 LEVEL C 或已確認 LEVEL D 流程。
+- 保留使用者未提交的其他修改，只編輯任務核准範圍。
+- 修改過程若發現需要擴大範圍，先重新判斷影響與授權，不自行延伸任務。
+
+### 3｜Mandatory QA
+
+任何網站 HTML、CSS、JavaScript 或 data 修改完成後，至少執行：
+
+```powershell
+python scripts/validate_site.py .
+git diff --check
+```
+
+並且：
+
+- 檢查本次完整 diff、changed files 與未提交狀態，確認只有核准範圍。
+- 若 repository 另有已存在且適用的 test、lint、build 或 validation，也必須執行。
+- 文件或控制規則修改仍須執行使用者指定及與風險相稱的檢查。
+- 記錄實際執行的命令與結果；未執行的檢查不得暗示已通過。
+
+### 4｜Self-Fix Loop
+
+QA 失敗時，每一輪必須包含：分析 failure → 判斷是否由本次修改造成 → 只修復任務相關原因 → 重新執行適用 QA。
+
+1. 第一次失敗：定位原因；若由本次修改造成，修復後重跑 QA。
+2. 第二次仍失敗：再分析一次，只修復與任務相關的問題，再重跑 QA。
+3. 第三次仍失敗：可進行最後一輪任務內修復與 QA；最多自動修復 3 輪。
+
+3 輪後仍失敗時：
+
+- 停止擴大修改，不得宣稱完成。
+- 狀態使用 PARTIAL 或 BLOCKED。
+- 回報失敗的測試、已嘗試的修復、最可能原因，以及是否需要使用者決策。
+- 若 failure 是任務前已存在且與本次修改無關，只記錄證據與影響，不擅自修復無關問題。
+
+不得為了讓測試變綠而：
+
+- 刪除測試。
+- 放寬既有 validation。
+- 隱藏或吞掉 error。
+- 註解掉問題程式。
+- 移除原本要求的功能。
+
+只有使用者明確要求修改 validation 本身時，才可把 validation 納入修改範圍；仍須說明其影響。
+
+### 5｜Regression Check
+
+修改與 QA 後，必須再確認：
+
+- 使用者要求與驗收條件是否真的完成。
+- 是否意外修改無關檔案或內容。
+- 原有重要功能、設定與安全限制是否仍存在。
+- 是否產生 obsolete、duplicated 或互相衝突的 code／data／control record。
+- 結果是否與 Active Master 衝突。
+- 是否依 LEVEL A／B／C／D 規則更新必要的 `PROJECT_STATE.md` 或 `CHANGELOG.md`，且沒有不必要更新。
+
+不能只以 command exit code 等於 0 作為完成依據；必須結合 diff、需求、功能與 CURRENT 一致性判斷。
+
+### 6｜UI / Website Tasks
+
+涉及版面、responsive 或互動時，除了 repository validation，若目前環境具備 browser、screenshot、Playwright 或 equivalent capability，應主動檢查：
+
+- desktop、tablet、mobile。
+- horizontal overflow 與 obvious layout breakage。
+- navigation、CTA、anchor links。
+- console errors。
+- image loading。
+
+依任務保留可核對的 viewport、結果或截圖證據。若環境沒有瀏覽器測試能力，不得假裝完成 visual QA，回報中必須明確寫：`structural validation passed, visual/browser QA not executed`。
+
+### 7｜Definition of Done
+
+只有以下條件全部成立，狀態才可標為 DONE 或對使用者說「完成」：
+
+- 使用者要求已實作。
+- mandatory validation 與其他適用檢查全部通過。
+- 本次修改造成的 regression 已排除。
+- 沒有未處理的本次錯誤。
+- 修改沒有超出核准範圍。
+- 必要的 state／changelog 已依 LEVEL A／B／C／D 規則處理。
+
+任一條件不成立時，使用 PARTIAL 或 BLOCKED，並清楚說明剩餘問題，不得使用 DONE。
+
+### 8｜Commit / Push
+
+- Self-QA 成功只代表修改可交付，不代表取得發布權限。
+- 不自行 commit，不自行 push；只有使用者明確要求時才執行。
+- commit 或 push 前再次確認範圍、validation 與 working tree，且不得混入無關變更。
 
 ## Repository safeguards
 

@@ -1,16 +1,17 @@
 # slit.light Project State
 
-- Project OS：v1.1
+- Project OS：v1.2
 - 更新日期：2026-08-29
 - 狀態：ACTIVE
 
 ## Project OS controls
 
 - Instruction Triage：ACTIVE（LEVEL A／TASK、B／DATA、C／DECISION、D／MAJOR CHANGE）
+- Self-QA Loop：ACTIVE（Before Change → Implementation → Mandatory QA → 最多 3 輪 Self-Fix → Regression Check → Definition of Done）
 - Repository instructions：[AGENTS.md](AGENTS.md)
 - Canonical pointer：[PROJECT_MASTER.md](PROJECT_MASTER.md)
 - Formal change history：[CHANGELOG.md](CHANGELOG.md)
-- 產品 Active Master 維持 v1.0；本次 v1.1 僅升級 Project OS 控制規則，不改產品策略。
+- 產品 Active Master 維持 v1.0；本次 v1.2 只升級 Project OS 控制規則，不改產品策略。
 - Canonical version-history safeguard：ACTIVE；已存在的 versioned Product Master 為 immutable history，Project OS 與 Product Master 分開版本管理。
 
 ## Canonical source

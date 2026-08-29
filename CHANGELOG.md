@@ -2,6 +2,20 @@
 
 本檔只記錄正式設定、canonical 與 Project OS 變更。一次性 TASK 與尚未形成決策的單筆 DATA 不記錄於此。
 
+## 2026-08-29｜Project OS v1.2 — Self-QA Loop
+
+- 類型：正式 Project OS 設定變更。
+- 決策：所有 repository 修改採用 Before Change、Implementation、Mandatory QA、最多 3 輪 Self-Fix、Regression Check 與 Definition of Done 流程。
+- 原因：避免修改寫完即停止，要求 Codex 以需求、diff、功能與 CURRENT 一致性共同判斷完成，不以單一 exit code 代替 QA。
+- 產品影響：無；Product Master v1.0、Case Sprint、定價、客群與品牌策略不變。
+- 網站影響：無；未修改 HTML、CSS、JavaScript、data 或公開內容。
+- 文案影響：無對外文案變更。
+- 流程影響：網站與 data 修改必跑基準 validation；QA failure 最多自動修復 3 輪；UI 任務在能力可用時增加 browser／visual QA；未達 Definition of Done 必須回報 PARTIAL／BLOCKED。
+- KPI 影響：無；既有指標與門檻不變。
+- 影響範圍：`AGENTS.md` 為主要規則；`PROJECT_MASTER.md`、`PROJECT_STATE.md` 同步 Project OS v1.2；`CHANGELOG.md` 記錄本次正式設定變更。
+- 未修改範圍：Product Master canonical 原文、網站內容、`.github/workflows/pages.yml`、`scripts/validate_site.py`。
+- 版本結果：Project OS v1.1 → v1.2；Product Master 維持 v1.0，兩套版本仍獨立管理。
+
 ## 2026-08-29｜Project OS v1.1 — Canonical Master version-history safeguard
 
 - 類型：正式 Project OS 設定變更。

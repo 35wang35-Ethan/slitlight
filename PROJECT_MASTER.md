@@ -1,6 +1,6 @@
 # slit.light Project Master Control
 
-- Project OS：v1.1
+- Project OS：v1.2
 - 控制狀態：ACTIVE
 - Active Master：[slit.light_Product_Execution_Master_2026-08-27_v1.0.md](docs/source/slit.light_Product_Execution_Master_2026-08-27_v1.0.md)
 - Master 版本：v1.0（2026-08-27）
@@ -14,7 +14,7 @@
 
 ## Separate version domains
 
-- Project OS 版本：v1.1，管理 instruction triage、控制流程與 repository safeguards。
+- Project OS 版本：v1.2，管理 instruction triage、Self-QA Loop、控制流程與 repository safeguards。
 - Product Master 版本：v1.0，管理產品、品牌、變現、內容與市場驗證策略。
 - 兩套版本獨立管理；Project OS 升版不代表 Product Master 升版，Product Master 升版也不代表 Project OS 升版。
 
