@@ -1,8 +1,16 @@
 # slit.light Project State
 
-- Project OS：v1.0
+- Project OS：v1.1
 - 更新日期：2026-08-29
 - 狀態：ACTIVE
+
+## Project OS controls
+
+- Instruction Triage：ACTIVE（LEVEL A／TASK、B／DATA、C／DECISION、D／MAJOR CHANGE）
+- Repository instructions：[AGENTS.md](AGENTS.md)
+- Canonical pointer：[PROJECT_MASTER.md](PROJECT_MASTER.md)
+- Formal change history：[CHANGELOG.md](CHANGELOG.md)
+- 產品 Active Master 維持 v1.0；本次 v1.1 僅升級 Project OS 控制規則，不改產品策略。
 
 ## Canonical source
 
@@ -21,5 +29,9 @@
 - 目前優先：完成 Case Sprint SOP 與交付模板，取得 3–5 位付費 Beta，並持續記錄 AI 對照、工時、拍攝率與二次購買。
 
 ## Blockers
+
+- 無。
+
+## Major Change Candidates
 
 - 無。
