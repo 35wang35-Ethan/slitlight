@@ -92,7 +92,8 @@ def validate_page(root: Path, relative_path: str, errors: list[str]) -> SitePars
         if not image.get("width") or not image.get("height"):
             errors.append(f"{relative_path}: image missing width/height: {src}")
         is_hero = "hero-image" in (image.get("class") or "").split()
-        if not is_hero and not src.endswith(("favicon.svg", "brand-symbol.svg")) and image.get("loading") != "lazy":
+        is_header_logo = "brand-logo" in (image.get("class") or "").split()
+        if not is_hero and not is_header_logo and not src.endswith(("favicon.svg", "brand-symbol.svg")) and image.get("loading") != "lazy":
             errors.append(f"{relative_path}: non-critical image must be lazy: {src}")
 
     for reference in sorted(parser.refs):

@@ -26,12 +26,13 @@ jobs:
 
       - name: Prepare public frontend
         run: |
-          mkdir -p public/assets/images public/assets/data public/takes public/admin
-          cp index.html privacy.html terms.html admin.html robots.txt sitemap.xml google03850f274d84bd8f.html public/
+          mkdir -p public/assets/images public/assets/data public/assets/brand public/takes public/case-sprint public/admin
+          cp index.html privacy.html terms.html admin.html favicon.ico robots.txt sitemap.xml google03850f274d84bd8f.html public/
           cp admin/index.html admin/login.html public/admin/
           cp -R assets/css assets/js public/assets/
           cp -R assets/data/. public/assets/data/
           cp -R assets/vendor public/assets/
+          cp -R assets/brand/. public/assets/brand/
           cp assets/favicon.svg assets/brand-symbol.svg public/assets/
           cp assets/images/about.jpg assets/images/about-768.jpg assets/images/about.webp assets/images/about-768.webp public/assets/images/
           cp assets/images/slow-take-hero.jpg assets/images/slow-take-hero-768.jpg assets/images/slow-take-hero.webp assets/images/slow-take-hero-768.webp public/assets/images/
@@ -41,6 +42,7 @@ jobs:
           cp assets/images/selected-choice.jpg assets/images/selected-choice-768.jpg assets/images/selected-choice.webp assets/images/selected-choice-768.webp public/assets/images/
           cp assets/images/selected-frame.jpg assets/images/selected-frame-768.jpg assets/images/selected-frame.webp assets/images/selected-frame-768.webp public/assets/images/
           cp takes/index.html public/takes/
+          cp case-sprint/index.html public/case-sprint/
 
       - name: Validate public frontend
         run: python3 scripts/validate_site.py public
