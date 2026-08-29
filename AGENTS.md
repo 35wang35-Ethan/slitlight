@@ -50,7 +50,7 @@
 
 1. 修改前先完成 Impact Analysis。
 2. 只更新決策真正控制的 authoritative location：
-   - 長期產品、品牌、服務或定價規格：Active Master。
+   - 長期產品、品牌、服務或定價規格：依 Canonical Master version protocol 建立下一個 minor version，不得原地修改 Active Master。
    - 當前進度、KPI、觀測或 blocker：`PROJECT_STATE.md`。
    - 技術或網站設定：相應設定檔或正式內容；不得擴大到未被授權的區域。
 3. 同步更新受影響的 CURRENT 控制資料，避免 Master、state 與實作互相矛盾。
@@ -74,7 +74,7 @@
 2. 在 `PROJECT_STATE.md` 標記為 Major Change Candidate，說明與 CURRENT 的衝突、影響及可能需要升級 v2.0 的原因。
 3. 第一次提出候選案時，即使語氣像正式決策，也不得默默修改 CURRENT v1.x、canonical pointer 或 Active Master。
 4. 等待使用者在看過影響與版本建議後明確確認。
-5. 確認後建立新的 versioned Master（通常為 v2.0），再更新 `PROJECT_MASTER.md` pointer、`PROJECT_STATE.md` 與 `CHANGELOG.md`；不得把重大變更偽裝成 v1.x 小修。
+5. 確認前不得建立新的 Product Master；確認後才從目前 Active Master 完整複製出新的 major version（通常為 v2.0），在新檔套用變更，再更新 `PROJECT_MASTER.md` pointer、`PROJECT_STATE.md` 與 `CHANGELOG.md`。不得把重大變更偽裝成 v1.x 小修。
 6. 不確定是否為重大變更時，不自行升版本；先保留 CURRENT 並提出風險與版本建議。
 
 ## Impact Analysis
@@ -100,13 +100,21 @@ LEVEL C 與 D 在修改前必須列出：
 - LEVEL A 不寫 CHANGELOG。
 - LEVEL B 只記錄在 state／數據紀錄；除非它觸發並完成正式決策，否則不寫成設定變更。
 - CHANGELOG 是歷史紀錄，不可反向覆蓋 Active Master。
+- Product Master 版本切換的紀錄必須另外標示 previous version、new version、原因、日期與影響範圍。
 
 ## Master safeguards
 
 - AI 不得因「覺得比較好」自行更改品牌、產品、客群、商業模式、定價或策略。
 - 不得把建議、草稿、候選案、單筆數據或臨時任務寫成 CURRENT 決策。
-- 修改 Master 必須保持版本化；小幅文案、案例或流程優化依 Active Master 的版本規則升級 v1.x，重大變更升級 v2.0。
-- 新版本生效後才更新 canonical pointer；舊版本保留作歷史，不再標為 CURRENT。
+- 已存在且檔名帶版本號的 canonical Master 是 immutable history；不得原地覆寫、改名取代或刪除。
+- LEVEL C 若正式決策需要修改 Product Master，必須保留舊版，將上一版完整內容複製到新的 minor version，僅在新檔套用變更；完成檢查後才更新 `PROJECT_MASTER.md` CURRENT pointer。
+- LEVEL D 在使用者正式確認前不得建立新 Product Master；確認後才建立新的 major version，保留舊版並在新檔套用已確認的重大變更。
+- 禁止修改 v1.0 內容但仍沿用 v1.0 版本號。
+- 禁止刪除舊版而只保留最新版。
+- 禁止在沒有正式 LEVEL C 決策或已確認 LEVEL D 的情況下自行建立新 Product Master。
+- `PROJECT_MASTER.md` 只是 CURRENT pointer／control record，不取代、摘要覆蓋或充當 canonical 原文。
+- 新版本完成並生效後才更新 canonical pointer。舊版原文內的版本與當時狀態屬歷史快照，不回寫；是否 CURRENT 以 pointer 為準。
+- Project OS 版本與 Product Master 版本是兩個獨立序列；任一方升版不得推定另一方也升版。
 - 若資料、實作與 Master 不一致，先報告衝突及影響，未獲授權前不自行選擇新策略。
 
 ## Repository safeguards
