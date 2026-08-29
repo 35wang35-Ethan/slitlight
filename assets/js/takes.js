@@ -4,7 +4,7 @@
   const grid = document.querySelector('[data-selected-grid]');
   if (!source || !grid) return;
 
-  const labels = { choice: 'CHOICE', 'second-look': 'SECOND LOOK', frame: 'FRAME' };
+  const labels = { case: 'CASE', judgment: 'JUDGMENT', frame: 'FRAME' };
   const allowedCategories = new Set(Object.keys(labels));
   const pageBase = document.body.dataset.pageBase || '';
   const dataUrl = new URL(source, document.baseURI).href;
@@ -59,7 +59,7 @@
     const featured = index === 0;
     const media = linkMarkup(url, `觀看：${item.title}`, imageMarkup(item, featured), 'selected-media-link');
     const heading = linkMarkup(url, `觀看：${item.title}`, title);
-    return `<article class="selected-item${featured ? ' selected-item--featured' : ''} reveal is-visible" data-category="${escapeHtml(item.category)}">${media}<div class="selected-copy"><p class="selected-category">${labels[item.category]}</p><h3>${heading}</h3><p class="selected-description">${escapeHtml(item.description)}</p>${workInfoMarkup(item)}</div></article>`;
+    return `<article class="selected-item${featured ? ' selected-item--featured' : ''} reveal is-visible" data-category="${escapeHtml(item.category)}">${media}<div class="selected-copy"><p class="selected-category">0${index + 1} / ${labels[item.category]}</p><h3>${heading}</h3><p class="selected-description">${escapeHtml(item.description)}</p>${workInfoMarkup(item)}</div></article>`;
   }
 
   function visibleItems(items) {
@@ -119,7 +119,7 @@
 
   async function loadCms() {
     if (!window.slitData) return [];
-    const query = 'select=id,title,slug,cover_image,client_name,client_type,insight,execution,publish_status,sort_order&client_type=in.(choice,second-look,frame)&publish_status=eq.published&order=sort_order.asc&limit=5';
+    const query = 'select=id,title,slug,cover_image,client_name,client_type,insight,execution,publish_status,sort_order&client_type=in.(case,judgment,frame)&publish_status=eq.published&order=sort_order.asc&limit=3';
     const rows = await window.slitData.rest.select('cases', query);
     return (rows || []).map(caseToTake);
   }

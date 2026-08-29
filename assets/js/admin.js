@@ -1,5 +1,5 @@
 (() => {
-  const categories = ['choice', 'second-look', 'frame'];
+  const categories = ['case', 'judgment', 'frame'];
   const originalAdminIds = new Set(['bae94b1b-c832-425b-bd0b-8240718c654f']);
   const statusLabels = { new: '新詢問', contacted: '已聯絡', discovery: '初談完成', quoted: '已報價', active: '合作中', completed: '完成', declined: '未合作' };
   const state = {
@@ -61,6 +61,7 @@
     if (!node) throw new Error(`首頁缺少可編輯欄位：${field}`);
     if (!preserveBreaks) return normalizeText(node.textContent);
     const clone = node.cloneNode(true);
+    clone.querySelectorAll('p').forEach(paragraph => paragraph.append('\n'));
     clone.querySelectorAll('br').forEach(br => br.replaceWith('\n'));
     return clone.textContent.replace(/[ \t]+/g, ' ').replace(/\n\s*/g, '\n').trim();
   }
@@ -71,14 +72,11 @@
       heroLabel: readCmsField(documentNode, 'heroLabel'),
       heroTitle: readCmsField(documentNode, 'heroTitle'),
       heroNote: readCmsField(documentNode, 'heroNote'),
-      heroStatement: readCmsField(documentNode, 'heroStatement'),
       aboutTitle: readCmsField(documentNode, 'aboutTitle'),
-      aboutBody: readCmsField(documentNode, 'aboutBody'),
+      aboutBody: readCmsField(documentNode, 'aboutBody', true),
       aboutName: readCmsField(documentNode, 'aboutName'),
       aboutRole: readCmsField(documentNode, 'aboutRole'),
       collaborationTitle: readCmsField(documentNode, 'collaborationTitle'),
-      collaborationBody: readCmsField(documentNode, 'collaborationBody', true),
-      collaborationScope: readCmsField(documentNode, 'collaborationScope'),
       collaborationCta: readCmsField(documentNode, 'collaborationCta')
     };
   }
@@ -205,7 +203,7 @@
       const fields = element('div', 'take-fields');
       const firstRow = element('div', 'field-row');
       firstRow.append(
-        labelled('Category', selectControl('category', item.category, [['choice', 'CHOICE'], ['second-look', 'SECOND LOOK'], ['frame', 'FRAME']])),
+        labelled('Category', selectControl('category', item.category, [['case', 'CASE'], ['judgment', 'JUDGMENT'], ['frame', 'FRAME']])),
         labelled('Order', inputControl('order', item.order, { type: 'number', min: 1, max: 99 }))
       );
       fields.append(
@@ -280,13 +278,15 @@
   }
 
   function collectCopy() {
-    return Object.fromEntries(new FormData(copyForm).entries());
+    const copy = Object.fromEntries(new FormData(copyForm).entries());
+    copy.aboutName = 'ETHAN';
+    return copy;
   }
 
   function validateSelected(items) {
     if (items.length < 3 || items.length > 5) throw new Error('Selected 必須維持 3–5 筆。');
     const selectedCount = items.filter(item => item.selected).length;
-    if (selectedCount < 3 || selectedCount > 5) throw new Error('首頁必須勾選 3–5 筆 Selected。');
+    if (selectedCount < 3 || selectedCount > 5) throw new Error('精選內容必須勾選 3–5 筆。');
     const orders = new Set();
     const slugs = new Set();
     items.forEach((item, index) => {
@@ -305,7 +305,7 @@
   }
 
   function validateCopy(copy) {
-    const required = ['heroLabel', 'heroTitle', 'heroNote', 'heroStatement', 'aboutTitle', 'aboutBody', 'aboutName', 'aboutRole', 'collaborationTitle', 'collaborationBody', 'collaborationScope', 'collaborationCta'];
+    const required = ['heroLabel', 'heroTitle', 'heroNote', 'aboutTitle', 'aboutBody', 'aboutName', 'aboutRole', 'collaborationTitle', 'collaborationCta'];
     required.forEach(field => { if (!String(copy[field] || '').trim()) throw new Error(`網站文字欄位不可留白：${field}`); });
   }
 
@@ -387,8 +387,8 @@
     const [staticSelectedText, indexHtml, cmsCases, copyRows, inquiries] = await Promise.all([
       loadSameOriginText(staticSelectedUrl),
       loadSameOriginText(indexUrl),
-      window.slitData.rest.select('cases', 'select=id,title,slug,cover_image,client_name,client_type,insight,execution,publish_status,sort_order&client_type=in.(choice,second-look,frame)&order=sort_order.asc', { auth: true }),
-      window.slitData.rest.select('homepage_sections', 'select=id,content&section_key=eq.editorial_copy&limit=1', { auth: true }),
+      window.slitData.rest.select('cases', 'select=id,title,slug,cover_image,client_name,client_type,insight,execution,publish_status,sort_order&client_type=in.(case,judgment,frame)&order=sort_order.asc', { auth: true }),
+      window.slitData.rest.select('homepage_sections', 'select=id,content&section_key=eq.homepage_copy_refinement_20260829&limit=1', { auth: true }),
       window.slitData.rest.select('inquiries', 'select=id,name,email,social_contact,problem_type,problem_description,status,created_at&order=created_at.desc', { auth: true })
     ]);
     const staticSelected = JSON.parse(staticSelectedText);
@@ -400,6 +400,7 @@
     } catch {
       state.copy = extractCopy(indexHtml);
     }
+    state.copy.aboutName = 'ETHAN';
     state.inquiries = inquiries || [];
     state.selectedDirty = false;
     state.copyDirty = false;
@@ -450,7 +451,7 @@
   }
 
   async function saveCopy(copy) {
-    const row = { section_key: 'editorial_copy', title: 'slit.light editorial site copy', content: JSON.stringify(copy), sort_order: 100, enabled: true };
+    const row = { section_key: 'homepage_copy_refinement_20260829', title: 'Slit.light homepage copy', content: JSON.stringify(copy), sort_order: 100, enabled: true };
     if (state.copyRowId) row.id = state.copyRowId;
     await window.slitData.rest.upsert('homepage_sections', [row], { onConflict: 'section_key' });
   }
@@ -580,9 +581,9 @@
     markDirty('selected');
   });
   document.querySelector('#add-take-button').addEventListener('click', () => {
-    if (state.selected.length >= 5) return;
+    if (state.selected.length >= 3) return;
     const nextOrder = Math.max(0, ...state.selected.map(item => Number(item.order) || 0)) + 1;
-    state.selected.push({ slug: `new-take-${nextOrder}`, category: 'choice', title: '', description: '', cover: 'assets/images/selected-choice.jpg', coverAlt: '', coverWidth: 1916, coverHeight: 821, selected: true, order: nextOrder, workTitle: '', year: null, director: '', creator: '', sourceNote: '', externalUrl: '', instagramUrl: '', internalSlug: '' });
+    state.selected.push({ slug: `new-take-${nextOrder}`, category: 'case', title: '', description: '', cover: 'assets/images/selected-choice.jpg', coverAlt: '', coverWidth: 1916, coverHeight: 821, selected: true, order: nextOrder, workTitle: '', year: null, director: '', creator: '', sourceNote: '', externalUrl: '', instagramUrl: '', internalSlug: '' });
     renderSelected();
     markDirty('selected');
   });

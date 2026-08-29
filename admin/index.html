@@ -6,17 +6,17 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="theme-color" content="#211f1c">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://ptruiafyvqhyeodvkiub.supabase.co; img-src 'self' https://ptruiafyvqhyeodvkiub.supabase.co data:; style-src 'self'; script-src 'self'; base-uri 'none'; form-action 'self'">
-  <title>slit.light Studio｜內容管理</title>
+  <title>Slit.light Studio｜內容管理</title>
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/css/admin.css?v=20260823c">
   <script src="../assets/js/supabase.js?v=20260823b" defer></script>
-  <script src="../assets/js/admin.js?v=20260823e" defer></script>
+  <script src="../assets/js/admin.js?v=20260828c" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#auth-main">跳到內容管理</a>
 
   <section id="auth-view" class="auth-view" aria-labelledby="auth-title">
-    <div class="auth-brand"><img src="../assets/brand-symbol.svg" width="34" height="34" alt=""><span>slit.light</span></div>
+    <div class="auth-brand"><img src="../assets/brand-symbol.svg" width="34" height="34" alt=""><span>Slit.light</span></div>
     <main id="auth-main" class="auth-card">
       <p class="kicker">STUDIO</p>
       <h1 id="auth-title">回到內容裡。</h1>
@@ -53,7 +53,7 @@
 
   <div id="studio-view" class="studio" hidden>
     <aside class="studio-sidebar">
-      <a class="studio-brand" href="../" target="_blank" rel="noopener noreferrer"><img src="../assets/brand-symbol.svg" width="32" height="32" alt=""><span>slit.light</span></a>
+      <a class="studio-brand" href="../" target="_blank" rel="noopener noreferrer"><img src="../assets/brand-symbol.svg" width="32" height="32" alt=""><span>Slit.light</span></a>
       <div><p class="kicker">CONTENT STUDIO</p><p class="studio-description">只管理目前網站真正使用的內容。</p></div>
       <nav id="studio-nav" aria-label="內容管理導覽">
         <button class="is-active" type="button" data-panel-target="overview">Overview</button>
@@ -66,10 +66,10 @@
       <div class="sidebar-bottom"><span id="admin-user"></span><button id="logout-button" type="button">登出</button></div>
     </aside>
 
-    <header class="studio-mobile-header"><button id="menu-button" type="button" aria-expanded="false">MENU</button><span>slit.light Studio</span><button type="button" data-save-shortcut>儲存</button></header>
+    <header class="studio-mobile-header"><button id="menu-button" type="button" aria-expanded="false">MENU</button><span>Slit.light Studio</span><button type="button" data-save-shortcut>儲存</button></header>
 
     <main id="studio-main" class="studio-main">
-      <h1 class="sr-only">slit.light Studio</h1>
+      <h1 class="sr-only">Slit.light Studio</h1>
       <div id="loading-state" class="loading-state" role="status">正在讀取最新內容…</div>
 
       <section class="studio-panel is-active" data-panel="overview" aria-labelledby="overview-title">
@@ -86,16 +86,16 @@
       </section>
 
       <section class="studio-panel" data-panel="selected" aria-labelledby="selected-editor-title">
-        <header class="panel-heading panel-heading--actions"><div><p class="kicker">SELECTED TAKES</p><h2 id="selected-editor-title">精選觀看。</h2><p>固定保留 3–5 筆；依 order 排序，不使用日期。</p></div><button id="add-take-button" class="secondary-button" type="button">新增一筆</button></header>
+        <header class="panel-heading panel-heading--actions"><div><p class="kicker">SELECTED</p><h2 id="selected-editor-title">判斷證據。</h2><p>首頁固定保留 3 筆；依 order 排序，不使用日期。</p></div><button id="add-take-button" class="secondary-button" type="button">新增一筆</button></header>
         <div id="selected-editors" class="selected-editors"></div>
       </section>
 
       <section class="studio-panel" data-panel="copy" aria-labelledby="copy-title">
-        <header class="panel-heading"><p class="kicker">SITE COPY</p><h2 id="copy-title">網站文字。</h2><p>只開放目前品牌入口需要的 Hero、About 與 Collaborate 文字。</p></header>
+        <header class="panel-heading"><p class="kicker">SITE COPY</p><h2 id="copy-title">網站文字。</h2><p>只開放目前品牌入口需要的 Hero、About 與 Start With a Case 文字。</p></header>
         <form id="copy-form" class="copy-grid">
-          <fieldset class="studio-card"><legend>Hero</legend><label>SLOW TAKE Label<input name="heroLabel" maxlength="30"></label><label>主標<input name="heroTitle" maxlength="40"></label><label>次要說明<input name="heroNote" maxlength="80"></label><label>補充說明<input name="heroStatement" maxlength="100"></label></fieldset>
-          <fieldset class="studio-card"><legend>About</legend><label>標題<input name="aboutTitle" maxlength="40"></label><label>內文<textarea name="aboutBody" rows="7" maxlength="260"></textarea></label><div class="field-row"><label>公開名稱<input name="aboutName" maxlength="30"></label><label>職稱<input name="aboutRole" maxlength="40"></label></div></fieldset>
-          <fieldset class="studio-card"><legend>Collaborate</legend><label>標題<input name="collaborationTitle" maxlength="40"></label><label>說明<textarea name="collaborationBody" rows="3" maxlength="120"></textarea></label><label>合作範圍<input name="collaborationScope" maxlength="80"></label><label>CTA 文字<input name="collaborationCta" maxlength="30"></label></fieldset>
+          <fieldset class="studio-card"><legend>Hero</legend><label>品牌 Label<input name="heroLabel" maxlength="30"></label><label>主標<input name="heroTitle" maxlength="60"></label><label>補充說明<input name="heroNote" maxlength="80"></label></fieldset>
+          <fieldset class="studio-card"><legend>About</legend><label>標題<input name="aboutTitle" maxlength="40"></label><label>內文<textarea name="aboutBody" rows="7" maxlength="260"></textarea></label><div class="field-row"><label>公開名稱<input name="aboutName" value="ETHAN" readonly></label><label>職稱<input name="aboutRole" maxlength="40"></label></div></fieldset>
+          <fieldset class="studio-card"><legend>Start With a Case</legend><label>標題<input name="collaborationTitle" maxlength="40"></label><label>CTA 文字<input name="collaborationCta" maxlength="30"></label></fieldset>
         </form>
       </section>
 

@@ -42,7 +42,7 @@ class SiteParser(HTMLParser):
             self.scripts.append(values["src"])
         elif tag == "img":
             self.images.append(values)
-            if "slow-take-hero" in (values.get("src") or ""):
+            if "hero-image" in (values.get("class") or "").split():
                 self.hero_is_eager = values.get("loading") != "lazy" and values.get("fetchpriority") == "high"
 
         for attr in ("href", "src"):
@@ -91,7 +91,8 @@ def validate_page(root: Path, relative_path: str, errors: list[str]) -> SitePars
         src = image.get("src") or ""
         if not image.get("width") or not image.get("height"):
             errors.append(f"{relative_path}: image missing width/height: {src}")
-        if "slow-take-hero" not in src and not src.endswith(("favicon.svg", "brand-symbol.svg")) and image.get("loading") != "lazy":
+        is_hero = "hero-image" in (image.get("class") or "").split()
+        if not is_hero and not src.endswith(("favicon.svg", "brand-symbol.svg")) and image.get("loading") != "lazy":
             errors.append(f"{relative_path}: non-critical image must be lazy: {src}")
 
     for reference in sorted(parser.refs):
@@ -126,7 +127,7 @@ def validate_selected(root: Path, errors: list[str]) -> None:
         "director", "creator", "sourceNote", "externalUrl", "instagramUrl",
         "internalSlug"
     }
-    categories = {"choice", "second-look", "frame"}
+    categories = {"case", "judgment", "frame"}
     slugs: set[str] = set()
     orders: set[int] = set()
     selected_count = 0
@@ -165,8 +166,8 @@ def validate_selected(root: Path, errors: list[str]) -> None:
             if not variant.exists():
                 errors.append(f"selected[{index}] missing cover variant: {variant.relative_to(root)}")
 
-    if not 3 <= selected_count <= 5:
-        errors.append(f"selected.json: expected 3–5 selected items, found {selected_count}")
+    if selected_count != 3:
+        errors.append(f"selected.json: expected exactly 3 selected items, found {selected_count}")
 
 
 def validate_admin(root: Path, errors: list[str]) -> None:
@@ -209,7 +210,7 @@ def main() -> int:
         errors.append(f"missing Google Search Console verification file: {verification_file.name}")
     elif verification_file.read_text(encoding="utf-8").strip() != verification_value:
         errors.append(f"invalid Google Search Console verification file: {verification_file.name}")
-    pages = ("index.html", "takes/index.html", "privacy.html", "terms.html")
+    pages = ("index.html", "case-sprint/index.html", "takes/index.html", "privacy.html", "terms.html")
     parsed = {page: validate_page(root, page, errors) for page in pages}
 
     for page, parser in parsed.items():
@@ -230,16 +231,18 @@ def main() -> int:
 
     homepage = (root / "index.html").read_text(encoding="utf-8")
     homepage_sections = (
-        'id="slow-take"', 'id="perspectives"', 'id="selected"',
-        'id="about"', 'id="collaboration"'
+        'id="slow-take"', 'id="problem"', 'id="case-sprint"',
+        'id="how-it-works"', 'id="about"', 'id="contact"'
     )
     positions = [homepage.find(section) for section in homepage_sections]
     if any(position < 0 for position in positions) or positions != sorted(positions):
-        errors.append("index.html: homepage sections must follow SLOW TAKE > PERSPECTIVES > SELECTED > ABOUT > COLLABORATE")
+        errors.append("index.html: homepage sections must follow HERO > CASE PROBLEM > CASE SPRINT > HOW IT WORKS > ABOUT > START WITH A CASE")
     if 'href="#journal"' in homepage or "JOURNAL" in homepage:
         errors.append("index.html: JOURNAL must not appear in the primary homepage experience")
     if 'data-take-filter' in homepage or 'href="takes/"' in homepage:
         errors.append("index.html: Selected must not behave like an archive")
+    if 'id="selected"' in homepage or '>SELECTED<' in homepage or '>PERSPECTIVES<' in homepage:
+        errors.append("index.html: legacy PERSPECTIVES / SELECTED sections remain on the homepage")
 
     for css_path in root.glob("assets/css/*.css"):
         css = css_path.read_text(encoding="utf-8")
@@ -251,14 +254,14 @@ def main() -> int:
     validate_admin(root, errors)
 
     public_sources = [
-        root / "index.html", root / "takes/index.html", root / "privacy.html",
+        root / "index.html", root / "case-sprint/index.html", root / "takes/index.html", root / "privacy.html",
         root / "terms.html", *root.glob("assets/js/*.js")
     ]
     banned = (
-        "HOOOO", "有專業", "IP 核心", "轉換企劃", "A WAY OF LOOKING",
+        "HOOOO", "IP 核心", "轉換企劃", "A WAY OF LOOKING",
         "THREE WAYS OF LOOKING", "START A CONVERSATION", "最近在看。",
         "查看全部", "最新文章", "最新發布",
-        "35slit.light@gmail.com", "mailto:"
+        "35slit.light@gmail.com", "mailto:", "\u738b\u6d69\u5b87", "3 VIDEOS"
     )
     for source in public_sources:
         if not source.exists():
