@@ -1,6 +1,14 @@
 # slit.light Project OS Changelog
 
-本檔只記錄正式設定、canonical 與 Project OS 變更。一次性 TASK 與尚未形成決策的單筆 DATA 不記錄於此。
+本檔是歷史紀錄，只在正式 C／已確認 D 或 Project OS 正式變更時讀寫；A／B 日常工作不載入。
+
+## 2026-08-30｜Project OS v1.2 — Lean context loading
+
+- 類型：正式 Project OS 設定優化。
+- 決策：每次任務只預設讀 `AGENTS.md`；Master、state 與 changelog 依 A／B／C／D on-demand 載入，並壓縮重複治理文字。
+- 原因：降低日常 Codex token／context 消耗，同時保留 immutable Master、minimal scope、Self-QA 與發布權限限制。
+- 影響範圍：`AGENTS.md`、`PROJECT_MASTER.md`、`PROJECT_STATE.md`、`CHANGELOG.md`；Product Master、網站、data、validator 與 workflow 不變。
+- 版本結果：Project OS 維持 v1.2；Product Master 維持 v1.0。
 
 ## 2026-08-29｜Project OS v1.2 — Self-QA Loop
 
