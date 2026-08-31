@@ -2,6 +2,21 @@
 
 本檔是歷史紀錄，只在正式 C／已確認 D 或 Project OS 正式變更時讀寫；A／B 日常工作不載入。
 
+## Unreleased｜Case Sprint conversion and consistency refinement
+
+- 類型：正式網站執行更新；Product Master 維持 v1.0。
+- 首頁與 Case Sprint 產品頁統一為「提供案例、案例深訪、萃取角度、整理腳本」四步流程。
+- Case Sprint 新增 Bootstrap Pre-brief Modal、Turnstile-protected inquiry client、UTM capture 與 inquiry analytics events，沿用既有 Supabase Edge Function／admin workflow。
+- 首頁與 Case Sprint CTA 直接開啟同一套 Pre-brief Modal，分別保存 CTA source；analytics funnel 補齊 `case_sprint_view`、`prebrief_open`、`inquiry_start`、`inquiry_submit` 與安全的 `inquiry_error` stage。
+- Pre-brief 補齊 Beta 必要欄位、Privacy consent、loading 防重送、完整 success／error state；error 保留已填內容並提供 retry／Instagram。
+- 恢復 `submit-inquiry` Edge Function source，新增非破壞式 `007_case_sprint_prebrief_funnel.sql` migration、後端欄位長度／Turnstile 驗證與 insert confirmation。
+- Admin inquiries 補齊 Submitted time、Name、Brand、Case Summary、Problem、Email、Contact、Source、Status，並保留既有 status 相容值；Privacy 同步說明實際表單資料用途與刪除方式。
+- Bootstrap bundle 更新為完整官方 5.3.3，以支援 Modal、Offcanvas 與 ScrollSpy。
+- Header、Footer、CTA 與 Beta 文案依 CURRENT Case Sprint 路徑收斂；未確認的 Threads、Facebook 連結不公開。
+- 修正 mobile Offcanvas anchor 重複套用 `scroll-padding-top` 與 `scroll-margin-top` 的雙偏移。
+- Validation：repository 通過，5 pages、137 references；375／390／430／1440px browser regression、Offcanvas → Modal、CTA source、ESC cleanup 與 failure data retention 通過；localhost 僅有預期的 Turnstile `110200`。
+- Release status：local working tree only；Supabase Dashboard 尚未登入，migration／Edge Function、commit／push 與 production E2E 尚未完成。
+
 ## 2026-08-30｜Project OS v1.2 — Lean context loading
 
 - 類型：正式 Project OS 設定優化。

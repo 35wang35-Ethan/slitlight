@@ -12,6 +12,10 @@
 
 公開網站只使用 anon key，資料存取仍由既有 RLS 控制。不要把 service-role key、管理員密碼或 Auth token 加入 repository。
 
+## Case Sprint Pre-brief
+
+`migrations/007_case_sprint_prebrief_funnel.sql` 只在既有 `inquiries` 補上 Pre-brief 欄位、長度限制與 Beta 狀態，不重建資料表。`functions/submit-inquiry/index.ts` 會在伺服器端再次驗證欄位與 Turnstile，使用 service role 寫入後回傳 insert confirmation；service role 與 Turnstile secret 只設定在 Supabase Function secrets。
+
 ## 原管理員登入與密碼重設
 
 後台沿用原本的 Supabase Auth 使用者與 `admins` 白名單，不建立第二個管理員帳號。Supabase Dashboard 的 Authentication → URL Configuration 必須保留：

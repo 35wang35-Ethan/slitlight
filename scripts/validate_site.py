@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import re
 import sys
+from collections import Counter
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlsplit
@@ -20,6 +21,7 @@ class SiteParser(HTMLParser):
         self.stylesheets: list[str] = []
         self.scripts: list[str] = []
         self.images: list[dict[str, str | None]] = []
+        self.ids: list[str] = []
         self.hero_is_eager = False
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
@@ -44,6 +46,8 @@ class SiteParser(HTMLParser):
             self.images.append(values)
             if "hero-image" in (values.get("class") or "").split():
                 self.hero_is_eager = values.get("loading") != "lazy" and values.get("fetchpriority") == "high"
+        if values.get("id"):
+            self.ids.append(values["id"])
 
         for attr in ("href", "src"):
             if values.get(attr):
@@ -70,6 +74,9 @@ def validate_page(root: Path, relative_path: str, errors: list[str]) -> SitePars
         errors.append(f"{relative_path}: html lang must be zh-Hant")
     if parser.h1_count != 1:
         errors.append(f"{relative_path}: expected one h1, found {parser.h1_count}")
+    duplicate_ids = sorted(value for value, count in Counter(parser.ids).items() if count > 1)
+    if duplicate_ids:
+        errors.append(f"{relative_path}: duplicate ids: {', '.join(duplicate_ids)}")
     for name in ("description", "viewport", "robots"):
         if name not in parser.meta_names:
             errors.append(f"{relative_path}: missing meta[name={name}]")
@@ -80,8 +87,8 @@ def validate_page(root: Path, relative_path: str, errors: list[str]) -> SitePars
         if rel not in parser.link_rels:
             errors.append(f"{relative_path}: missing link rel={rel}")
 
-    bootstrap_css = [href for href in parser.stylesheets if href.endswith("bootstrap.min.css")]
-    bootstrap_js = [src for src in parser.scripts if src.endswith("bootstrap.bundle.min.js")]
+    bootstrap_css = [href for href in parser.stylesheets if urlsplit(href).path.endswith("bootstrap.min.css")]
+    bootstrap_js = [src for src in parser.scripts if urlsplit(src).path.endswith("bootstrap.bundle.min.js")]
     if len(bootstrap_css) != 1:
         errors.append(f"{relative_path}: expected one Bootstrap stylesheet, found {len(bootstrap_css)}")
     if len(bootstrap_js) != 1:
@@ -215,8 +222,8 @@ def main() -> int:
     parsed = {page: validate_page(root, page, errors) for page in pages}
 
     for page, parser in parsed.items():
-        config_scripts = [index for index, src in enumerate(parser.scripts) if src.endswith("assets/js/config.js")]
-        analytics_scripts = [index for index, src in enumerate(parser.scripts) if src.endswith("assets/js/analytics.js")]
+        config_scripts = [index for index, src in enumerate(parser.scripts) if urlsplit(src).path.endswith("assets/js/config.js")]
+        analytics_scripts = [index for index, src in enumerate(parser.scripts) if urlsplit(src).path.endswith("assets/js/analytics.js")]
         if len(config_scripts) != 1 or len(analytics_scripts) != 1:
             errors.append(f"{page}: expected one config.js and one analytics.js")
         elif config_scripts[0] > analytics_scripts[0]:

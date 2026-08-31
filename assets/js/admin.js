@@ -1,7 +1,7 @@
 (() => {
   const categories = ['case', 'judgment', 'frame'];
   const originalAdminIds = new Set(['bae94b1b-c832-425b-bd0b-8240718c654f']);
-  const statusLabels = { new: '新詢問', contacted: '已聯絡', discovery: '初談完成', quoted: '已報價', active: '合作中', completed: '完成', declined: '未合作' };
+  const statusLabels = { new: '新詢問', contacted: '已聯絡', qualified: '符合', paid: '已付款', not_fit: '不適合', discovery: '初談完成', quoted: '已報價', active: '合作中', completed: '完成', declined: '未合作' };
   const state = {
     user: null,
     selected: [],
@@ -315,27 +315,27 @@
     if (!state.inquiries.length) {
       const row = document.createElement('tr');
       const cell = document.createElement('td');
-      cell.colSpan = 4;
+      cell.colSpan = 9;
       cell.textContent = '目前沒有詢問資料。';
       row.append(cell);
       body.append(row);
     }
     state.inquiries.forEach(item => {
       const row = document.createElement('tr');
-      const contact = document.createElement('td');
-      contact.append(element('strong', '', item.name || '未命名'), document.createElement('br'), element('small', '', item.email || item.social_contact || '—'));
-      const detailCell = document.createElement('td');
-      detailCell.append(element('span', '', item.problem_type || '未分類'));
-      const details = document.createElement('details');
-      details.append(element('summary', '', '查看內容'), element('p', '', item.problem_description || '—'));
-      detailCell.append(details);
       const date = document.createElement('td');
-      date.textContent = item.created_at ? new Date(item.created_at).toLocaleDateString('zh-TW') : '—';
+      date.textContent = item.created_at ? new Date(item.created_at).toLocaleString('zh-TW', { hour12: false }) : '—';
+      const name = element('td', '', item.name || '—');
+      const brand = element('td', '', item.brand || '—');
+      const caseSummary = element('td', '', item.case_summary || item.problem_description || '—');
+      const problem = element('td', '', item.problem || item.problem_type || '—');
+      const email = element('td', '', item.email || '—');
+      const contact = element('td', '', item.contact || item.social_contact || '—');
+      const source = element('td', '', item.source || '—');
       const statusCell = document.createElement('td');
       const select = selectControl('inquiry-status', item.status, Object.entries(statusLabels));
       select.dataset.inquiry = item.id;
       statusCell.append(select);
-      row.append(contact, detailCell, date, statusCell);
+      row.append(date, name, brand, caseSummary, problem, email, contact, source, statusCell);
       body.append(row);
     });
   }
@@ -389,7 +389,7 @@
       loadSameOriginText(indexUrl),
       window.slitData.rest.select('cases', 'select=id,title,slug,cover_image,client_name,client_type,insight,execution,publish_status,sort_order&client_type=in.(case,judgment,frame)&order=sort_order.asc', { auth: true }),
       window.slitData.rest.select('homepage_sections', 'select=id,content&section_key=eq.homepage_copy_refinement_20260829&limit=1', { auth: true }),
-      window.slitData.rest.select('inquiries', 'select=id,name,email,social_contact,problem_type,problem_description,status,created_at&order=created_at.desc', { auth: true })
+      window.slitData.rest.select('inquiries', 'select=*&order=created_at.desc', { auth: true })
     ]);
     const staticSelected = JSON.parse(staticSelectedText);
     state.selected = cmsCases.length >= 3 ? cmsCases.map(caseToTake) : staticSelected;

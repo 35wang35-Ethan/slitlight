@@ -29,14 +29,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Noto+Sans+TC:wght@400;500;600&amp;family=Source+Serif+4:opsz,wght@8..60,600&amp;display=swap" rel="stylesheet">
   <link href="../assets/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
-  <link href="../assets/css/main.css?v=20260829q" rel="stylesheet">
-  <link href="../assets/css/components.css?v=20260829q" rel="stylesheet">
-  <link href="../assets/css/responsive.css?v=20260829q" rel="stylesheet">
+  <link href="../assets/css/main.css?v=20260831b" rel="stylesheet">
+  <link href="../assets/css/components.css?v=20260831b" rel="stylesheet">
+  <link href="../assets/css/responsive.css?v=20260831b" rel="stylesheet">
   <script type="application/ld+json">
     {"@context":"https://schema.org","@type":"Service","name":"Case Sprint｜案例內容萃取","provider":{"@type":"Organization","name":"Slit.light"},"url":"https://35wang35-ethan.github.io/slitlight/case-sprint/","description":"從真實案例裡，找出只有你適合講的內容角度，再整理成可直接拍的短影音腳本。"}
   </script>
 </head>
-<body id="top" data-page-base="../">
+<body id="top" data-page-base="../" data-page="case-sprint">
   <a class="skip-link" href="#main-content">跳到主要內容</a>
   <header class="site-header navbar navbar-expand-lg">
     <div class="container-fluid site-header-inner">
@@ -49,7 +49,7 @@
             <a class="nav-link" href="#top" aria-current="page">CASE SPRINT</a>
             <a class="nav-link" href="../#how-it-works">HOW IT WORKS</a>
             <a class="nav-link" href="../#about">ABOUT</a>
-            <a class="nav-link nav-contact ms-lg-2" href="https://www.instagram.com/ethan190410/" target="_blank" rel="noopener noreferrer">帶一個案例來 <span aria-hidden="true">→</span></a>
+            <a class="header-cta nav-contact ms-lg-2" href="#pre-brief" data-bs-toggle="modal" data-bs-target="#pre-brief" data-prebrief-source="case_sprint_header">帶一個案例來 <span aria-hidden="true">→</span></a>
           </nav>
           <nav class="offcanvas-social" aria-label="社群連結"><a href="https://www.instagram.com/ethan190410/" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>Instagram <span aria-hidden="true">↗</span></a></nav>
         </div>
@@ -64,7 +64,10 @@
         <p class="product-type">案例內容萃取</p>
         <h1 id="product-title">不是幫你想更多<span class="nowrap-phrase">題目。</span>是把你做過的事裡，真正<span class="nowrap-phrase">值得說的</span>東西找出來。</h1>
         <p class="product-hero-description">從一個真實案例裡，挖出只有你適合說的判斷，再整理成可直接拍的短影音腳本。</p>
-        <a class="text-action" href="https://www.instagram.com/ethan190410/" target="_blank" rel="noopener noreferrer">帶一個案例來 <span aria-hidden="true">→</span></a>
+        <div class="cta-stack cta-stack--inline">
+          <a class="text-action" href="#pre-brief" data-bs-toggle="modal" data-bs-target="#pre-brief" data-prebrief-source="case_sprint_hero">帶一個案例來 <span aria-hidden="true">→</span></a>
+          <a class="secondary-link" href="https://www.instagram.com/ethan190410/" target="_blank" rel="noopener noreferrer">Instagram 聊聊 <span aria-hidden="true">↗</span></a>
+        </div>
       </div>
     </section>
 
@@ -80,12 +83,13 @@
 
     <section class="section process-section" aria-labelledby="process-title">
       <div class="container">
-        <div class="reveal"><p class="eyebrow">PROCESS</p><h2 id="process-title">只從三步開始。</h2></div>
-        <div class="process-list">
-          <article class="process-step reveal"><p class="process-number">01</p><h3>TALK</h3><p>45–60 分鐘案例深訪。</p></article>
-          <article class="process-step reveal"><p class="process-number">02</p><h3>EXTRACT</h3><p>找出衝突、限制、選擇、取捨與專業判斷。</p></article>
-          <article class="process-step reveal"><p class="process-number">03</p><h3>TURN INTO CONTENT</h3><p>整理成 3 個內容角度，以及 3 支可以直接拍的內容。</p></article>
-        </div>
+        <div class="reveal"><p class="eyebrow">PROCESS</p><h2 id="process-title">從一個案例開始。</h2></div>
+        <ol class="process-list reveal">
+          <li class="process-step"><p class="process-number">01</p><h3>提供案例</h3><p>先讓我知道你真正做過什麼。</p></li>
+          <li class="process-step"><p class="process-number">02</p><h3>案例深訪</h3><p>45–60 分鐘，把當時的選擇與取捨問出來。</p></li>
+          <li class="process-step"><p class="process-number">03</p><h3>萃取角度</h3><p>找出 3 個值得講的內容方向。</p></li>
+          <li class="process-step"><p class="process-number">04</p><h3>整理腳本</h3><p>完成 3 支可直接拍的腳本。</p></li>
+        </ol>
       </div>
     </section>
 
@@ -93,12 +97,11 @@
       <div class="container">
         <div class="reveal"><p class="eyebrow">WHAT YOU GET</p><h2 id="deliverables-title">合作會留下什麼。</h2></div>
         <ol class="deliverables-list reveal">
-          <li><div><strong>CASE INSIGHT MAP</strong><span>案例真正值得留下的重點。</span></div></li>
-          <li><div><strong>3 JUDGMENT CARDS</strong><span>三個能看出專業取捨的判斷。</span></div></li>
-          <li><div><strong>3 ANGLE CARDS</strong><span>三個可以發展成短影音的內容方向。</span></div></li>
-          <li><div><strong>3 PRODUCTION-READY SCRIPTS</strong><span>三支可直接拍攝的完整腳本。</span></div></li>
-          <li><div><strong>SHOOTING HANDOFF</strong><span>簡易 A-roll / B-roll 與拍攝提示。</span></div></li>
-          <li><div><strong>REUSABLE LINES</strong><span>可延伸到 Threads、Caption、Carousel 等內容的句子。</span></div></li>
+          <li><div><strong>案例重點整理</strong><span>找出案例裡真正值得留下的選擇與判斷。</span></div></li>
+          <li><div><strong>3 個內容角度</strong><span>把同一案例拆成三個不同的內容方向。</span></div></li>
+          <li><div><strong>3 支可拍腳本</strong><span>整理成可以直接進入拍攝的完整腳本。</span></div></li>
+          <li><div><strong>拍攝交接</strong><span>附上必要的 A-roll / B-roll 與畫面提示。</span></div></li>
+          <li><div><strong>可再利用句子</strong><span>延伸到 Threads、Caption、Carousel 等內容。</span></div></li>
         </ol>
       </div>
     </section>
@@ -118,8 +121,8 @@
     <section class="section beta-section" aria-labelledby="beta-title">
       <div class="container reveal">
         <p class="eyebrow">CASE SPRINT / BETA</p>
-        <h2 id="beta-title">目前開放第一批案例合作。</h2>
-        <p>Case Sprint 正在進行第一階段付費驗證。我們不展示不存在的客戶數字，只用真實合作繼續校準方法。</p>
+        <h2 id="beta-title">目前開放第一批 Beta 合作。</h2>
+        <p>以真實案例持續驗證流程、交付與內容品質。</p>
       </div>
     </section>
 
@@ -128,7 +131,10 @@
         <div class="row"><div class="col-12 col-lg-9 reveal collaboration-copy">
           <p class="eyebrow">START WITH A CASE</p>
           <h2 id="contact-title">有一個案例，不知道哪段值得講？</h2>
-          <a class="primary-link" href="https://www.instagram.com/ethan190410/" target="_blank" rel="noopener noreferrer">帶一個案例來聊 <span aria-hidden="true">→</span></a>
+          <div class="cta-stack">
+            <a class="primary-link" href="#pre-brief" data-bs-toggle="modal" data-bs-target="#pre-brief" data-prebrief-source="case_sprint_final">帶一個案例來 <span aria-hidden="true">→</span></a>
+            <a class="collaboration-secondary" href="https://www.instagram.com/ethan190410/" target="_blank" rel="noopener noreferrer">Instagram 聊聊 <span aria-hidden="true">↗</span></a>
+          </div>
         </div></div>
       </div>
     </section>
@@ -139,15 +145,49 @@
       <div class="row gy-5 footer-main">
         <div class="col-12 col-md-5"><a class="footer-brand-lockup" href="../" aria-label="Slit.light 首頁"><img src="../assets/brand/slitlight-logo-black.png" width="1926" height="453" loading="lazy" decoding="async" alt=""><span>PAST THE ANSWER.</span></a></div>
         <nav class="col-6 col-md-3 footer-nav" aria-label="頁尾內容導覽"><a href="#top">CASE SPRINT</a><a href="../#how-it-works">HOW IT WORKS</a><a href="../#about">ABOUT</a></nav>
-        <nav class="col-6 col-md-4 footer-social" aria-label="社群連結"><a href="https://www.instagram.com/ethan190410/" target="_blank" rel="noopener noreferrer" aria-label="Instagram，另開新視窗"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>Instagram <span aria-hidden="true">↗</span></a><!-- TODO: Add Threads and Facebook when official URLs are available. --></nav>
+        <nav class="col-6 col-md-4 footer-social" aria-label="社群連結">
+          <a href="https://www.instagram.com/ethan190410/" target="_blank" rel="noopener noreferrer" aria-label="Instagram，另開新視窗"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>Instagram <span aria-hidden="true">↗</span></a>
+        </nav>
       </div>
-      <div class="footer-bottom"><span>© <span data-current-year></span> Slit.light</span><div><a href="../privacy.html">Privacy</a><a href="../terms.html">Terms</a><a class="back-to-top" href="#top" aria-label="回到頁首"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 10 6-6 6 6M12 4v16"/></svg></a></div></div>
+      <div class="footer-bottom"><span>© <span data-current-year></span> Slit.light</span><div><a href="../privacy.html">Privacy</a><a href="../terms.html">Terms</a><a class="back-to-top" href="#top" aria-label="回到頁首"><span>Back to top</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 10 6-6 6 6M12 4v16"/></svg></a></div></div>
     </div>
   </footer>
 
-  <script src="../assets/vendor/bootstrap/bootstrap.bundle.min.js" defer></script>
-  <script src="../assets/js/config.js" defer></script>
+  <div id="pre-brief" class="modal fade prebrief-modal" tabindex="-1" aria-labelledby="prebrief-title" aria-describedby="prebrief-intro">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div><p class="eyebrow">CASE SPRINT / PRE-BRIEF</p><h2 id="prebrief-title">帶一個案例來。</h2></div>
+          <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="關閉前置表單"></button>
+        </div>
+        <div class="modal-body">
+          <p id="prebrief-intro" class="prebrief-intro">有一個做過的案子，卻不知道哪段值得變成內容？<br>先簡單告訴我發生了什麼。不用整理得很完整。</p>
+          <form id="inquiryForm" class="prebrief-form" novalidate>
+            <div class="hp-field" aria-hidden="true"><label for="companyWebsite">公司網站</label><input id="companyWebsite" name="company_website" tabindex="-1" autocomplete="off"></div>
+            <div class="form-field"><label for="name">稱呼</label><input id="name" name="name" class="form-control" autocomplete="name" maxlength="80" required><div class="invalid-feedback">請填寫稱呼。</div></div>
+            <div class="form-field"><label for="brand">品牌／公司／目前在做什麼</label><input id="brand" name="brand" class="form-control" autocomplete="organization" maxlength="150" required><div class="invalid-feedback">請簡單說明你的品牌、公司或目前工作。</div></div>
+            <div class="form-field"><label for="websiteOrSocial">網站／Instagram／社群連結 <span>選填</span></label><input id="websiteOrSocial" name="website_or_social" class="form-control" maxlength="500" inputmode="url" placeholder="https:// 或 @帳號" autocomplete="url"></div>
+            <div class="form-field"><label for="caseSummary">簡單說一個你想談的真實案例</label><textarea id="caseSummary" name="case_summary" class="form-control" rows="6" maxlength="3000" required></textarea><small class="form-helper">不用整理完整，先告訴我發生了什麼即可。</small><div class="invalid-feedback">請簡單描述一個真實案例。</div></div>
+            <div class="form-field"><label for="problemChoice">目前最卡的是什麼？</label><select id="problemChoice" name="problem" class="form-control" required><option value="">請選擇</option><option>不知道案例哪段值得講</option><option>內容越做越像同行</option><option>有專業，但說不出差異</option><option>AI 寫得出來，但不像自己</option><option>其他</option></select><div class="invalid-feedback">請選擇目前最卡的問題。</div></div>
+            <div class="form-field"><label for="email">Email</label><input id="email" name="email" type="email" class="form-control" autocomplete="email" maxlength="320" required><div class="invalid-feedback">請填寫有效的 Email。</div></div>
+            <div class="form-field"><label for="otherContact">其他聯絡方式 <span>選填</span></label><input id="otherContact" name="contact" class="form-control" maxlength="300" placeholder="LINE／Instagram" autocomplete="off"></div>
+            <div class="form-check prebrief-consent"><input id="privacyConsent" name="privacy_consent" class="form-check-input" type="checkbox" value="yes" required><label class="form-check-label" for="privacyConsent">我同意 Slit.light 為回覆本次 Case Sprint 詢問使用以上資料。詳見 <a href="../privacy.html" target="_blank" rel="noopener noreferrer">Privacy</a>。</label><div class="invalid-feedback">請確認同意資料使用說明。</div></div>
+            <div id="turnstileContainer" class="turnstile-container" hidden></div>
+            <p id="formStatus" class="form-status" role="status" aria-live="polite"></p>
+            <button class="prebrief-submit" type="submit"><span class="inquiry-spinner" aria-hidden="true"></span><span data-submit-label>送出案例</span> <span data-submit-arrow aria-hidden="true">→</span></button>
+            <div id="inquiryError" class="inquiry-state inquiry-state--error" role="alert" aria-live="assertive" hidden><h3>目前沒有成功送出。</h3><p>請再試一次。如果持續無法送出，也可以透過 Instagram 聯絡。</p><div class="inquiry-actions"><button id="retryInquiry" class="state-action" type="button">重新送出</button><a class="state-link" href="https://www.instagram.com/ethan190410/" target="_blank" rel="noopener noreferrer">Instagram <span aria-hidden="true">↗</span></a></div></div>
+          </form>
+          <section id="inquirySuccess" class="inquiry-state inquiry-state--success" aria-labelledby="inquiry-success-title" aria-live="polite" tabindex="-1" hidden><p class="eyebrow">RECEIVED</p><h3 id="inquiry-success-title">已收到你的案例。</h3><p>我會先看看這個案例是否適合 Case Sprint，再和你確認下一步。</p><p>你現在不用再準備其他資料。</p><div class="inquiry-actions"><button class="state-action" type="button" data-bs-dismiss="modal">回到網站</button><a class="state-link" href="https://www.instagram.com/ethan190410/" target="_blank" rel="noopener noreferrer">Instagram <span aria-hidden="true">↗</span></a></div></section>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/vendor/bootstrap/bootstrap.bundle.min.js?v=5.3.3" defer></script>
+  <script src="../assets/js/config.js?v=20260831b" defer></script>
   <script src="../assets/js/analytics.js" defer></script>
-  <script src="../assets/js/main.js?v=20260829q" defer></script>
+  <script src="../assets/js/main.js?v=20260831b" defer></script>
+  <script src="../assets/js/supabase.js?v=20260831b" defer></script>
+  <script src="../assets/js/inquiry.js?v=20260831b" defer></script>
 </body>
 </html>

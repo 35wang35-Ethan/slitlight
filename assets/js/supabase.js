@@ -78,6 +78,8 @@
       const message = payload?.message || payload?.error_description || payload?.error || `Supabase 回應 ${response.status}`;
       const error = new Error(message);
       error.status = response.status;
+      error.code = payload?.error_code || '';
+      error.stage = payload?.stage || '';
       throw error;
     }
     return payload;
@@ -200,6 +202,14 @@
     });
   }
 
+  async function invoke(functionName, body) {
+    return request(`/functions/v1/${encodeURIComponent(functionName)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+  }
+
   async function uploadImage(path, file) {
     const safePath = String(path).split('/').map(encodeURIComponent).join('/');
     return request(`/storage/v1/object/site-images/${safePath}`, {
@@ -218,6 +228,7 @@
     endpoint,
     auth: Object.freeze({ signIn, getSession, getUser, signOut, requestPasswordRecovery, updatePassword, isRecovery }),
     rest: Object.freeze({ select, upsert, update }),
+    functions: Object.freeze({ invoke }),
     storage: Object.freeze({ uploadImage, publicImageUrl })
   });
 })();
