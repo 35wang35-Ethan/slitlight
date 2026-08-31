@@ -1,7 +1,7 @@
 (() => {
   const categories = ['case', 'judgment', 'frame'];
   const originalAdminIds = new Set(['bae94b1b-c832-425b-bd0b-8240718c654f']);
-  const statusLabels = { new: '新詢問', contacted: '已聯絡', qualified: '符合', paid: '已付款', not_fit: '不適合', discovery: '初談完成', quoted: '已報價', active: '合作中', completed: '完成', declined: '未合作' };
+  const statusLabels = { new: '新詢問', qualified: '符合', payment_pending: '待付款', paid: '已付款', scheduled: '已排程', completed: '完成', not_fit: '不適合', contacted: '已聯絡', discovery: '初談完成', quoted: '已報價', active: '合作中', declined: '未合作' };
   const state = {
     user: null,
     selected: [],
@@ -315,7 +315,7 @@
     if (!state.inquiries.length) {
       const row = document.createElement('tr');
       const cell = document.createElement('td');
-      cell.colSpan = 9;
+      cell.colSpan = 10;
       cell.textContent = '目前沒有詢問資料。';
       row.append(cell);
       body.append(row);
@@ -326,6 +326,7 @@
       date.textContent = item.created_at ? new Date(item.created_at).toLocaleString('zh-TW', { hour12: false }) : '—';
       const name = element('td', '', item.name || '—');
       const brand = element('td', '', item.brand || '—');
+      const website = element('td', '', item.website_or_social || item.website || item.instagram || '—');
       const caseSummary = element('td', '', item.case_summary || item.problem_description || '—');
       const problem = element('td', '', item.problem || item.problem_type || '—');
       const email = element('td', '', item.email || '—');
@@ -335,7 +336,7 @@
       const select = selectControl('inquiry-status', item.status, Object.entries(statusLabels));
       select.dataset.inquiry = item.id;
       statusCell.append(select);
-      row.append(date, name, brand, caseSummary, problem, email, contact, source, statusCell);
+      row.append(date, name, brand, website, caseSummary, problem, email, contact, source, statusCell);
       body.append(row);
     });
   }

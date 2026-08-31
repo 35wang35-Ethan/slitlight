@@ -18,7 +18,11 @@
   let source = document.body.dataset.page === 'case-sprint' ? 'case_sprint_direct' : 'home_direct';
 
   const allowedStages = new Set(['validation', 'turnstile', 'network', 'edge_function', 'database', 'unknown']);
-  const track = (name, properties = {}) => window.gtag?.('event', name, properties);
+  const track = (name, properties = {}) => {
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = window.gtag || function gtag() { window.dataLayer.push(arguments); };
+    window.gtag('event', name, properties);
+  };
   const trackingProperties = extra => ({ source, ...extra });
   const setStatus = (type = '', message = '') => {
     status.className = `form-status${type ? ` ${type}` : ''}`;
@@ -66,7 +70,9 @@
     script.async = true;
     script.defer = true;
     script.addEventListener('load', renderTurnstile);
-    script.addEventListener('error', () => setStatus('error', '安全驗證載入失敗，請重新整理後再試。'));
+    script.addEventListener('error', () => {
+      setStatus('error', '安全驗證載入失敗，請重新整理後再試。');
+    });
     document.head.append(script);
   }
 
@@ -76,7 +82,6 @@
 
   modal.addEventListener('shown.bs.modal', () => {
     source = modal.dataset.prebriefSource || source;
-    hasStarted = false;
     track('prebrief_open', trackingProperties());
   });
 
@@ -85,7 +90,6 @@
     hasStarted = true;
     track('inquiry_start', trackingProperties());
   };
-  form.addEventListener('focusin', markStarted);
   form.addEventListener('input', markStarted);
   form.addEventListener('change', markStarted);
 
@@ -178,8 +182,11 @@
   });
 
   document.querySelector('#retryInquiry')?.addEventListener('click', () => {
+    errorState.hidden = true;
     submitButton.hidden = false;
-    form.requestSubmit();
+    setStatus(config.turnstileSiteKey?.trim() && !turnstileToken ? 'info' : '',
+      config.turnstileSiteKey?.trim() && !turnstileToken ? '請完成安全驗證後重新送出。' : '');
+    submitButton.focus();
   });
 
   modal.addEventListener('hide.bs.modal', event => {
@@ -195,6 +202,7 @@
       submitButton.hidden = false;
       setStatus('', '');
       resetTurnstile();
+      hasStarted = false;
     }
     setSubmitting(false);
   });

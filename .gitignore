@@ -11,3 +11,6 @@ README.private.md
 supabase/functions/.env
 supabase/functions/.env.*
 !supabase/functions/.env.example
+
+# Supabase CLI local state
+supabase/.temp/

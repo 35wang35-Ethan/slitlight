@@ -15,7 +15,7 @@
 }
 
 @media (max-width: 991.98px) {
-  :root { --header-height: 68px; --section-space: 104px; }
+  :root { --header-height: 68px; --header-offset: 84px; --section-space: 104px; }
   .site-header-inner { min-height: var(--header-height); padding-inline: 22px; }
   .site-nav-panel { width: min(88vw, 360px); }
   .site-nav-panel:not(.show):not(.showing):not(.hiding) { display: none; }

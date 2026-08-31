@@ -87,7 +87,11 @@ if (primaryNavigation && window.bootstrap?.ScrollSpy) {
 const prebriefModal = document.querySelector('#pre-brief');
 if (prebriefModal && window.bootstrap?.Modal) {
   const modal = window.bootstrap.Modal.getOrCreateInstance(prebriefModal);
-  const defaultPrebriefSource = document.body.dataset.page === 'case-sprint' ? 'case_sprint_direct' : 'home_direct';
+  const allowedPrebriefSources = new Set(['takes_header']);
+  const requestedPrebriefSource = new URLSearchParams(window.location.search).get('prebrief_source');
+  const defaultPrebriefSource = allowedPrebriefSources.has(requestedPrebriefSource)
+    ? requestedPrebriefSource
+    : document.body.dataset.page === 'case-sprint' ? 'case_sprint_direct' : 'home_direct';
   const openPrebriefFromHash = () => {
     if (window.location.hash === '#pre-brief') modal.show();
   };

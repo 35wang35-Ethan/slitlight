@@ -21,10 +21,11 @@
   --measure-wide: 56ch;
   --section-space: clamp(120px, 10vw, 160px);
   --header-height: 76px;
-  --anchor-offset: 92px;
+  --header-offset: 92px;
 }
 
-html { scroll-behavior: smooth; scroll-padding-top: var(--anchor-offset); }
+html { scroll-behavior: smooth; scroll-padding-top: var(--header-offset); }
+section[id] { scroll-margin-top: 0; }
 body { margin: 0; overflow-x: hidden; background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: var(--type-body); font-weight: 400; line-height: 1.8; text-wrap: pretty; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 body, button, input, select, textarea { font-family: var(--sans); }
 img { max-width: 100%; }

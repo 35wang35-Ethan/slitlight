@@ -5,7 +5,13 @@ alter table public.inquiries
   add column if not exists problem text,
   add column if not exists contact text,
   add column if not exists privacy_consent boolean not null default false,
-  add column if not exists consented_at timestamptz;
+  add column if not exists consented_at timestamptz,
+  add column if not exists quoted_amount numeric(12,2),
+  add column if not exists payment_status text not null default 'not_requested',
+  add column if not exists payment_method text,
+  add column if not exists payment_reference text,
+  add column if not exists payment_requested_at timestamptz,
+  add column if not exists paid_at timestamptz;
 
 update public.inquiries
 set
@@ -57,10 +63,15 @@ end $$;
 
 alter table public.inquiries
   add constraint inquiries_status_check
-  check (status in ('new','contacted','qualified','paid','not_fit','discovery','quoted','active','completed','declined'));
+  check (status in ('new','qualified','payment_pending','paid','scheduled','completed','not_fit','contacted','discovery','quoted','active','declined')),
+  add constraint inquiries_payment_status_check
+  check (payment_status in ('not_requested','pending','paid','failed','refunded')),
+  add constraint inquiries_quoted_amount_check
+  check (quoted_amount is null or quoted_amount >= 0);
 
 comment on column public.inquiries.website_or_social is 'Optional website, Instagram, or social profile supplied in Case Sprint Pre-brief.';
 comment on column public.inquiries.case_summary is 'Short real-case summary supplied in Case Sprint Pre-brief.';
 comment on column public.inquiries.problem is 'Selected primary content problem.';
 comment on column public.inquiries.contact is 'Optional alternate contact such as LINE or Instagram.';
 comment on column public.inquiries.privacy_consent is 'Whether the sender consented to use of the submitted data for this inquiry.';
+comment on column public.inquiries.payment_status is 'Manual Beta payment state; no payment API or webhook is connected.';
