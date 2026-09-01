@@ -1,7 +1,7 @@
 .site-image { display: block; overflow: hidden; background: #d8d1c7; }
 .site-image img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
-.problem-section { padding-block: clamp(110px, 8vw, 130px); background: var(--paper-warm); }
+.problem-section { padding-block: clamp(96px, 7vw, 112px); background: var(--paper-warm); }
 .problem-layout { display: grid; gap: clamp(56px, 4.5vw, 64px); }
 .problem-heading h2 { max-width: 760px; margin: 0; text-wrap: balance; }
 .problem-points { display: grid; grid-template-columns: repeat(3, minmax(0, 260px)); align-items: start; justify-content: space-between; gap: clamp(32px, 4vw, 56px); margin: 0; padding: 0; list-style: none; }
@@ -9,12 +9,12 @@
 .problem-number { display: block; margin-bottom: 18px; color: var(--meta); font: 500 .75rem var(--sans); letter-spacing: .09em; }
 .problem-points p { margin: 0; }
 
-.how-it-works-section { padding-block: clamp(96px, 7vw, 120px); background: var(--paper); }
+.how-it-works-section { padding-block: clamp(84px, 6vw, 104px); background: var(--paper); }
 .work-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 220px)); justify-content: space-between; gap: clamp(32px, 3vw, 48px); width: 100%; margin: 0; padding: 0; list-style: none; }
 .work-step { min-width: 0; max-width: 220px; outline-offset: 8px; transition: transform 240ms ease; }
 .work-step > span { display: block; margin-bottom: 24px; color: var(--accent); font: 500 clamp(28px, 2.2vw, 32px) var(--sans); transition: color 240ms ease; }
 .work-step h3 { margin-bottom: 12px; font-size: 1.25rem; font-weight: 600; text-decoration-color: transparent; text-underline-offset: 6px; transition: text-decoration-color 240ms ease; }
-.work-step p { max-width: 220px; margin: 0; color: var(--muted); font-size: 1rem; line-height: 1.7; }
+.work-step p { max-width: 220px; margin: 0; color: var(--muted); font-size: 1.0625rem; line-height: 1.7; }
 
 .example-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 30px; }
 .example-disclaimer { margin: 0; color: var(--muted); font-size: 1rem; }
@@ -80,12 +80,12 @@
 
 .about-section { padding-block: clamp(120px, 8vw, 140px); background: var(--paper); }
 .about-photo img, .about-image { aspect-ratio: 4 / 5; object-position: center; filter: saturate(.72); }
-.about-row { display: grid; grid-template-columns: minmax(0, 42fr) minmax(0, 50fr); align-items: start; gap: 8%; margin-inline: 0; }
-.about-row > * { width: auto; padding-inline: 0; }
+.about-row { display: grid; grid-template-columns: minmax(0, 40fr) minmax(0, 52fr); align-items: start; gap: 8%; margin-inline: 0; }
+.about-row > .about-photo, .about-row > .about-copy { width: auto; padding-inline: 0; }
 .about-photo { margin-top: 0; }
-.about-copy { max-width: 600px; padding-left: 0; }
-.about-copy h2 { max-width: 600px; margin-bottom: 28px; font-size: var(--type-h2); text-wrap: balance; }
-.about-copy > p:not(.eyebrow), .about-body { max-width: var(--measure-body); color: var(--muted); font-size: 1.0625rem; line-height: 1.75; }
+.about-copy { max-width: 640px; padding-left: 0; }
+.about-copy h2 { max-width: 640px; margin-bottom: 28px; font-size: var(--type-h2); text-wrap: balance; }
+.about-copy > p:not(.eyebrow), .about-body { max-width: 48ch; color: var(--muted); font-size: 1.0625rem; line-height: 1.75; }
 .about-body p { margin-bottom: 18px; }
 .about-body p:last-child { margin-bottom: 0; color: var(--ink); }
 .about-philosophy { max-width: 560px; margin-top: clamp(40px, 4vw, 48px); }

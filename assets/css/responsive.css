@@ -50,10 +50,11 @@
 
 @media (max-width: 767.98px) {
   .problem-points, .work-steps, .audience-grid { grid-template-columns: 1fr; }
-  .problem-section, .about-section { padding-block: 88px; }
+  .problem-section { padding-block: 76px; }
+  .about-section { padding-block: 88px; }
   .problem-points { gap: 32px; }
   .work-steps { gap: 40px; }
-  .how-it-works-section { padding-block: 88px; }
+  .how-it-works-section { padding-block: 76px; }
   .case-sprint-section { padding-block: 96px; }
   .case-formula { align-items: flex-start; flex-direction: column; gap: 18px; }
   .case-formula > span[aria-hidden] { margin-left: 26px; transform: rotate(90deg); }
@@ -113,6 +114,10 @@
   .selected-page-content { padding: 72px 0 96px; }
   .policy-hero { padding: 64px 0 42px; }
   .policy-content { padding: 58px 0 82px; }
+}
+
+@media (max-width: 389.98px) {
+  .hero h1 { font-size: 2.4375rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

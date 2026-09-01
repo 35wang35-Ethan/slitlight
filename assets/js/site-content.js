@@ -8,8 +8,18 @@
       node.textContent = 'Slit.light';
       return;
     }
-    if (field === 'heroTitle') {
-      node.textContent = String(value).trim();
+    if (field === 'heroTitle' || field === 'heroNote') {
+      const text = String(value).trim();
+      const breakAt = text.indexOf('，');
+      if (breakAt === -1) {
+        node.textContent = text;
+        return;
+      }
+      node.replaceChildren(
+        document.createTextNode(text.slice(0, breakAt + 1)),
+        document.createElement('br'),
+        document.createTextNode(text.slice(breakAt + 1))
+      );
       return;
     }
     if (field === 'aboutTitle' || field === 'collaborationTitle') {
