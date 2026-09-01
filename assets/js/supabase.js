@@ -202,6 +202,14 @@
     });
   }
 
+  async function remove(table, query) {
+    return request(queryPath(table, query), {
+      method: 'DELETE',
+      auth: 'user',
+      headers: { Prefer: 'return=representation' }
+    });
+  }
+
   async function invoke(functionName, body) {
     return request(`/functions/v1/${encodeURIComponent(functionName)}`, {
       method: 'POST',
@@ -227,7 +235,7 @@
   window.slitData = Object.freeze({
     endpoint,
     auth: Object.freeze({ signIn, getSession, getUser, signOut, requestPasswordRecovery, updatePassword, isRecovery }),
-    rest: Object.freeze({ select, upsert, update }),
+    rest: Object.freeze({ select, upsert, update, remove }),
     functions: Object.freeze({ invoke }),
     storage: Object.freeze({ uploadImage, publicImageUrl })
   });

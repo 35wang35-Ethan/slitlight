@@ -24,6 +24,9 @@
   const selectedEditors = document.querySelector('#selected-editors');
   const copyForm = document.querySelector('#copy-form');
   const toast = document.querySelector('#toast');
+  const deleteInquiryDialog = document.querySelector('#delete-inquiry-dialog');
+  const confirmDeleteInquiryButton = document.querySelector('#confirm-delete-inquiry');
+  let pendingDeleteInquiryId = null;
 
   function showToast(message) {
     toast.textContent = message;
@@ -310,7 +313,7 @@
     if (!state.inquiries.length) {
       const row = document.createElement('tr');
       const cell = document.createElement('td');
-      cell.colSpan = 10;
+      cell.colSpan = 11;
       cell.textContent = '目前沒有詢問資料。';
       row.append(cell);
       body.append(row);
@@ -331,7 +334,14 @@
       const select = selectControl('inquiry-status', item.status, Object.entries(statusLabels));
       select.dataset.inquiry = item.id;
       statusCell.append(select);
-      row.append(date, name, brand, website, caseSummary, problem, email, contact, source, statusCell);
+      const actionsCell = document.createElement('td');
+      actionsCell.className = 'inquiry-actions-cell';
+      const deleteButton = element('button', 'inquiry-delete-button', '刪除');
+      deleteButton.type = 'button';
+      deleteButton.dataset.deleteInquiry = item.id;
+      deleteButton.setAttribute('aria-label', `刪除 ${item.name || '這筆'}詢問`);
+      actionsCell.append(deleteButton);
+      row.append(date, name, brand, website, caseSummary, problem, email, contact, source, statusCell, actionsCell);
       body.append(row);
     });
   }
@@ -619,6 +629,41 @@
       showToast('詢問狀態已更新');
     } catch (error) {
       showToast(`狀態更新失敗：${error.message}`);
+    }
+  });
+
+  document.querySelector('#inquiries-table').addEventListener('click', event => {
+    const button = event.target.closest('[data-delete-inquiry]');
+    if (!button || !state.user) return;
+    pendingDeleteInquiryId = button.dataset.deleteInquiry;
+    deleteInquiryDialog.showModal();
+  });
+
+  document.querySelector('#cancel-delete-inquiry').addEventListener('click', () => {
+    deleteInquiryDialog.close();
+  });
+
+  deleteInquiryDialog.addEventListener('close', () => {
+    pendingDeleteInquiryId = null;
+  });
+
+  confirmDeleteInquiryButton.addEventListener('click', async () => {
+    const inquiryId = pendingDeleteInquiryId;
+    if (!state.user || !inquiryId) return;
+    try {
+      confirmDeleteInquiryButton.disabled = true;
+      const deleted = await window.slitData.rest.remove('inquiries', `id=eq.${encodeURIComponent(inquiryId)}`);
+      if (!Array.isArray(deleted) || !deleted.some(item => item.id === inquiryId)) throw new Error('Delete was not confirmed');
+      state.inquiries = state.inquiries.filter(item => item.id !== inquiryId);
+      renderInquiries();
+      updateStats();
+      deleteInquiryDialog.close();
+      showToast('詢問已刪除');
+    } catch {
+      deleteInquiryDialog.close();
+      showToast('刪除失敗，請稍後再試');
+    } finally {
+      confirmDeleteInquiryButton.disabled = false;
     }
   });
 
