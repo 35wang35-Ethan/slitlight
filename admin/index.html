@@ -10,7 +10,7 @@
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/css/admin.css?v=20260831b">
   <script src="../assets/js/supabase.js?v=20260831b" defer></script>
-  <script src="../assets/js/admin.js?v=20260831c" defer></script>
+  <script src="../assets/js/admin.js?v=20260901a" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#auth-main">跳到內容管理</a>
@@ -81,21 +81,20 @@
         </div>
         <div class="overview-grid">
           <article class="studio-card"><p class="card-label">SITE</p><h2>公開網站</h2><p>Selected 與首頁文字從 Supabase 讀取；資料不可用時，網站會自動使用 repository 內的穩定版本。</p><a class="text-link" href="../" target="_blank" rel="noopener noreferrer">查看網站 ↗</a></article>
-          <article class="studio-card"><p class="card-label">SCOPE</p><h2>目前可管理</h2><p>Selected Takes、Hero、About、Collaborate、圖片與原有詢問資料。不恢復價格、服務方案或 FAQ。</p></article>
+          <article class="studio-card"><p class="card-label">SCOPE</p><h2>目前可管理</h2><p>Selected Takes、Hero、About、圖片與原有詢問資料。不恢復價格、服務方案或 FAQ。</p></article>
         </div>
       </section>
 
       <section class="studio-panel" data-panel="selected" aria-labelledby="selected-editor-title">
-        <header class="panel-heading panel-heading--actions"><div><p class="kicker">SELECTED</p><h2 id="selected-editor-title">判斷證據。</h2><p>首頁固定保留 3 筆；依 order 排序，不使用日期。</p></div><button id="add-take-button" class="secondary-button" type="button">新增一筆</button></header>
+        <header class="panel-heading panel-heading--actions"><div><p class="kicker">SELECTED</p><h2 id="selected-editor-title">判斷證據。</h2><p>首頁固定保留 3 筆；依 order 排序，不使用日期。</p><p id="selected-load-status" class="form-message" role="alert"></p></div><button id="add-take-button" class="secondary-button" type="button">新增一筆</button></header>
         <div id="selected-editors" class="selected-editors"></div>
       </section>
 
       <section class="studio-panel" data-panel="copy" aria-labelledby="copy-title">
-        <header class="panel-heading"><p class="kicker">SITE COPY</p><h2 id="copy-title">網站文字。</h2><p>只開放目前品牌入口需要的 Hero、About 與 Start With a Case 文字。</p></header>
+        <header class="panel-heading"><p class="kicker">SITE COPY</p><h2 id="copy-title">網站文字。</h2><p>只開放目前品牌入口需要的 Hero 與 About 文字。Final CTA 由 repository 靜態管理。</p><p id="copy-load-status" class="form-message" role="alert"></p></header>
         <form id="copy-form" class="copy-grid">
-          <fieldset class="studio-card"><legend>Hero</legend><label>品牌 Label<input name="heroLabel" maxlength="30"></label><label>主標<input name="heroTitle" maxlength="60"></label><label>補充說明<input name="heroNote" maxlength="80"></label></fieldset>
-          <fieldset class="studio-card"><legend>About</legend><label>標題<input name="aboutTitle" maxlength="40"></label><label>內文<textarea name="aboutBody" rows="7" maxlength="260"></textarea></label><div class="field-row"><label>公開名稱<input name="aboutName" value="ETHAN" readonly></label><label>職稱<input name="aboutRole" maxlength="40"></label></div></fieldset>
-          <fieldset class="studio-card"><legend>Start With a Case</legend><label>標題<input name="collaborationTitle" maxlength="40"></label><label>CTA 文字<input name="collaborationCta" maxlength="30"></label></fieldset>
+          <fieldset class="studio-card"><legend>Hero</legend><label>主標<input name="heroTitle" maxlength="60"></label><label>補充說明<input name="heroNote" maxlength="80"></label></fieldset>
+          <fieldset class="studio-card"><legend>About</legend><label>標題<input name="aboutTitle" maxlength="40"></label><label>內文<textarea name="aboutBody" rows="7" maxlength="260"></textarea></label><div class="field-row"><label>公開名稱<input name="aboutName" maxlength="40"></label><label>職稱<input name="aboutRole" maxlength="40"></label></div></fieldset>
         </form>
       </section>
 
@@ -113,7 +112,7 @@
       </section>
 
       <section class="studio-panel" data-panel="inquiries" aria-labelledby="inquiries-title">
-        <header class="panel-heading"><p class="kicker">INQUIRIES</p><h2 id="inquiries-title">Case Sprint 詢問。</h2><p>查看 Pre-brief 送單內容，並以狀態追蹤 Beta 詢問。</p></header>
+        <header class="panel-heading"><p class="kicker">INQUIRIES</p><h2 id="inquiries-title">Case Sprint 詢問。</h2><p>查看 Pre-brief 送單內容，並以狀態追蹤 Beta 詢問。</p><p id="inquiries-load-status" class="form-message" role="alert"></p></header>
         <div class="inquiry-table-wrap studio-card"><table class="inquiry-table"><thead><tr><th>Submitted time</th><th>Name</th><th>Brand</th><th>Website / Social</th><th>Case Summary</th><th>Problem</th><th>Email</th><th>Contact</th><th>Source</th><th>Status</th></tr></thead><tbody id="inquiries-table"></tbody></table></div>
       </section>
 

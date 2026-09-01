@@ -1,7 +1,8 @@
 (() => {
   const categories = ['case', 'judgment', 'frame'];
   const originalAdminIds = new Set(['bae94b1b-c832-425b-bd0b-8240718c654f']);
-  const statusLabels = { new: '新詢問', qualified: '符合', payment_pending: '待付款', paid: '已付款', scheduled: '已排程', completed: '完成', not_fit: '不適合', contacted: '已聯絡', discovery: '初談完成', quoted: '已報價', active: '合作中', declined: '未合作' };
+  const copyFields = ['heroTitle', 'heroNote', 'aboutTitle', 'aboutBody', 'aboutName', 'aboutRole'];
+  const statusLabels = { new: '新詢問', contacted: '已聯絡', discovery: '初談完成', quoted: '已報價', active: '合作中', completed: '完成', declined: '未合作' };
   const state = {
     user: null,
     selected: [],
@@ -69,15 +70,12 @@
   function extractCopy(html) {
     const documentNode = new DOMParser().parseFromString(html, 'text/html');
     return {
-      heroLabel: readCmsField(documentNode, 'heroLabel'),
       heroTitle: readCmsField(documentNode, 'heroTitle'),
       heroNote: readCmsField(documentNode, 'heroNote'),
       aboutTitle: readCmsField(documentNode, 'aboutTitle'),
       aboutBody: readCmsField(documentNode, 'aboutBody', true),
       aboutName: readCmsField(documentNode, 'aboutName'),
-      aboutRole: readCmsField(documentNode, 'aboutRole'),
-      collaborationTitle: readCmsField(documentNode, 'collaborationTitle'),
-      collaborationCta: readCmsField(documentNode, 'collaborationCta')
+      aboutRole: readCmsField(documentNode, 'aboutRole')
     };
   }
 
@@ -247,8 +245,8 @@
   }
 
   function fillCopyForm() {
-    Object.entries(state.copy).forEach(([name, value]) => {
-      if (copyForm.elements[name]) copyForm.elements[name].value = value;
+    copyFields.forEach(name => {
+      copyForm.elements[name].value = state.copy[name] ?? '';
     });
   }
 
@@ -278,9 +276,7 @@
   }
 
   function collectCopy() {
-    const copy = Object.fromEntries(new FormData(copyForm).entries());
-    copy.aboutName = 'ETHAN';
-    return copy;
+    return Object.fromEntries(new FormData(copyForm).entries());
   }
 
   function validateSelected(items) {
@@ -305,8 +301,7 @@
   }
 
   function validateCopy(copy) {
-    const required = ['heroLabel', 'heroTitle', 'heroNote', 'aboutTitle', 'aboutBody', 'aboutName', 'aboutRole', 'collaborationTitle', 'collaborationCta'];
-    required.forEach(field => { if (!String(copy[field] || '').trim()) throw new Error(`網站文字欄位不可留白：${field}`); });
+    copyFields.forEach(field => { if (!String(copy[field] || '').trim()) throw new Error(`網站文字欄位不可留白：${field}`); });
   }
 
   function renderInquiries() {
@@ -349,7 +344,7 @@
     summary.replaceChildren();
     const changes = [];
     if (state.selectedDirty) changes.push('Selected Takes');
-    if (state.copyDirty) changes.push('Hero／About／Collaborate 文字');
+    if (state.copyDirty) changes.push('Hero／About 文字');
     if (!changes.length) changes.push('目前沒有尚未儲存的變更。');
     changes.forEach(change => summary.append(element('li', '', change)));
   }
@@ -385,30 +380,52 @@
   async function loadData() {
     const staticSelectedUrl = new URL('../assets/data/selected.json', document.baseURI).href;
     const indexUrl = new URL('../index.html', document.baseURI).href;
-    const [staticSelectedText, indexHtml, cmsCases, copyRows, inquiries] = await Promise.all([
-      loadSameOriginText(staticSelectedUrl),
-      loadSameOriginText(indexUrl),
-      window.slitData.rest.select('cases', 'select=id,title,slug,cover_image,client_name,client_type,insight,execution,publish_status,sort_order&client_type=in.(case,judgment,frame)&order=sort_order.asc', { auth: true }),
-      window.slitData.rest.select('homepage_sections', 'select=id,content&section_key=eq.homepage_copy_refinement_20260829&limit=1', { auth: true }),
-      window.slitData.rest.select('inquiries', 'select=*&order=created_at.desc', { auth: true })
-    ]);
-    const staticSelected = JSON.parse(staticSelectedText);
-    state.selected = cmsCases.length >= 3 ? cmsCases.map(caseToTake) : staticSelected;
-    state.originalCaseIds = new Set(cmsCases.map(item => item.id));
-    state.copyRowId = copyRows[0]?.id || null;
-    try {
-      state.copy = copyRows[0]?.content ? JSON.parse(copyRows[0].content) : extractCopy(indexHtml);
-    } catch {
-      state.copy = extractCopy(indexHtml);
-    }
-    state.copy.aboutName = 'ETHAN';
-    state.inquiries = inquiries || [];
     state.selectedDirty = false;
     state.copyDirty = false;
-    renderSelected();
-    fillCopyForm();
-    renderInquiries();
+
+    const selectedTask = (async () => {
+      const [staticSelectedText, cmsCases] = await Promise.all([
+        loadSameOriginText(staticSelectedUrl),
+        window.slitData.rest.select('cases', 'select=id,title,slug,cover_image,client_name,client_type,insight,execution,publish_status,sort_order&client_type=in.(case,judgment,frame)&order=sort_order.asc', { auth: true })
+      ]);
+      const staticSelected = JSON.parse(staticSelectedText);
+      state.selected = cmsCases.length >= 3 ? cmsCases.map(caseToTake) : staticSelected;
+      state.originalCaseIds = new Set(cmsCases.map(item => item.id));
+      renderSelected();
+      setMessage('#selected-load-status', '');
+    })();
+
+    const copyTask = (async () => {
+      const [indexHtml, copyRows] = await Promise.all([
+        loadSameOriginText(indexUrl),
+        window.slitData.rest.select('homepage_sections', 'select=id,content&section_key=eq.homepage_copy_refinement_20260829&limit=1', { auth: true })
+      ]);
+      const repositoryCopy = extractCopy(indexHtml);
+      const savedCopy = copyRows[0]?.content ? JSON.parse(copyRows[0].content) : {};
+      state.copyRowId = copyRows[0]?.id || null;
+      state.copy = Object.fromEntries(copyFields.map(field => [field, savedCopy[field] ?? repositoryCopy[field]]));
+      validateCopy(state.copy);
+      fillCopyForm();
+      setMessage('#copy-load-status', '');
+    })();
+
+    const inquiriesTask = (async () => {
+      state.inquiries = await window.slitData.rest.select('inquiries', 'select=*&order=created_at.desc', { auth: true }) || [];
+      renderInquiries();
+      setMessage('#inquiries-load-status', '');
+    })();
+
+    const results = await Promise.allSettled([selectedTask, copyTask, inquiriesTask]);
+    const panelErrors = [
+      ['#selected-load-status', 'Selected Takes', results[0]],
+      ['#copy-load-status', 'Site Copy', results[1]],
+      ['#inquiries-load-status', 'Inquiries', results[2]]
+    ];
+    panelErrors.forEach(([selector, label, result]) => {
+      if (result.status === 'rejected') setMessage(selector, `${label} 載入失敗：${result.reason?.message || '未知錯誤'}`, true);
+    });
     updateStats();
+    if (results.some(result => result.status === 'rejected')) showToast('已登入；部分內容暫時無法載入');
   }
 
   async function requireAdmin() {
