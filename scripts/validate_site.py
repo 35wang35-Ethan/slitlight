@@ -229,10 +229,23 @@ def main() -> int:
         elif config_scripts[0] > analytics_scripts[0]:
             errors.append(f"{page}: config.js must load before analytics.js")
 
-    browser_config = (root / "assets/js/config.js").read_text(encoding="utf-8")
-    for tracking_id in ("G-JG1RP94Q9J", "AW-18389054487"):
-        if tracking_id not in browser_config:
-            errors.append(f"assets/js/config.js: missing tracking ID {tracking_id}")
+    for page in pages:
+        html = (root / page).read_text(encoding="utf-8")
+        head = re.search(r"<head\b[^>]*>(.*?)</head>", html, re.S)
+        if not head or head[1].count("'GTM-5HX3RCNK'") != 1 or head[1].count("https://www.googletagmanager.com/gtm.js?id=") != 1:
+            errors.append(f"{page}: expected one GTM-5HX3RCNK loader in head")
+        if html.count("GTM-5HX3RCNK") != 2:
+            errors.append(f"{page}: expected exactly one GTM loader and one fallback")
+        if not re.search(r'<body\b[^>]*>\s*<!-- Google Tag Manager \(noscript\) -->\s*<noscript><iframe src="https://www.googletagmanager.com/ns.html\?id=GTM-5HX3RCNK"', html):
+            errors.append(f"{page}: GTM noscript must immediately follow body opening")
+
+    for path in [*(root / page for page in pages), *(root / "assets/js").glob("*.js")]:
+        content = path.read_text(encoding="utf-8")
+        if re.search(r"\bgtag\b|G-JG1RP94Q9J|AW-18389054487|google-analytics\.com|\banalyticsId\b|\bgoogleAdsId\b", content):
+            errors.append(f"{path.relative_to(root)}: legacy direct GA/Ads tracking remains")
+    inquiry_tracking = (root / "assets/js/inquiry.js").read_text(encoding="utf-8")
+    if not re.search(r"window\.dataLayer\.push\(\{[^}]*\bevent:\s*name\s*\}\)", inquiry_tracking):
+        errors.append("inquiry.js: events must use GTM dataLayer objects")
 
     if not parsed["index.html"].hero_is_eager:
         errors.append("index.html: hero image must be eager and fetchpriority=high")

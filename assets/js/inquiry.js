@@ -20,8 +20,7 @@
   const allowedStages = new Set(['validation', 'turnstile', 'network', 'edge_function', 'database', 'unknown']);
   const track = (name, properties = {}) => {
     window.dataLayer = window.dataLayer || [];
-    window.gtag = window.gtag || function gtag() { window.dataLayer.push(arguments); };
-    window.gtag('event', name, properties);
+    window.dataLayer.push({ stage: null, error_code: null, ...properties, event: name });
   };
   const trackingProperties = extra => ({ source, ...extra });
   const setStatus = (type = '', message = '') => {
