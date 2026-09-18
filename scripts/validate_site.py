@@ -22,12 +22,19 @@ class SiteParser(HTMLParser):
         self.scripts: list[str] = []
         self.images: list[dict[str, str | None]] = []
         self.ids: list[str] = []
+        self.fragment_refs: set[str] = set()
+        self.homepage_section_ids: list[str] = []
+        self.in_main_content = False
         self.hero_is_eager = False
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         values = dict(attrs)
         if tag == "html":
             self.html_lang = values.get("lang") or ""
+        elif tag == "main" and values.get("id") == "main-content":
+            self.in_main_content = True
+        elif tag == "section" and self.in_main_content and values.get("id"):
+            self.homepage_section_ids.append(values["id"])
         elif tag == "h1":
             self.h1_count += 1
         elif tag == "meta":
@@ -52,9 +59,17 @@ class SiteParser(HTMLParser):
         for attr in ("href", "src"):
             if values.get(attr):
                 self.refs.add(values[attr])
+        for attr in ("href", "data-bs-target"):
+            target = values.get(attr) or ""
+            if target.startswith("#") and len(target) > 1:
+                self.fragment_refs.add(target[1:])
         for attr in ("srcset", "imagesrcset"):
             if values.get(attr):
                 self.refs.update(item.strip().split()[0] for item in values[attr].split(","))
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag == "main":
+            self.in_main_content = False
 
 
 def is_local(reference: str) -> bool:
@@ -238,13 +253,13 @@ def main() -> int:
         errors.append("index.html: hero image must be eager and fetchpriority=high")
 
     homepage = (root / "index.html").read_text(encoding="utf-8")
-    homepage_sections = (
-        'id="slow-take"', 'id="problem"', 'id="case-sprint"',
-        'id="how-it-works"', 'id="about"', 'id="contact"'
-    )
-    positions = [homepage.find(section) for section in homepage_sections]
-    if any(position < 0 for position in positions) or positions != sorted(positions):
-        errors.append("index.html: homepage sections must follow HERO > CASE PROBLEM > CASE SPRINT > HOW IT WORKS > ABOUT > START WITH A CASE")
+    homepage_parser = parsed["index.html"]
+    homepage_sections = ("home", "problem", "diagnosis", "work", "services", "about", "contact")
+    if tuple(homepage_parser.homepage_section_ids) != homepage_sections:
+        errors.append("index.html: homepage sections must follow HERO > PROBLEM > DIAGNOSIS > PROOF > SERVICES > ABOUT > FINAL CTA")
+    missing_fragment_targets = sorted(homepage_parser.fragment_refs - set(homepage_parser.ids))
+    if missing_fragment_targets:
+        errors.append(f"index.html: missing anchor/nav targets: {', '.join(missing_fragment_targets)}")
     if 'href="#journal"' in homepage or "JOURNAL" in homepage:
         errors.append("index.html: JOURNAL must not appear in the primary homepage experience")
     if 'data-take-filter' in homepage or 'href="takes/"' in homepage:

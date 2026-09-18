@@ -2,6 +2,7 @@
   .hero-copy { padding-right: clamp(28px, 4vw, 48px); }
   .hero-layout { grid-template-columns: minmax(0, 45fr) minmax(0, 55fr); }
   .work-steps { grid-template-columns: repeat(2, minmax(0, 220px)); gap: 52px 36px; }
+  .problem-points--four, .diagnosis-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .selected-item--featured { grid-template-columns: minmax(0, 1.35fr) minmax(240px, .65fr); }
 }
 
@@ -49,15 +50,22 @@
 }
 
 @media (max-width: 767.98px) {
-  .problem-points, .work-steps, .audience-grid { grid-template-columns: 1fr; }
+  .problem-points, .work-steps, .audience-grid, .diagnosis-grid, .services-list { grid-template-columns: 1fr; }
   .problem-section { padding-block: 76px; }
   .about-section { padding-block: 88px; }
   .problem-points { gap: 32px; }
+  .diagnosis-section { padding-block: 96px; }
+  .diagnosis-grid { gap: 36px; }
+  .diagnosis-closing { margin-top: 64px; }
+  .proof-stage { min-height: 180px; }
+  .service-item--primary { grid-column: auto; }
   .work-steps { gap: 40px; }
   .how-it-works-section { padding-block: 76px; }
   .case-sprint-section { padding-block: 96px; }
   .case-formula { align-items: flex-start; flex-direction: column; gap: 18px; }
   .case-formula > span[aria-hidden] { margin-left: 26px; transform: rotate(90deg); }
+  .product-formula { align-items: flex-start; flex-direction: column; gap: 16px; }
+  .product-formula > span[aria-hidden] { margin-left: 22px; transform: rotate(90deg); }
   .example-heading { display: block; }
   .example-flow { grid-template-columns: 1fr; align-items: start; }
   .case-example .example-flow > span { display: none; }
@@ -75,12 +83,15 @@
   .brand-logo { width: clamp(108px, 31vw, 120px); }
   .hero-copy { padding-top: 72px; padding-bottom: 64px; }
   .hero-media { min-height: 0; aspect-ratio: 4 / 3; }
-  .hero h1 { max-width: none; margin-bottom: 22px; font-size: var(--type-h1); line-height: 1.12; text-wrap: balance; }
+  .hero h1 { max-width: none; margin-bottom: 22px; padding-right: 16px; font-size: clamp(2.0625rem, 8.6vw, 2.5rem); line-height: 1.12; text-wrap: balance; }
   .hero-note { max-width: 30ch; font-size: 1.0625rem; }
   .problem-heading h2, .case-sprint-heading h2, .section-heading h2, .about-copy h2, .collaboration-copy h2 { max-width: none; text-wrap: balance; }
   .hero-link { margin-top: 26px; }
   .case-formula { margin-top: 56px; font-size: 2.35rem; }
+  .case-formula--extended { font-size: 1.5rem; }
   .work-step, .work-step p { max-width: 220px; }
+  .service-item { grid-template-columns: 36px minmax(0, 1fr); gap: 10px; padding-top: 28px; }
+  .service-item--primary { padding-block: 34px 42px; }
   .case-example { margin-top: 80px; }
   .example-flow { margin-top: 38px; }
   .example-result { margin-top: 52px; }
@@ -95,6 +106,7 @@
   .collaboration-section { padding-block: 88px; }
   .collaboration-copy > p:not(.eyebrow):not(.collaboration-secondary) { margin: 26px 0 24px; }
   .product-hero { padding-top: 80px; }
+  .product-hero h1, .product-hero-description { padding-right: 16px; }
   .product-hero h1 { font-size: clamp(2.5rem, 10vw, 2.75rem); line-height: 1.18; }
   .deliverables-list li { grid-template-columns: 44px 1fr; }
   .prebrief-modal .modal-dialog { max-width: calc(100vw - 20px); margin: 10px auto; }
@@ -117,7 +129,7 @@
 }
 
 @media (max-width: 389.98px) {
-  .hero h1 { font-size: 2.4375rem; }
+  .hero h1 { font-size: 2.0625rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
