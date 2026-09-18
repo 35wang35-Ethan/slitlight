@@ -77,6 +77,25 @@ def is_local(reference: str) -> bool:
     return not parsed.scheme and not parsed.netloc and not reference.startswith(("#", "mailto:", "tel:", "data:"))
 
 
+def resolve_local_target(root: Path, page_path: Path, reference: str) -> Path:
+    clean = urlsplit(reference).path
+    if clean.startswith("/"):
+        return (root / clean.lstrip("/")).resolve()
+    return (page_path.parent / clean).resolve()
+
+
+def html_document_path(target: Path) -> Path:
+    return target / "index.html" if target.is_dir() else target
+
+
+def document_ids(path: Path) -> set[str]:
+    if not path.exists() or path.suffix.lower() not in {".html", ".htm"}:
+        return set()
+    parser = SiteParser()
+    parser.feed(path.read_text(encoding="utf-8"))
+    return set(parser.ids)
+
+
 def validate_page(root: Path, relative_path: str, errors: list[str]) -> SiteParser:
     page_path = root / relative_path
     if not page_path.exists():
@@ -92,6 +111,9 @@ def validate_page(root: Path, relative_path: str, errors: list[str]) -> SitePars
     duplicate_ids = sorted(value for value, count in Counter(parser.ids).items() if count > 1)
     if duplicate_ids:
         errors.append(f"{relative_path}: duplicate ids: {', '.join(duplicate_ids)}")
+    missing_fragment_targets = sorted(parser.fragment_refs - set(parser.ids))
+    if missing_fragment_targets:
+        errors.append(f"{relative_path}: missing same-page anchor targets: {', '.join(missing_fragment_targets)}")
     for name in ("description", "viewport", "robots"):
         if name not in parser.meta_names:
             errors.append(f"{relative_path}: missing meta[name={name}]")
@@ -119,10 +141,13 @@ def validate_page(root: Path, relative_path: str, errors: list[str]) -> SitePars
             errors.append(f"{relative_path}: non-critical image must be lazy: {src}")
 
     for reference in sorted(parser.refs):
+        parsed_reference = urlsplit(reference)
+        if reference.startswith("#"):
+            continue
         if not is_local(reference):
             continue
-        clean = urlsplit(reference).path
-        target = (page_path.parent / clean).resolve()
+        clean = parsed_reference.path
+        target = resolve_local_target(root, page_path, reference)
         try:
             target.relative_to(root)
         except ValueError:
@@ -130,6 +155,13 @@ def validate_page(root: Path, relative_path: str, errors: list[str]) -> SitePars
             continue
         if clean and not target.exists():
             errors.append(f"{relative_path}: missing local asset: {reference}")
+            continue
+        if parsed_reference.fragment:
+            target_document = html_document_path(target if clean else page_path)
+            if parsed_reference.fragment not in document_ids(target_document):
+                errors.append(
+                    f"{relative_path}: missing cross-page anchor target: {reference}"
+                )
     return parser
 
 
@@ -233,7 +265,10 @@ def main() -> int:
         errors.append(f"missing Google Search Console verification file: {verification_file.name}")
     elif verification_file.read_text(encoding="utf-8").strip() != verification_value:
         errors.append(f"invalid Google Search Console verification file: {verification_file.name}")
-    pages = ("index.html", "case-sprint/index.html", "takes/index.html", "privacy.html", "terms.html")
+    pages = (
+        "index.html", "video-audit/index.html", "case-sprint/index.html",
+        "takes/index.html", "privacy.html", "terms.html"
+    )
     parsed = {page: validate_page(root, page, errors) for page in pages}
 
     for page, parser in parsed.items():
@@ -257,9 +292,6 @@ def main() -> int:
     homepage_sections = ("home", "problem", "diagnosis", "work", "services", "about", "contact")
     if tuple(homepage_parser.homepage_section_ids) != homepage_sections:
         errors.append("index.html: homepage sections must follow HERO > PROBLEM > DIAGNOSIS > PROOF > SERVICES > ABOUT > FINAL CTA")
-    missing_fragment_targets = sorted(homepage_parser.fragment_refs - set(homepage_parser.ids))
-    if missing_fragment_targets:
-        errors.append(f"index.html: missing anchor/nav targets: {', '.join(missing_fragment_targets)}")
     if 'href="#journal"' in homepage or "JOURNAL" in homepage:
         errors.append("index.html: JOURNAL must not appear in the primary homepage experience")
     if 'data-take-filter' in homepage or 'href="takes/"' in homepage:
@@ -277,8 +309,8 @@ def main() -> int:
     validate_admin(root, errors)
 
     public_sources = [
-        root / "index.html", root / "case-sprint/index.html", root / "takes/index.html", root / "privacy.html",
-        root / "terms.html", *root.glob("assets/js/*.js")
+        root / "index.html", root / "video-audit/index.html", root / "case-sprint/index.html",
+        root / "takes/index.html", root / "privacy.html", root / "terms.html", *root.glob("assets/js/*.js")
     ]
     banned = (
         "HOOOO", "IP 核心", "轉換企劃", "A WAY OF LOOKING",
