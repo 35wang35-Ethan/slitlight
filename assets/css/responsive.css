@@ -50,7 +50,7 @@
 }
 
 @media (max-width: 767.98px) {
-  .problem-points, .work-steps, .audience-grid, .diagnosis-grid, .services-list { grid-template-columns: 1fr; }
+  .problem-points, .work-steps, .audience-grid, .diagnosis-grid, .services-list, .audit-problem-list, .audit-check-grid, .audit-proof-flow { grid-template-columns: 1fr; }
   .problem-section { padding-block: 76px; }
   .about-section { padding-block: 88px; }
   .problem-points { gap: 32px; }
@@ -108,6 +108,8 @@
   .product-hero { padding-top: 80px; }
   .product-hero h1, .product-hero-description { padding-right: 16px; }
   .product-hero h1 { font-size: clamp(2.5rem, 10vw, 2.75rem); line-height: 1.18; }
+  .audit-hero h1 { font-size: clamp(2.0625rem, 8.6vw, 2.5rem); }
+  .audit-check-grid li { grid-template-columns: 38px minmax(0, 1fr); }
   .deliverables-list li { grid-template-columns: 44px 1fr; }
   .prebrief-modal .modal-dialog { max-width: calc(100vw - 20px); margin: 10px auto; }
   .prebrief-modal .modal-header { padding: 22px 20px 18px; }

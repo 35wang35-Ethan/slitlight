@@ -223,6 +223,21 @@
 .product-method-note { max-width: 720px; margin: clamp(34px, 4vw, 48px) 0 34px; color: var(--muted); font-size: 1rem; line-height: 1.75; }
 .product-method-note .detail-label { display: block; margin-bottom: 12px; }
 .product-method-note > p:last-child { margin: 0; }
+.audit-title-phrase { display: inline-block; white-space: nowrap; }
+.audit-hero-cta { margin-top: 42px; }
+.audit-problem-section { background: var(--paper-warm); }
+.audit-problem-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(42px, 7vw, 110px); margin: 0; padding: 0; list-style: none; }
+.audit-problem-list li { padding: 24px 0; border-top: 1px solid var(--line); color: var(--ink); font-size: clamp(1.1rem, 1.7vw, 1.35rem); line-height: 1.6; }
+.audit-checks-section { background: var(--ink-deep); color: #f6f2eb; }
+.audit-checks-section .eyebrow { color: #d3baa0; }
+.audit-check-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(42px, 7vw, 110px); margin: 0; padding: 0; list-style: none; }
+.audit-check-grid li { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 12px; padding: 22px 0; border-top: 1px solid rgba(255,255,255,.2); }
+.audit-check-grid span { color: #d3baa0; font: 500 .75rem var(--sans); letter-spacing: .09em; }
+.audit-check-grid strong { color: #f6f2eb; font-size: clamp(1.05rem, 1.6vw, 1.3rem); font-weight: 500; line-height: 1.55; }
+.audit-scope-note { max-width: 720px; margin: clamp(52px, 6vw, 76px) 0 0; padding-top: 24px; border-top: 1px solid var(--line); color: var(--ink); font-size: clamp(1.05rem, 1.7vw, 1.25rem); line-height: 1.7; }
+.audit-proof-section { background: var(--paper); }
+.audit-proof-flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; margin: 0; padding: 0; list-style: none; }
+.audit-proof-flow li { padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); }
 .audience-section { background: var(--paper-warm); }
 .audience-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(46px, 8vw, 130px); max-width: 1050px; }
 .audience-column { padding-top: 0; }
@@ -249,6 +264,8 @@
 .beta-section .eyebrow { color: #d3baa0; }
 .beta-section h2 { max-width: 860px; }
 .beta-section p:not(.eyebrow):not(.second-opinion-note) { max-width: 650px; margin: 30px 0 34px; color: rgba(255,255,255,.7); font-size: clamp(1.05rem, 1.7vw, 1.3rem); }
+.audit-beta-section .audit-price { margin-bottom: 12px; color: #f6f2eb; font-size: clamp(1.35rem, 2.6vw, 2rem); }
+.audit-beta-section .audit-beta-note { margin: 0; color: rgba(255,255,255,.68); font-size: 1rem; }
 .second-opinion-note { margin: 72px 0 0; color: rgba(255,255,255,.68); font-size: .9375rem; letter-spacing: 0; }
 
 .selected-page-main { min-height: 70vh; padding-top: 0; background: var(--paper); }
