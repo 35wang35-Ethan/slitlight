@@ -33,7 +33,7 @@
     submitButton.disabled = submitting;
     submitButton.classList.toggle('is-loading', submitting);
     submitButton.setAttribute('aria-busy', String(submitting));
-    submitLabel.textContent = submitting ? '送出中…' : '送出案例';
+    submitLabel.textContent = submitting ? '送出中…' : '送出詢問';
   };
   const resetTurnstile = () => {
     turnstileToken = '';
@@ -136,7 +136,7 @@
     };
 
     setSubmitting(true);
-    setStatus('info', '正在安全地送出案例。');
+    setStatus('info', '正在安全地送出詢問。');
 
     try {
       if (!window.slitData?.functions?.invoke || !config.secureInquiryEnabled) {

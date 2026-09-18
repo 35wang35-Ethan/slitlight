@@ -53,7 +53,7 @@
             <a class="nav-link" href="#services">VIDEO AUDIT</a>
             <a class="nav-link" href="#services">SERVICES</a>
             <a class="nav-link" href="#about">ABOUT</a>
-            <a class="header-cta nav-contact ms-lg-2" href="#pre-brief" data-bs-toggle="modal" data-bs-target="#pre-brief" data-prebrief-source="home_header">CONTACT <span aria-hidden="true">→</span></a>
+            <a class="header-cta nav-contact ms-lg-2" href="#pre-brief" data-bs-toggle="modal" data-bs-target="#pre-brief" data-prebrief-source="home_header">詢問影片內容健檢 <span aria-hidden="true">→</span></a>
           </nav>
           <nav class="offcanvas-social" aria-label="社群連結"><a href="https://www.instagram.com/ethan190410/" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>Instagram <span aria-hidden="true">↗</span></a></nav>
         </div>
@@ -178,27 +178,27 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
-          <div><p class="eyebrow">CASE SPRINT / INQUIRY</p><h2 id="prebrief-title">先說說你的案例。</h2></div>
-          <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="關閉前置表單"></button>
+          <div><p class="eyebrow">VIDEO CONTENT AUDIT / INQUIRY</p><h2 id="prebrief-title">想先看看影片問題在哪？</h2></div>
+          <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="關閉詢問表單"></button>
         </div>
         <div class="modal-body">
-          <p id="prebrief-intro" class="prebrief-intro">有一個真的做過的案例就可以。<br>不用整理完整，先告訴我發生了什麼，以及現在最卡的地方。</p>
+          <p id="prebrief-intro" class="prebrief-intro">把目前正在做的影片或社群帳號給我看看。<br>不用先整理完整，我會先了解你現在最卡的地方。</p>
           <form id="inquiryForm" class="prebrief-form" novalidate>
             <div class="hp-field" aria-hidden="true"><label for="companyWebsite">公司網站</label><input id="companyWebsite" name="company_website" tabindex="-1" autocomplete="off"></div>
             <div class="form-field"><label for="name">稱呼</label><input id="name" name="name" class="form-control" autocomplete="name" maxlength="80" required><div class="invalid-feedback">請填寫稱呼。</div></div>
             <div class="form-field"><label for="brand">品牌／公司／目前在做什麼</label><input id="brand" name="brand" class="form-control" autocomplete="organization" maxlength="150" required><div class="invalid-feedback">請簡單說明你的品牌、公司或目前工作。</div></div>
-            <div class="form-field"><label for="websiteOrSocial">網站／Instagram／社群連結 <span>選填</span></label><input id="websiteOrSocial" name="website_or_social" class="form-control" maxlength="500" inputmode="url" placeholder="https:// 或 @帳號" autocomplete="url"></div>
-            <div class="form-field"><label for="caseSummary">簡單說一個你想談的真實案例</label><textarea id="caseSummary" name="case_summary" class="form-control" rows="6" maxlength="3000" required></textarea><small class="form-helper">不用整理完整，先告訴我發生了什麼即可。</small><div class="invalid-feedback">請簡單描述一個真實案例。</div></div>
-            <div class="form-field"><label for="problemChoice">目前最卡的是什麼？</label><select id="problemChoice" name="problem" class="form-control" required><option value="">請選擇</option><option>不知道案例哪段值得講</option><option>內容越做越像同行</option><option>有專業，但說不出差異</option><option>AI 寫得出來，但不像自己</option><option>其他</option></select><div class="invalid-feedback">請選擇目前最卡的問題。</div></div>
+            <div class="form-field"><label for="websiteOrSocial">社群帳號／頻道／網站 <span>選填</span></label><input id="websiteOrSocial" name="website_or_social" class="form-control" maxlength="500" inputmode="url" placeholder="https:// 或 @帳號" autocomplete="url"><small class="form-helper">Instagram、YouTube、TikTok、Facebook 或網站皆可。</small></div>
+            <div class="form-field"><label for="caseSummary">想讓我先看的影片／內容</label><textarea id="caseSummary" name="case_summary" class="form-control" rows="6" maxlength="3000" required></textarea><small class="form-helper">可以貼影片網址，或簡單說明目前正在做哪類內容。</small><div class="invalid-feedback">請提供想先看的影片、網址或內容說明。</div></div>
+            <div class="form-field"><label for="problemChoice">目前最想先解決什麼？</label><select id="problemChoice" name="problem" class="form-control" required><option value="">請選擇</option><option>不知道影片問題在哪</option><option>前段留不住人</option><option>畫面有做，但內容不夠清楚</option><option>題目／內容開始重複</option><option>看得到數據，但不知道怎麼判斷</option><option>不知道下一批影片該怎麼改</option><option>其他</option></select><div class="invalid-feedback">請選擇目前最想先解決的問題。</div></div>
             <div class="form-field"><label for="email">Email</label><input id="email" name="email" type="email" class="form-control" autocomplete="email" maxlength="320" required><div class="invalid-feedback">請填寫有效的 Email。</div></div>
             <div class="form-field"><label for="otherContact">其他聯絡方式 <span>選填</span></label><input id="otherContact" name="contact" class="form-control" maxlength="300" placeholder="LINE／Instagram" autocomplete="off"></div>
-            <div class="form-check prebrief-consent"><input id="privacyConsent" name="privacy_consent" class="form-check-input" type="checkbox" value="yes" required><label class="form-check-label" for="privacyConsent">我同意 Slit.light 為回覆本次 Case Sprint 詢問使用以上資料。詳見 <a href="privacy.html" target="_blank" rel="noopener noreferrer">Privacy</a>。</label><div class="invalid-feedback">請確認同意資料使用說明。</div></div>
+            <div class="form-check prebrief-consent"><input id="privacyConsent" name="privacy_consent" class="form-check-input" type="checkbox" value="yes" required><label class="form-check-label" for="privacyConsent">我同意為回覆本次詢問使用以上資料。詳見 <a href="privacy.html" target="_blank" rel="noopener noreferrer">Privacy</a>。</label><div class="invalid-feedback">請確認同意資料使用說明。</div></div>
             <div id="turnstileContainer" class="turnstile-container" hidden></div>
             <p id="formStatus" class="form-status" role="status" aria-live="polite"></p>
-            <button class="prebrief-submit" type="submit"><span class="inquiry-spinner" aria-hidden="true"></span><span data-submit-label>送出案例</span> <span data-submit-arrow aria-hidden="true">→</span></button>
+            <button class="prebrief-submit" type="submit"><span class="inquiry-spinner" aria-hidden="true"></span><span data-submit-label>送出詢問</span> <span data-submit-arrow aria-hidden="true">→</span></button>
             <div id="inquiryError" class="inquiry-state inquiry-state--error" role="alert" aria-live="assertive" hidden><h3>目前沒有成功送出。</h3><p>請再試一次。如果持續無法送出，也可以透過 Instagram 聯絡。</p><div class="inquiry-actions"><button id="retryInquiry" class="state-action" type="button">重新送出</button><a class="state-link" href="https://www.instagram.com/ethan190410/" target="_blank" rel="noopener noreferrer">Instagram <span aria-hidden="true">↗</span></a></div></div>
           </form>
-          <section id="inquirySuccess" class="inquiry-state inquiry-state--success" aria-labelledby="inquiry-success-title" aria-live="polite" tabindex="-1" hidden><p class="eyebrow">RECEIVED</p><h3 id="inquiry-success-title">已收到你的案例。</h3><p>我會先看看這個案例是否適合 Case Sprint，再和你確認下一步。</p><p>你現在不用再準備其他資料。</p><div class="inquiry-actions"><button class="state-action" type="button" data-bs-dismiss="modal">回到網站</button><a class="state-link" href="https://www.instagram.com/ethan190410/" target="_blank" rel="noopener noreferrer">Instagram <span aria-hidden="true">↗</span></a></div></section>
+          <section id="inquirySuccess" class="inquiry-state inquiry-state--success" aria-labelledby="inquiry-success-title" aria-live="polite" tabindex="-1" hidden><p class="eyebrow">RECEIVED</p><h3 id="inquiry-success-title">已收到你的詢問。</h3><p>我會先看你提供的內容，再和你確認接下來適合怎麼進行。</p><div class="inquiry-actions"><button class="state-action" type="button" data-bs-dismiss="modal">回到網站</button><a class="state-link" href="https://www.instagram.com/ethan190410/" target="_blank" rel="noopener noreferrer">Instagram <span aria-hidden="true">↗</span></a></div></section>
         </div>
       </div>
     </div>
@@ -210,6 +210,6 @@
   <script src="assets/js/main.js?v=20260831c" defer></script>
   <script src="assets/js/supabase.js?v=20260831b" defer></script>
   <script src="assets/js/site-content.js?v=20260902a" defer></script>
-  <script src="assets/js/inquiry.js?v=20260831d" defer></script>
+  <script src="assets/js/inquiry.js?v=20260919a" defer></script>
 </body>
 </html>
