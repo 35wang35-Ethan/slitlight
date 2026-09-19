@@ -109,6 +109,10 @@
   .product-hero h1, .product-hero-description { padding-right: 16px; }
   .product-hero h1 { font-size: clamp(2.5rem, 10vw, 2.75rem); line-height: 1.18; }
   .audit-hero h1 { font-size: clamp(2.0625rem, 8.6vw, 2.5rem); }
+  .audit-hero-lead { margin-bottom: 18px; font-size: 1.35rem; }
+  .audit-hero-price { margin-top: 28px; }
+  .audit-hero-summary { max-width: 28ch; }
+  .audit-hero-actions { align-items: flex-start; flex-direction: column; gap: 8px; margin-top: 30px; }
   .audit-check-grid li { grid-template-columns: 38px minmax(0, 1fr); }
   .deliverables-list li { grid-template-columns: 44px 1fr; }
   .prebrief-modal .modal-dialog { max-width: calc(100vw - 20px); margin: 10px auto; }
