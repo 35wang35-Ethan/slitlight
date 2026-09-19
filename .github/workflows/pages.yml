@@ -26,7 +26,7 @@ jobs:
 
       - name: Prepare public frontend
         run: |
-          mkdir -p public/assets/images public/assets/data public/assets/brand public/takes public/case-sprint public/admin
+          mkdir -p public/assets/images public/assets/data public/assets/brand public/takes public/case-sprint public/video-audit public/admin
           cp index.html privacy.html terms.html admin.html favicon.ico robots.txt sitemap.xml google03850f274d84bd8f.html public/
           cp admin/index.html admin/login.html public/admin/
           cp -R assets/css assets/js public/assets/
@@ -43,6 +43,7 @@ jobs:
           cp assets/images/selected-frame.jpg assets/images/selected-frame-768.jpg assets/images/selected-frame.webp assets/images/selected-frame-768.webp public/assets/images/
           cp takes/index.html public/takes/
           cp case-sprint/index.html public/case-sprint/
+          cp video-audit/index.html public/video-audit/
 
       - name: Validate public frontend
         run: python3 scripts/validate_site.py public
