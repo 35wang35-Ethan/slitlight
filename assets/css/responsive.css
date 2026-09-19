@@ -73,6 +73,7 @@
   .selected-item--featured .selected-media img { aspect-ratio: 4 / 3; }
   .process-list { grid-template-columns: 1fr; }
   .process-list { gap: 54px; }
+  .audit-offer-layout { grid-template-columns: 1fr; gap: 42px; }
 }
 
 @media (max-width: 575.98px) {
@@ -113,6 +114,10 @@
   .audit-hero-price { margin-top: 28px; }
   .audit-hero-summary { max-width: 28ch; }
   .audit-hero-actions { align-items: flex-start; flex-direction: column; gap: 8px; margin-top: 30px; }
+  .one-page-home .diagnosis-section { padding-block: 88px; }
+  .one-page-home .audit-offer-section, .one-page-home .audit-checks-section, .one-page-home .deliverables-section, .one-page-home .process-section, .one-page-home .audience-section, .one-page-home .services-section { padding-block: 80px; }
+  .audit-offer-price { font-size: clamp(2.25rem, 11vw, 3rem); }
+  .audit-offer-copy .primary-link { margin-top: 28px; }
   .audit-check-grid li { grid-template-columns: 38px minmax(0, 1fr); }
   .deliverables-list li { grid-template-columns: 44px 1fr; }
   .prebrief-modal .modal-dialog { max-width: calc(100vw - 20px); margin: 10px auto; }

@@ -302,15 +302,37 @@ def main() -> int:
 
     homepage = (root / "index.html").read_text(encoding="utf-8")
     homepage_parser = parsed["index.html"]
-    homepage_sections = ("home", "problem", "diagnosis", "services", "about", "contact")
+    homepage_sections = (
+        "home", "problem", "diagnosis", "video-audit", "checks", "deliverables",
+        "process", "audience", "about", "services", "contact"
+    )
     if tuple(homepage_parser.homepage_section_ids) != homepage_sections:
-        errors.append("index.html: homepage sections must follow HERO > PROBLEM > DIAGNOSIS > SERVICES > ABOUT > FINAL CTA")
+        errors.append(
+            "index.html: homepage sections must follow HERO > PROBLEM > DIAGNOSIS > "
+            "VIDEO AUDIT > WHAT I CHECK > WHAT YOU GET > PROCESS > WHO IT'S FOR > "
+            "ABOUT > OTHER SERVICES > FINAL CTA"
+        )
     if 'href="#journal"' in homepage or "JOURNAL" in homepage:
         errors.append("index.html: JOURNAL must not appear in the primary homepage experience")
     if 'data-take-filter' in homepage or 'href="takes/"' in homepage:
         errors.append("index.html: Selected must not behave like an archive")
     if 'id="selected"' in homepage or '>SELECTED<' in homepage or '>PERSPECTIVES<' in homepage:
         errors.append("index.html: legacy PERSPECTIVES / SELECTED sections remain on the homepage")
+
+    video_audit = (root / "video-audit/index.html").read_text(encoding="utf-8")
+    video_audit_redirect_markers = (
+        '<meta name="robots" content="noindex,follow">',
+        '<link rel="canonical" href="https://35wang35-ethan.github.io/slitlight/">',
+        '<meta http-equiv="refresh" content="0; url=../#video-audit">',
+        'window.location.replace("../#video-audit");',
+        'href="../#video-audit"'
+    )
+    if not all(marker in video_audit for marker in video_audit_redirect_markers):
+        errors.append("video-audit/index.html: retired page must redirect to homepage #video-audit")
+
+    sitemap = (root / "sitemap.xml").read_text(encoding="utf-8")
+    if "https://35wang35-ethan.github.io/slitlight/video-audit/" in sitemap:
+        errors.append("sitemap.xml: retired video-audit URL must not be indexed")
 
     for css_path in root.glob("assets/css/*.css"):
         css = css_path.read_text(encoding="utf-8")
