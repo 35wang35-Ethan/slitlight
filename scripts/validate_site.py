@@ -302,9 +302,9 @@ def main() -> int:
 
     homepage = (root / "index.html").read_text(encoding="utf-8")
     homepage_parser = parsed["index.html"]
-    homepage_sections = ("home", "problem", "diagnosis", "work", "services", "about", "contact")
+    homepage_sections = ("home", "problem", "diagnosis", "services", "about", "contact")
     if tuple(homepage_parser.homepage_section_ids) != homepage_sections:
-        errors.append("index.html: homepage sections must follow HERO > PROBLEM > DIAGNOSIS > PROOF > SERVICES > ABOUT > FINAL CTA")
+        errors.append("index.html: homepage sections must follow HERO > PROBLEM > DIAGNOSIS > SERVICES > ABOUT > FINAL CTA")
     if 'href="#journal"' in homepage or "JOURNAL" in homepage:
         errors.append("index.html: JOURNAL must not appear in the primary homepage experience")
     if 'data-take-filter' in homepage or 'href="takes/"' in homepage:

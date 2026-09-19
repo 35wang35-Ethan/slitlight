@@ -10,7 +10,7 @@
 .problem-number { display: block; margin-bottom: 18px; color: var(--meta); font: 500 .75rem var(--sans); letter-spacing: .09em; }
 .problem-points p { margin: 0; }
 
-.diagnosis-section { padding-block: clamp(120px, 9vw, 150px); background: var(--ink-deep); color: #f6f2eb; }
+.diagnosis-section { padding-block: clamp(110px, 8vw, 132px); background: var(--ink-deep); color: #f6f2eb; }
 .diagnosis-section .eyebrow { color: #d3baa0; }
 .diagnosis-heading h2 { max-width: 720px; }
 .diagnosis-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(26px, 3vw, 48px); }
@@ -22,7 +22,7 @@
 .proof-section { background: var(--paper); }
 .proof-stage { min-height: clamp(180px, 22vw, 320px); border-block: 1px solid var(--line); }
 
-.services-section { background: var(--paper-warm); }
+.services-section { padding-block: clamp(96px, 7vw, 112px); background: var(--paper-warm); }
 .services-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(40px, 6vw, 88px); margin: 0; padding: 0; list-style: none; }
 .service-item { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 16px; padding: 34px 0 8px; border-top: 1px solid var(--line); }
 .service-item--primary { grid-column: 1 / -1; padding-block: 44px 52px; }
@@ -30,6 +30,7 @@
 .service-item h3 { margin: 0 0 14px; font-size: clamp(1.55rem, 2.5vw, 2.25rem); }
 .service-item--primary h3 { font-size: clamp(2.25rem, 4.4vw, 4rem); }
 .service-item p { max-width: 520px; margin: 0; color: var(--muted); font-size: 1.0625rem; line-height: 1.7; }
+.service-item .section-link { margin-top: 20px; }
 .service-item--quiet { opacity: .68; }
 
 .how-it-works-section { padding-block: clamp(84px, 6vw, 104px); background: var(--paper); }
@@ -104,7 +105,7 @@
 .text-action { display: inline-flex; min-height: 48px; align-items: center; gap: 14px; color: var(--ink); font-weight: 500; text-decoration: underline; text-decoration-color: rgba(43,40,36,.3); text-underline-offset: 8px; transition: color 250ms ease, text-decoration-color 250ms ease; }
 .text-action:hover, .text-action:focus-visible { color: var(--accent); text-decoration-color: currentColor; }
 
-.about-section { padding-block: clamp(120px, 8vw, 140px); background: var(--paper); }
+.about-section { padding-block: clamp(100px, 7vw, 120px); background: var(--paper); }
 .about-photo img, .about-image { aspect-ratio: 4 / 5; object-position: center; filter: saturate(.72); }
 .about-row { display: grid; grid-template-columns: minmax(0, 40fr) minmax(0, 52fr); align-items: start; gap: 8%; margin-inline: 0; }
 .about-row > .about-photo, .about-row > .about-copy { width: auto; padding-inline: 0; }
@@ -122,7 +123,7 @@
 .about-role strong { font-size: .875rem; font-weight: 600; }
 .about-role span { color: var(--muted); font-size: .875rem; }
 
-.collaboration-section { padding: clamp(110px, 8vw, 130px) 0; background: var(--ink-deep); color: #f6f2eb; }
+.collaboration-section { padding: clamp(100px, 7vw, 118px) 0; background: var(--ink-deep); color: #f6f2eb; }
 .collaboration-section .eyebrow { color: #d3baa0; }
 .collaboration-copy h2 { max-width: 680px; margin-bottom: 0; font-size: clamp(40px, 3.8vw, 64px); text-wrap: balance; }
 .collaboration-copy > p:not(.eyebrow):not(.collaboration-secondary) { max-width: 640px; margin: 34px 0 32px; color: rgba(255,255,255,.7); font-size: clamp(1.12rem, 2vw, 1.5rem); line-height: 1.7; }
