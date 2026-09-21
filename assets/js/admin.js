@@ -515,13 +515,14 @@
 
   authForm.addEventListener('submit', async event => {
     event.preventDefault();
-    const button = event.currentTarget.querySelector('button');
+    const form = event.currentTarget;
+    const button = form.querySelector('button');
     setMessage('#auth-error', '');
     button.disabled = true;
     button.textContent = '登入中…';
     try {
-      await window.slitData.auth.signIn(event.currentTarget.email.value.trim(), event.currentTarget.password.value);
-      event.currentTarget.password.value = '';
+      await window.slitData.auth.signIn(form.email.value.trim(), form.password.value);
+      form.password.value = '';
       await requireAdmin();
     } catch (error) {
       if (error.message.includes('管理權限')) await window.slitData.auth.signOut();
@@ -560,9 +561,10 @@
 
   recoveryUpdateForm.addEventListener('submit', async event => {
     event.preventDefault();
-    const button = event.currentTarget.querySelector('button');
-    const password = event.currentTarget.password.value;
-    const confirmation = event.currentTarget.confirmation.value;
+    const form = event.currentTarget;
+    const button = form.querySelector('button');
+    const password = form.password.value;
+    const confirmation = form.confirmation.value;
     if (password.length < 12) return setMessage('#recovery-update-message', '新密碼至少需要 12 個字元。', true);
     if (password !== confirmation) return setMessage('#recovery-update-message', '兩次輸入的密碼不一致。', true);
     try {
@@ -570,7 +572,7 @@
       button.textContent = '更新中…';
       setMessage('#recovery-update-message', '');
       await window.slitData.auth.updatePassword(password);
-      event.currentTarget.reset();
+      form.reset();
       await requireAdmin();
       showToast('原管理員帳號密碼已更新');
     } catch (error) {
