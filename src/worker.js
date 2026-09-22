@@ -91,6 +91,7 @@ async function submitInquiry(request, env) {
     return failure(503, 'turnstile', 'TURNSTILE_NOT_CONFIGURED');
   }
   let verification;
+  // Log only verification metadata, never credentials, bodies or exception text.
   try {
     const verifyBody = new FormData();
     verifyBody.set('secret', secret);
@@ -98,14 +99,44 @@ async function submitInquiry(request, env) {
     const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
       method: 'POST', body: verifyBody, signal: AbortSignal.timeout(10000)
     });
-    if (!response.ok) return failure(502, 'turnstile', 'VERIFY_UNAVAILABLE');
-    verification = await response.json();
+    if (!response.ok) {
+      let errorPayload = null;
+      try {
+        errorPayload = await response.json();
+      } catch {
+        console.error('TURNSTILE_VERIFY_HTTP_ERROR', {
+          status: response.status, parse_error: true
+        });
+        return failure(502, 'turnstile', 'VERIFY_UNAVAILABLE');
+      }
+      console.error('TURNSTILE_VERIFY_HTTP_ERROR', {
+        status: response.status,
+        success: typeof errorPayload?.success === 'boolean' ? errorPayload.success : null,
+        error_codes: Array.isArray(errorPayload?.['error-codes']) ? errorPayload['error-codes'] : [],
+        action: errorPayload?.action ?? null,
+        hostname: errorPayload?.hostname ?? null
+      });
+      return failure(502, 'turnstile', 'VERIFY_UNAVAILABLE');
+    }
+    try {
+      verification = await response.json();
+    } catch {
+      console.error('TURNSTILE_VERIFY_PARSE_ERROR', {
+        status: response.status
+      });
+      return failure(502, 'turnstile', 'VERIFY_UNAVAILABLE');
+    }
     if (!isRecord(verification)) return failure(502, 'turnstile', 'VERIFY_UNAVAILABLE');
   } catch {
+    console.error('TURNSTILE_VERIFY_FETCH_EXCEPTION');
     return failure(502, 'turnstile', 'VERIFY_UNAVAILABLE');
   }
   if (verification.success !== true || (verification.action ?? '') !== expectedAction ||
       !allowedHostnames.includes(verification.hostname)) {
+    console.error('TURNSTILE_VERIFY_REJECTED', {
+      error_codes: verification['error-codes'] ?? [],
+      action: verification.action ?? null, hostname: verification.hostname ?? null
+    });
     return failure(403, 'turnstile', 'TURNSTILE_FAILED');
   }
 

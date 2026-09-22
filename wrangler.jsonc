@@ -1,18 +1,25 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "slitlight-foundation",
+  "name": "slitlight-preview",
+  "workers_dev": true,
+  "preview_urls": true,
   "main": "src/worker.js",
   "compatibility_date": "2026-09-21",
+  "vars": {
+    "TURNSTILE_EXPECTED_ACTION": "inquiry",
+    "TURNSTILE_ALLOWED_HOSTNAMES": "slitlight-preview.35wang35.workers.dev"
+  },
   "assets": {
     "directory": "./public",
     "binding": "ASSETS",
     "run_worker_first": ["/api/*"]
   },
-  // Local foundation only. No remote database has been provisioned.
+  // Migration preview database; production remains on GitHub Pages + Supabase.
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "slitlight-db",
+      "database_id": "e2c2a4c0-46e2-422a-8a37-18d81e94f0f9",
       "migrations_dir": "migrations"
     }
   ]
