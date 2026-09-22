@@ -138,16 +138,20 @@
     setStatus('info', '正在安全地送出詢問。');
 
     try {
-      if (!window.slitData?.functions?.invoke || !config.secureInquiryEnabled) {
-        const unavailable = new Error('Inquiry service unavailable');
-        unavailable.stage = 'edge_function';
-        unavailable.code = 'SERVICE_UNAVAILABLE';
-        throw unavailable;
-      }
-      const result = await window.slitData.functions.invoke(config.inquiryFunction || 'submit-inquiry', {
-        inquiry,
-        turnstileToken
+      const response = await fetch('/api/inquiries', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ inquiry, turnstileToken })
       });
+      const result = await response.json().catch(() => null);
+      if (!response.ok) {
+        const rejected = new Error('Inquiry submission rejected');
+        rejected.status = response.status;
+        rejected.stage = allowedStages.has(result?.stage) ? result.stage : 'unknown';
+        const code = result?.error_code || result?.error;
+        rejected.code = typeof code === 'string' && /^[A-Z0-9_]{1,64}$/.test(code) ? code : 'API_ERROR';
+        throw rejected;
+      }
       if (!result?.ok || !result?.id || result?.status !== 'new') {
         const incomplete = new Error('Inquiry confirmation missing');
         incomplete.stage = 'database';
