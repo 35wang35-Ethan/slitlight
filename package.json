@@ -3,6 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "cf:admin:dev": "wrangler dev -c wrangler.admin.jsonc",
+    "cf:admin:deploy": "wrangler deploy -c wrangler.admin.jsonc",
     "cf:dev": "wrangler dev --local",
     "cf:check": "wrangler deploy --dry-run --outdir .wrangler/dry-run",
     "d1:migrate:local": "wrangler d1 migrations apply DB --local"

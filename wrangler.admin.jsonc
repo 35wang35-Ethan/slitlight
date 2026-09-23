@@ -1,0 +1,17 @@
+﻿{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "slitlight-admin-preview",
+  "main": "src/admin-worker.js",
+  "compatibility_date": "2026-09-23",
+  "workers_dev": true,
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": true
+  },
+  "d1_databases": [{
+    "binding": "DB",
+    "database_name": "slitlight-db",
+    "database_id": "e2c2a4c0-46e2-422a-8a37-18d81e94f0f9"
+  }]
+}
