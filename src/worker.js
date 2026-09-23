@@ -147,13 +147,13 @@ async function submitInquiry(request, env) {
       INSERT INTO inquiries (
         id, created_at, name, brand, website_or_social, case_summary, problem,
         email, contact, privacy_consent, consented_at, source, status,
-        utm_source, utm_medium, utm_campaign, utm_content, utm_term
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        utm_source, utm_medium, utm_campaign, utm_content, utm_term, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).bind(
       id, timestamp, inquiry.name, inquiry.brand, optional(inquiry.website_or_social),
       inquiry.case_summary, inquiry.problem, inquiry.email, optional(inquiry.contact),
       1, timestamp, inquiry.source, 'new', optional(inquiry.utm_source), optional(inquiry.utm_medium),
-      optional(inquiry.utm_campaign), optional(inquiry.utm_content), optional(inquiry.utm_term)
+      optional(inquiry.utm_campaign), optional(inquiry.utm_content), optional(inquiry.utm_term), timestamp
     ).run();
     if (!result.success || result.meta.changes !== 1) throw new Error('Insert not confirmed');
   } catch {

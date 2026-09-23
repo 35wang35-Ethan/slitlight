@@ -68,6 +68,7 @@ async function accepted(payload) {
   assert.equal(row.status, 'new');
   assert.equal(row.privacy_consent, 1);
   assert.equal(row.created_at, row.consented_at);
+  assert.equal(row.updated_at, row.created_at);
   assert.ok(Date.parse(row.created_at) >= started && Date.parse(row.created_at) <= Date.now());
   assert.ok(row.created_at.endsWith('Z'));
   assert.equal(JSON.stringify(row).includes(payload.turnstileToken), false);
@@ -92,7 +93,7 @@ try {
 
     const tampered = fixture();
     Object.assign(tampered.inquiry, {
-      status: 'completed', id: 'client-id', created_at: '2000-01-01', consented_at: '2000-01-01',
+      status: 'completed', id: 'client-id', created_at: '2000-01-01', consented_at: '2000-01-01', updated_at: '2000-01-01',
       privacy_consent: 'yes', source: '', case_summary: '', problem: '', contact: '',
       problem_description: 'Legacy summary', problem_type: 'Legacy problem', social_contact: 'Legacy contact'
     });
