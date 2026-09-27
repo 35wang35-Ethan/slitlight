@@ -9,9 +9,8 @@ OUTPUT = ROOT / "public"
 
 # Keep this allowlist in sync with pages.yml's Prepare public frontend step.
 FILES = (
-    "index.html", "privacy.html", "terms.html", "admin.html", "favicon.ico",
+    "index.html", "privacy.html", "terms.html", "favicon.ico",
     "robots.txt", "sitemap.xml", "google03850f274d84bd8f.html",
-    "admin/index.html", "admin/login.html",
     "assets/favicon.svg", "assets/brand-symbol.svg",
     "takes/index.html", "case-sprint/index.html", "video-audit/index.html",
 )

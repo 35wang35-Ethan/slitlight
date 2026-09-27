@@ -9,7 +9,7 @@
     "POLICY_AUD": "b063e21da4c30977c43d5aceeb4d3174b165334581d6c40b1bf9829a1c5b36ff"
   },
   "assets": {
-    "directory": "./public",
+    "directory": "./admin-public",
     "binding": "ASSETS",
     "run_worker_first": true
   },

@@ -18,6 +18,7 @@ supabase/.temp/
 # Local Cloudflare development and generated static artifact
 node_modules/
 public/
+admin-public/
 .wrangler/
 .dev.vars
 .dev.vars.*

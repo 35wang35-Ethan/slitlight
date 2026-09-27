@@ -375,7 +375,26 @@ def main() -> int:
                 errors.append(f"{css_path.relative_to(root)}: missing local asset: {reference}")
 
     validate_selected(root, errors)
-    validate_admin(root, errors)
+    source_root = Path(__file__).resolve().parent.parent
+    if root == source_root:
+        validate_admin(root, errors)
+    else:
+        # Generated Pages artifacts must never publish the Worker-only Admin.
+        for entry in ("admin.html", "admin/index.html", "admin/login.html"):
+            if (root / entry).exists():
+                errors.append(f"public artifact must not contain Admin entry: {entry}")
+        # Keep credential/backend checks for any copied legacy JS assets.
+        for entry in ("assets/js/admin.js", "assets/js/supabase.js"):
+            path = root / entry
+            if path.exists():
+                content = path.read_text(encoding="utf-8")
+                if "service_role" in content:
+                    errors.append(f"{entry}: service-role credential appears to be committed")
+                if entry == "assets/js/admin.js" and "https://api.github.com" in content:
+                    errors.append("admin: obsolete GitHub-token backend remains")
+    homepage = (root / "index.html").read_text(encoding="utf-8")
+    if any(marker in homepage for marker in ("assets/js/supabase.js", "assets/js/site-content.js", "window.slitData")):
+        errors.append("homepage: Supabase CMS runtime dependency remains")
 
     public_sources = [
         root / "index.html", root / "video-audit/index.html", root / "case-sprint/index.html",
