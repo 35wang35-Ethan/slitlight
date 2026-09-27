@@ -1,14 +1,7 @@
 (() => {
-  const originalAdminIds = new Set(['bae94b1b-c832-425b-bd0b-8240718c654f']);
   const statusLabels = { new: '新詢問', contacted: '已聯絡', discovery: '初談完成', quoted: '已報價', active: '合作中', completed: '完成', declined: '未合作' };
-  const state = { user: null, inquiries: [] };
+  const state = { inquiries: [] };
 
-  const authView = document.querySelector('#auth-view');
-  const authForm = document.querySelector('#auth-form');
-  const forgotPasswordButton = document.querySelector('#forgot-password-button');
-  const recoveryRequestForm = document.querySelector('#recovery-request-form');
-  const recoveryUpdateForm = document.querySelector('#recovery-update-form');
-  const studioView = document.querySelector('#studio-view');
   const loadingState = document.querySelector('#loading-state');
   const toast = document.querySelector('#toast');
   const deleteInquiryDialog = document.querySelector('#delete-inquiry-dialog');
@@ -26,21 +19,6 @@
     node.textContent = message;
     node.classList.toggle('is-error', isError);
     node.classList.toggle('is-success', Boolean(message) && !isError);
-  }
-
-  function showAuthMode(mode) {
-    authForm.hidden = mode !== 'login';
-    forgotPasswordButton.hidden = mode !== 'login';
-    recoveryRequestForm.hidden = mode !== 'request';
-    recoveryUpdateForm.hidden = mode !== 'update';
-    setMessage('#auth-error', '');
-    setMessage('#recovery-request-message', '');
-    setMessage('#recovery-update-message', '');
-    if (mode === 'request') {
-      recoveryRequestForm.email.value = authForm.email.value.trim();
-      recoveryRequestForm.email.focus();
-    }
-    if (mode === 'update') recoveryUpdateForm.password.focus();
   }
 
   function element(tag, className = '', text = '') {
@@ -145,105 +123,6 @@
     }
   }
 
-  async function requireAdmin() {
-    const user = await window.slitData.auth.getUser();
-    let isAdmin = originalAdminIds.has(user.id);
-    if (!isAdmin) {
-      const rows = await window.slitData.rest.select('admins', `select=user_id&user_id=eq.${encodeURIComponent(user.id)}&limit=1`, { auth: true });
-      isAdmin = rows.length > 0;
-    }
-    if (!isAdmin) {
-      await window.slitData.auth.signOut();
-      throw new Error('這個帳號沒有後台管理權限。');
-    }
-    state.user = user;
-    document.querySelector('#admin-user').textContent = user.email || '管理員';
-    authView.hidden = true;
-    studioView.hidden = false;
-    document.querySelector('.skip-link').href = '#studio-main';
-    loadingState.hidden = false;
-    try {
-      await loadData();
-    } catch (error) {
-      loadingState.hidden = false;
-      loadingState.textContent = `登入成功，但內容載入失敗：${error.message}`;
-      showToast('已登入；部分內容暫時無法載入');
-      return;
-    } finally {
-      if (!loadingState.textContent.startsWith('登入成功')) loadingState.hidden = true;
-    }
-  }
-
-  authForm.addEventListener('submit', async event => {
-    event.preventDefault();
-    const form = event.currentTarget;
-    const button = form.querySelector('button');
-    setMessage('#auth-error', '');
-    button.disabled = true;
-    button.textContent = '登入中…';
-    try {
-      await window.slitData.auth.signIn(form.email.value.trim(), form.password.value);
-      form.password.value = '';
-      await requireAdmin();
-    } catch (error) {
-      if (error.message.includes('管理權限')) await window.slitData.auth.signOut();
-      const message = error.message.includes('Invalid login credentials')
-        ? '登入失敗，請確認 Email 與密碼。'
-        : error.message;
-      setMessage('#auth-error', message, true);
-    } finally {
-      button.disabled = false;
-      button.textContent = '登入';
-    }
-  });
-
-  forgotPasswordButton.addEventListener('click', () => showAuthMode('request'));
-  document.querySelectorAll('[data-auth-mode="login"]').forEach(button => {
-    button.addEventListener('click', () => showAuthMode('login'));
-  });
-
-  recoveryRequestForm.addEventListener('submit', async event => {
-    event.preventDefault();
-    const button = event.currentTarget.querySelector('button[type="submit"]');
-    const email = event.currentTarget.email.value.trim();
-    try {
-      button.disabled = true;
-      button.textContent = '寄送中…';
-      setMessage('#recovery-request-message', '');
-      await window.slitData.auth.requestPasswordRecovery(email, new URL('./', window.location.href).href);
-      setMessage('#recovery-request-message', '已寄出。請從信件返回這個後台，連結有效時間依 Supabase 設定為準。');
-    } catch (error) {
-      setMessage('#recovery-request-message', `寄送失敗：${error.message}`, true);
-    } finally {
-      button.disabled = false;
-      button.textContent = '寄出密碼重設信';
-    }
-  });
-
-  recoveryUpdateForm.addEventListener('submit', async event => {
-    event.preventDefault();
-    const form = event.currentTarget;
-    const button = form.querySelector('button');
-    const password = form.password.value;
-    const confirmation = form.confirmation.value;
-    if (password.length < 12) return setMessage('#recovery-update-message', '新密碼至少需要 12 個字元。', true);
-    if (password !== confirmation) return setMessage('#recovery-update-message', '兩次輸入的密碼不一致。', true);
-    try {
-      button.disabled = true;
-      button.textContent = '更新中…';
-      setMessage('#recovery-update-message', '');
-      await window.slitData.auth.updatePassword(password);
-      form.reset();
-      await requireAdmin();
-      showToast('原管理員帳號密碼已更新');
-    } catch (error) {
-      setMessage('#recovery-update-message', `更新失敗：${error.message}`, true);
-    } finally {
-      button.disabled = false;
-      button.textContent = '更新原帳號密碼';
-    }
-  });
-
   document.querySelector('#studio-nav').addEventListener('click', event => {
     const button = event.target.closest('[data-panel-target]');
     if (button) showPanel(button.dataset.panelTarget);
@@ -252,14 +131,13 @@
     const open = document.querySelector('.studio-sidebar').classList.toggle('is-open');
     event.currentTarget.setAttribute('aria-expanded', String(open));
   });
-  document.querySelector('#logout-button').addEventListener('click', async () => {
-    await window.slitData.auth.signOut();
-    window.location.reload();
+  document.querySelector('#logout-button').addEventListener('click', () => {
+    window.location.assign('/cdn-cgi/access/logout');
   });
 
   document.querySelector('#inquiries-table').addEventListener('change', async event => {
     const select = event.target.closest('[data-inquiry]');
-    if (!select || !state.user) return;
+    if (!select) return;
     const item = state.inquiries.find(row => row.id === select.dataset.inquiry);
     if (!item) return;
     select.disabled = true;
@@ -286,7 +164,7 @@
 
   document.querySelector('#inquiries-table').addEventListener('click', event => {
     const button = event.target.closest('[data-delete-inquiry]');
-    if (!button || !state.user) return;
+    if (!button) return;
     pendingDeleteInquiryId = button.dataset.deleteInquiry;
     deleteInquiryDialog.showModal();
   });
@@ -301,7 +179,7 @@
 
   confirmDeleteInquiryButton.addEventListener('click', async () => {
     const inquiryId = pendingDeleteInquiryId;
-    if (!state.user || !inquiryId) return;
+    if (!inquiryId) return;
     try {
       confirmDeleteInquiryButton.disabled = true;
       const deleted = await inquiryRequest(`/${encodeURIComponent(inquiryId)}`, { method: 'DELETE' });
@@ -320,18 +198,10 @@
   });
 
   (async () => {
-    if (!window.slitData) return setMessage('#auth-error', '後台連線元件載入失敗，請重新整理。', true);
-    if (window.slitData.auth.isRecovery()) {
-      showAuthMode('update');
-      return;
-    }
-    const current = await window.slitData.auth.getSession();
-    if (!current) return;
     try {
-      await requireAdmin();
-    } catch {
-      await window.slitData.auth.signOut();
-      setMessage('#auth-error', '登入狀態已失效，請重新登入。', true);
+      await loadData();
+    } finally {
+      loadingState.hidden = true;
     }
   })();
 })();

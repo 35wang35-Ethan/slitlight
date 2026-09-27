@@ -228,7 +228,7 @@ def validate_selected(root: Path, errors: list[str]) -> None:
 def validate_admin(root: Path, errors: list[str]) -> None:
     required = (
         "admin.html", "admin/index.html", "admin/login.html", "assets/css/admin.css",
-        "assets/js/admin.js", "assets/js/supabase.js", "assets/js/site-content.js"
+        "assets/js/admin.js", "assets/js/site-content.js"
     )
     for relative_path in required:
         if not (root / relative_path).exists():
@@ -239,17 +239,51 @@ def validate_admin(root: Path, errors: list[str]) -> None:
         return
     html = admin_page.read_text(encoding="utf-8")
     script = admin_script.read_text(encoding="utf-8")
-    data_client = (root / "assets/js/supabase.js").read_text(encoding="utf-8")
-    if "Content-Security-Policy" not in html:
+    class AdminParser(HTMLParser):
+        def __init__(self):
+            super().__init__()
+            self.policies = []
+            self.scripts = []
+            self.password_input = False
+
+        def handle_starttag(self, tag, attrs):
+            attrs = dict(attrs)
+            if tag == "meta" and (attrs.get("http-equiv") or "").lower() == "content-security-policy":
+                self.policies.append(attrs.get("content") or "")
+            if tag == "script":
+                self.scripts.append(attrs.get("src") or "")
+            if tag == "input" and (attrs.get("type") or "").lower() == "password":
+                self.password_input = True
+
+    parser = AdminParser()
+    parser.feed(html)
+    if not parser.policies:
         errors.append("admin/index.html: Content Security Policy is required")
-    if "https://ptruiafyvqhyeodvkiub.supabase.co" not in html or "https://ptruiafyvqhyeodvkiub.supabase.co" not in data_client:
-        errors.append("admin: original Supabase project configuration is missing")
-    if "signIn" not in data_client or "type=\"password\"" not in html:
-        errors.append("admin: Email/Password authentication is missing")
-    if not all(marker in data_client for marker in ("requestPasswordRecovery", "updatePassword", "type') !== 'recovery")):
-        errors.append("admin: original account password recovery flow is incomplete")
-    if not all(marker in html for marker in ('id="forgot-password-button"', 'id="recovery-update-form"')):
-        errors.append("admin: password recovery controls are missing")
+    for policy in parser.policies:
+        if "ptruiafyvqhyeodvkiub.supabase.co" in policy.lower():
+            errors.append("admin: Supabase origin must not appear in CSP")
+        directives = [part.split() for part in policy.split(";") if part.strip()]
+        connect = [part[1:] for part in directives if part[0].lower() == "connect-src"]
+        if connect != [["'self'"]]:
+            errors.append("admin: CSP connect-src must be restricted to 'self'")
+    if any(urlsplit(src).path.endswith("assets/js/supabase.js") for src in parser.scripts):
+        errors.append("admin: Supabase script dependency remains")
+    if parser.password_input or any(marker in html for marker in (
+        "forgot-password-button", "recovery-request-form", "recovery-update-form"
+    )):
+        errors.append("admin: obsolete password/recovery UI remains")
+    for marker in ("window.slitData", "auth.signIn", "auth.getSession", "auth.getUser",
+                   "auth.signOut", "requestPasswordRecovery", "updatePassword"):
+        if marker in script:
+            errors.append(f"admin: obsolete Supabase auth dependency: {marker}")
+    if "/api/admin/inquiries" not in script:
+        errors.append("admin: same-origin inquiry API dependency is missing")
+    if "/cdn-cgi/access/logout" not in script:
+        errors.append("admin: Access logout is missing")
+    # Retain credential scanning when the legacy public client exists, without
+    # requiring it as an Admin asset.
+    client_path = root / "assets/js/supabase.js"
+    data_client = client_path.read_text(encoding="utf-8") if client_path.exists() else ""
     if "service_role" in html + script + data_client:
         errors.append("admin: a Supabase service-role credential appears to be committed")
     if "https://api.github.com" in html + script:

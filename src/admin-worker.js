@@ -2,7 +2,6 @@
   '/admin/',
   '/assets/css/admin.css',
   '/assets/js/admin.js',
-  '/assets/js/supabase.js',
   '/assets/favicon.svg',
   '/assets/brand-symbol.svg'
 ]);

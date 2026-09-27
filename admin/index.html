@@ -5,53 +5,16 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="theme-color" content="#211f1c">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://ptruiafyvqhyeodvkiub.supabase.co; img-src 'self' https://ptruiafyvqhyeodvkiub.supabase.co data:; style-src 'self'; script-src 'self'; base-uri 'none'; form-action 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; base-uri 'none'; form-action 'self'">
   <title>Slit.light Studio｜詢問管理</title>
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/css/admin.css?v=20260901a">
-  <script src="../assets/js/supabase.js?v=20260901a" defer></script>
   <script src="../assets/js/admin.js?v=20260901b" defer></script>
 </head>
 <body>
-  <a class="skip-link" href="#auth-main">跳到詢問管理</a>
+  <a class="skip-link" href="#studio-main">跳到詢問管理</a>
 
-  <section id="auth-view" class="auth-view" aria-labelledby="auth-title">
-    <div class="auth-brand"><img src="../assets/brand-symbol.svg" width="34" height="34" alt=""><span>Slit.light</span></div>
-    <main id="auth-main" class="auth-card">
-      <p class="kicker">STUDIO</p>
-      <h1 id="auth-title">回到內容裡。</h1>
-      <p>使用原本的後台 Email 與密碼登入。登入後可查看網站詢問與追蹤目前進度。</p>
-      <form id="auth-form" class="auth-form">
-        <label for="admin-email">Email</label>
-        <input id="admin-email" name="email" type="email" autocomplete="email" required>
-        <label for="admin-password">Password</label>
-        <input id="admin-password" name="password" type="password" autocomplete="current-password" required>
-        <button type="submit">登入</button>
-        <p id="auth-error" class="form-message" role="alert"></p>
-      </form>
-      <button id="forgot-password-button" class="auth-switch" type="button">忘記密碼？</button>
-
-      <form id="recovery-request-form" class="auth-form" hidden>
-        <label for="recovery-email">原管理員 Email</label>
-        <input id="recovery-email" name="email" type="email" autocomplete="email" required>
-        <button type="submit">寄出密碼重設信</button>
-        <button class="auth-secondary" type="button" data-auth-mode="login">返回登入</button>
-        <p id="recovery-request-message" class="form-message" role="status"></p>
-      </form>
-
-      <form id="recovery-update-form" class="auth-form" hidden>
-        <label for="new-password">新密碼</label>
-        <input id="new-password" name="password" type="password" autocomplete="new-password" minlength="12" required>
-        <label for="confirm-password">再次輸入新密碼</label>
-        <input id="confirm-password" name="confirmation" type="password" autocomplete="new-password" minlength="12" required>
-        <button type="submit">更新原帳號密碼</button>
-        <p id="recovery-update-message" class="form-message" role="alert"></p>
-      </form>
-    </main>
-    <p class="auth-note">登入由原本的 Supabase 帳號系統驗證；只有管理員帳號能進入。</p>
-  </section>
-
-  <div id="studio-view" class="studio" hidden>
+  <div id="studio-view" class="studio">
     <aside class="studio-sidebar">
       <a class="studio-brand" href="../" target="_blank" rel="noopener noreferrer"><img src="../assets/brand-symbol.svg" width="32" height="32" alt=""><span>Slit.light</span></a>
       <div><p class="kicker">INQUIRY STUDIO</p><p class="studio-description">查看網站詢問，追蹤目前進度。</p></div>
@@ -59,7 +22,7 @@
         <button class="is-active" type="button" data-panel-target="overview">Overview</button>
         <button type="button" data-panel-target="inquiries">Inquiries</button>
       </nav>
-      <div class="sidebar-bottom"><span id="admin-user"></span><button id="logout-button" type="button">登出</button></div>
+      <div class="sidebar-bottom"><span id="admin-user">Access ???</span><button id="logout-button" type="button">登出</button></div>
     </aside>
 
     <header class="studio-mobile-header"><button id="menu-button" type="button" aria-expanded="false">MENU</button><span>Slit.light Studio</span></header>
