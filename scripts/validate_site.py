@@ -380,6 +380,9 @@ def main() -> int:
         validate_admin(root, errors)
     else:
         # Generated Pages artifacts must never publish the Worker-only Admin.
+        for entry in ("assets/js/supabase.js", "assets/js/site-content.js"):
+            if (root / entry).exists():
+                errors.append(f"public artifact must not contain obsolete runtime: {entry}")
         for entry in ("admin.html", "admin/index.html", "admin/login.html"):
             if (root / entry).exists():
                 errors.append(f"public artifact must not contain Admin entry: {entry}")
@@ -395,6 +398,20 @@ def main() -> int:
     homepage = (root / "index.html").read_text(encoding="utf-8")
     if any(marker in homepage for marker in ("assets/js/supabase.js", "assets/js/site-content.js", "window.slitData")):
         errors.append("homepage: Supabase CMS runtime dependency remains")
+
+    config = (root / "assets/js/config.js").read_text(encoding="utf-8")
+    if "https://slitlight.35wang35.workers.dev/api/inquiries" not in config or "inquiryApiEndpoint" not in config:
+        errors.append("config: production inquiry endpoint is missing")
+    if not re.search(r"fetch\(\s*config\.inquiryApiEndpoint\s*,", inquiry_tracking):
+        errors.append("inquiry: submission must use the configured API endpoint")
+    if re.search(r"fetch\(\s*['\"]/api/inquiries['\"]", inquiry_tracking):
+        errors.append("inquiry: hardcoded same-origin endpoint remains")
+    privacy = (root / "privacy.html").read_text(encoding="utf-8")
+    if "supabase" in privacy.lower():
+        errors.append("privacy: obsolete Supabase processing description remains")
+    for processor in ("GitHub Pages", "Cloudflare Worker", "Cloudflare Turnstile", "Cloudflare D1", "Cloudflare Access"):
+        if processor not in privacy:
+            errors.append(f"privacy: current architecture description missing: {processor}")
 
     public_sources = [
         root / "index.html", root / "video-audit/index.html", root / "case-sprint/index.html",

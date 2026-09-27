@@ -51,6 +51,11 @@ def main() -> None:
         if source in files and not source.is_file():
             raise FileNotFoundError(source)
 
+    # Retain rollback sources in the repo, but never publish unused CMS clients.
+    files.difference_update(ROOT / name for name in (
+        "assets/js/supabase.js", "assets/js/site-content.js"
+    ))
+
     if OUTPUT.exists():
         shutil.rmtree(OUTPUT)
     OUTPUT.mkdir()

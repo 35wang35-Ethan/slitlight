@@ -41,7 +41,7 @@
   <main id="main-content">
     <header class="policy-hero"><div class="container shell-xs"><p class="eyebrow">PRIVACY</p><h1>隱私權與個人資料說明</h1><p>這裡說明網站分析與外部聯絡如何處理資料。</p></div></header>
     <section class="policy-content"><div class="container shell-xs"><article>
-      <p class="policy-meta">最後更新：2026 年 9 月 19 日</p>
+      <p class="policy-meta">最後更新：2026 年 9 月 27 日</p>
       <div class="policy-note">網站提供合作詢問表單；目前不設會員、線上付款或自動預約。</div>
 
       <h2>一、蒐集者與聯絡方式</h2>
@@ -53,8 +53,8 @@
       <h2>三、使用期間、地區、對象與方式</h2>
       <ul>
         <li><strong>期間：</strong>詢問資料保留至完成回覆、合作評估及必要的紀錄期間；你可以要求刪除。網站分析資料依 Google 服務設定與其保存政策處理。</li>
-        <li><strong>地區：</strong>資料可能在台灣，以及 Supabase、GitHub 與 Google 的資料處理地區處理。</li>
-        <li><strong>對象：</strong>Slit.light，以及提供表單儲存、安全驗證、網站託管與分析服務的 Supabase、Cloudflare、GitHub、Google。</li>
+        <li><strong>地區：</strong>資料可能在台灣，以及 Cloudflare、GitHub 與 Google 的資料處理地區處理。</li>
+        <li><strong>對象：</strong>Slit.light，以及提供詢問處理、資料儲存、安全驗證、網站託管與分析服務的 Cloudflare、GitHub、Google。公開網站由 GitHub Pages 託管。</li>
         <li><strong>方式：</strong>以受限制的後台讀取詢問、回覆聯絡，並以彙整資料了解頁面瀏覽與漏斗互動；Slit.light 不公開販售你的個人資料。</li>
       </ul>
 
@@ -62,7 +62,7 @@
       <p>網站進入時會載入 Google Analytics 與 Google Ads 標記，用於了解頁面瀏覽、按鈕互動與廣告成效。這些服務可能透過 Cookie 或類似技術處理裝置與使用資訊；你可以透過瀏覽器設定限制或封鎖 Cookie。</p>
 
       <h2>五、安全措施</h2>
-      <p>網站使用 HTTPS 與 Cloudflare Turnstile 降低垃圾送單；表單經伺服器端驗證後才寫入 Supabase，詢問資料僅限管理員帳號讀取。公開原始碼不保存 service role、Turnstile secret 或管理員密碼。</p>
+      <p>網站使用 HTTPS；詢問表單經 Cloudflare Worker 伺服器端驗證與 Cloudflare Turnstile 安全驗證後，才寫入 Cloudflare D1。後台由 Cloudflare Access 限制存取，詢問資料僅限授權管理員讀取。公開原始碼不保存 service role、Turnstile secret 或管理員密碼。</p>
 
       <h2>六、你可以行使的權利</h2>
       <p>你可以透過網站合作入口或 Instagram 請求查詢或閱覽、取得複製本、補充或更正、停止蒐集／處理／利用，或刪除你的個人資料。為避免他人冒用，我們可能先核對足以確認身分的資訊，再處理請求。</p>

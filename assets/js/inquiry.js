@@ -97,6 +97,11 @@
     if (isSubmitting) return;
 
     errorState.hidden = true;
+    if (!config.inquiryApiEndpoint) {
+      track('inquiry_error', trackingProperties({ stage: 'network', error_code: 'API_NOT_CONFIGURED' }));
+      showError();
+      return;
+    }
     if (form.elements.company_website?.value) {
       form.reset();
       return;
@@ -138,7 +143,7 @@
     setStatus('info', '正在安全地送出詢問。');
 
     try {
-      const response = await fetch('/api/inquiries', {
+      const response = await fetch(config.inquiryApiEndpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ inquiry, turnstileToken })

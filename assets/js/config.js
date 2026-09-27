@@ -1,5 +1,10 @@
 // Public browser configuration only. Never put secret keys in this file.
 window.slitConfig = Object.freeze({
+  inquiryApiEndpoint: ['localhost', '127.0.0.1', 'slitlight-preview.35wang35.workers.dev'].includes(window.location.hostname)
+    ? '/api/inquiries'
+    : window.location.hostname === '35wang35-ethan.github.io'
+      ? 'https://slitlight.35wang35.workers.dev/api/inquiries'
+      : null,
   turnstileSiteKey: ['localhost', '127.0.0.1'].includes(window.location.hostname)
     ? '1x00000000000000000000AA'
     : window.location.hostname === 'slitlight-preview.35wang35.workers.dev'
