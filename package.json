@@ -3,6 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "cf:production:dev": "wrangler dev -c wrangler.production.jsonc --local",
+    "cf:production:deploy": "wrangler deploy -c wrangler.production.jsonc",
     "build:admin": "python scripts/build_admin_public.py",
     "cf:admin:dev": "npm run build:admin && wrangler dev -c wrangler.admin.jsonc",
     "cf:admin:deploy": "npm run build:admin && wrangler deploy -c wrangler.admin.jsonc",

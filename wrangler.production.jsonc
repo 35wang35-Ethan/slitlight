@@ -1,0 +1,18 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "slitlight",
+  "main": "src/production-worker.js",
+  "compatibility_date": "2026-09-21",
+  "workers_dev": true,
+  "preview_urls": false,
+  "vars": {
+    "TURNSTILE_EXPECTED_ACTION": "inquiry",
+    "TURNSTILE_ALLOWED_HOSTNAMES": "35wang35-ethan.github.io"
+  },
+  "d1_databases": [{
+    "binding": "DB",
+    "database_name": "slitlight-db",
+    "database_id": "e2c2a4c0-46e2-422a-8a37-18d81e94f0f9",
+    "migrations_dir": "migrations"
+  }]
+}
