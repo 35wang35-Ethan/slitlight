@@ -4,6 +4,10 @@
   "main": "src/admin-worker.js",
   "compatibility_date": "2026-09-23",
   "workers_dev": true,
+  "vars": {
+    "TEAM_DOMAIN": "https://small-mouse-17e0.cloudflareaccess.com",
+    "POLICY_AUD": "b063e21da4c30977c43d5aceeb4d3174b165334581d6c40b1bf9829a1c5b36ff"
+  },
   "assets": {
     "directory": "./public",
     "binding": "ASSETS",

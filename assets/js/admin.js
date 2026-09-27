@@ -115,16 +115,34 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  async function inquiryRequest(path = '', options = {}) {
+    const response = await fetch(`/api/admin/inquiries${path}`, {
+      ...options, credentials: 'same-origin', cache: 'no-store', redirect: 'error'
+    });
+    const payload = await response.json().catch(() => null);
+    if (!response.ok || !payload) {
+      const error = new Error('請重新整理或稍後再試');
+      error.status = response.status;
+      throw error;
+    }
+    return payload;
+  }
+
   async function loadData() {
     try {
-      state.inquiries = await window.slitData.rest.select('inquiries', 'select=*&order=created_at.desc', { auth: true }) || [];
+      const payload = await inquiryRequest();
+      if (!Array.isArray(payload.inquiries)) throw new Error('資料格式錯誤');
+      state.inquiries = payload.inquiries;
       renderInquiries();
       setMessage('#inquiries-load-status', '');
+      return true;
     } catch (error) {
       setMessage('#inquiries-load-status', `Inquiries 載入失敗：${error.message || '未知錯誤'}`, true);
       showToast('已登入；詢問資料暫時無法載入');
+      return false;
+    } finally {
+      updateStats();
     }
-    updateStats();
   }
 
   async function requireAdmin() {
@@ -241,15 +259,28 @@
 
   document.querySelector('#inquiries-table').addEventListener('change', async event => {
     const select = event.target.closest('[data-inquiry]');
-    if (!select) return;
+    if (!select || !state.user) return;
+    const item = state.inquiries.find(row => row.id === select.dataset.inquiry);
+    if (!item) return;
+    select.disabled = true;
     try {
-      await window.slitData.rest.update('inquiries', { status: select.value }, `id=eq.${encodeURIComponent(select.dataset.inquiry)}`);
-      const item = state.inquiries.find(row => row.id === select.dataset.inquiry);
-      if (item) item.status = select.value;
+      const payload = await inquiryRequest(`/${encodeURIComponent(item.id)}`, {
+        method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: select.value, expectedUpdatedAt: item.updated_at })
+      });
+      if (payload.inquiry?.id !== item.id) throw new Error('更新未確認');
+      state.inquiries = state.inquiries.map(row => row.id === item.id ? payload.inquiry : row);
+      select.value = payload.inquiry.status;
       updateStats();
       showToast('詢問狀態已更新');
     } catch (error) {
-      showToast(`狀態更新失敗：${error.message}`);
+      select.value = item.status;
+      if (error.status === 409) {
+        const loaded = await loadData();
+        showToast(loaded ? '資料已被更新，已重新載入最新狀態' : '資料已被更新，重新載入失敗，請重新整理');
+      } else showToast(`狀態更新失敗：${error.message}`);
+    } finally {
+      select.disabled = false;
     }
   });
 
@@ -273,8 +304,8 @@
     if (!state.user || !inquiryId) return;
     try {
       confirmDeleteInquiryButton.disabled = true;
-      const deleted = await window.slitData.rest.remove('inquiries', `id=eq.${encodeURIComponent(inquiryId)}`);
-      if (!Array.isArray(deleted) || !deleted.some(item => item.id === inquiryId)) throw new Error('Delete was not confirmed');
+      const deleted = await inquiryRequest(`/${encodeURIComponent(inquiryId)}`, { method: 'DELETE' });
+      if (deleted.deleted !== true || deleted.id !== inquiryId) throw new Error('Delete was not confirmed');
       state.inquiries = state.inquiries.filter(item => item.id !== inquiryId);
       renderInquiries();
       updateStats();
